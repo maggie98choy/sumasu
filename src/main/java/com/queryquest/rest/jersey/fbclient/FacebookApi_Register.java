@@ -7,11 +7,6 @@ import org.json.simple.parser.JSONParser;
 
 
 
-
-
-
-
-
 /*import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -89,18 +84,20 @@ public class FacebookApi_Register implements Runnable {
 	     {
 	    	 login.setEmail((String) jsonObject.get("email"));
 	     }
-	    /* if ((String) jsonObject.get("password")!=null)
+	    
+	     /*if ((String) jsonObject.get("password")!=null)
 	     {
-	    	 login.setEmail((String) jsonObject.get("password"));
+	    	 login.setPassword((String) jsonObject.get("password"));
 	     }
 	     */
+	     
 	     SQLQueries sqlQuery = new SQLQueries();
 	     sqlQuery.insertUser(login);
 	     sqlQuery.releaseConnection();
 	     
 	     MongoQueries mongoQuery = new MongoQueries();
 	     mongoQuery.mongoConnect();
-	     mongoQuery.mongoInsert(jsonObject);
+	    // mongoQuery.mongoInsert(jsonObject);
 	     //Establish connection to MYSQL DB
 		 /*dbConn = new DBConnection();	     
 		 connect = dbConn.getMySqlDB();*/
