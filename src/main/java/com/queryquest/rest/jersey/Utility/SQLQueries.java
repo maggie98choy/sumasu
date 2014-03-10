@@ -56,7 +56,7 @@ public class SQLQueries {
 				pstmt = con.prepareStatement(ADD_USER_QUERY);
 				 
 			     pstmt.setString(1, login.getEmail().substring(0, login.getEmail().indexOf("@")));
-			     pstmt.setString(2, "");
+			     pstmt.setString(2, login.getPassword());
 			     pstmt.setString(3, login.getName());
 			     pstmt.setString(4, login.getEmail());
 			     pstmt.executeUpdate();

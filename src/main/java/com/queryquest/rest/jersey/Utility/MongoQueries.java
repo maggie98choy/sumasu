@@ -5,6 +5,8 @@ import java.net.UnknownHostException;
 
 
 
+
+import org.bson.BSONObject;
 import org.json.simple.JSONObject;
 
 import com.mongodb.BasicDBObject;
@@ -31,12 +33,13 @@ public class MongoQueries {
 		}
 	}
     
-    public void mongoInsert(JSONObject jsonObject){
+    public void mongoInsert(net.sf.json.JSONObject jsonObj){
     	BasicDBObject document = new BasicDBObject();
-    	document.putAll(jsonObject);
+    	document.putAll(jsonObj);
     	collection.insert(document);
     }
     
+
     
 
 }

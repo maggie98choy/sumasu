@@ -3,6 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<<<<<<< HEAD
 <meta charset="utf-8" />
 <title>QueryQuest</title>
 <!-- Stylesheets -->
@@ -25,6 +26,12 @@
  <!-- JS  -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
 
+=======
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>QueryQuest</title>
+</head>
+<body>
+>>>>>>> FETCH_HEAD
 <div id="fb-root"></div>
 <script>
  window.fbAsyncInit = function() 
@@ -64,6 +71,7 @@
 	  }(document));
  </script>
  
+<<<<<<< HEAD
   <div class="container-fluid">
  		   
         <form class="well span5 offset5" action="loginFB" method=POST>
@@ -84,14 +92,37 @@
          <img border="0" src="images/login_facebook.png" onclick="fblogin()"/>    
    		 <a href="registration.html"><img src="images/rainbow.gif"></a><br/><br/>
    		  <%
+=======
+<h1> QueryQuest Login</h1>
+  <form action="loginFB" method=POST>
+    Username: <input type="text" name="user"><br><br>
+    Password: <input type="password" name="password"><br/><br/>
+    <button  type="submit" value="submit" class="btn btn-primary">Submit </button>
+    <button type="reset" class="btn">Clear</button><br/><br/>
+    <input type="checkbox" id="remember" value="remember" />
+    <span>Remember me on this computer</span><br/>
+   </form> 
+
+    <img src="login_facebook.png" onclick="fblogin()"/>    
+    <a href="registration.html"><img src="rainbow.gif"></a><br/><br/>
+     
+     <%
+>>>>>>> FETCH_HEAD
 		String register_status  = (String)request.getAttribute("register_status");
 		if (register_status != null)	
 	    	out.println("<font size=\"4\" color=\"red\">Failed: User has already registered</font>");
 	  %>
+<<<<<<< HEAD
    		 <p class="forgot">New user? <a href="registration.html">Register</a></p>
    		 </form>
     </div> 
 
+=======
+	  <br>
+    <p class="forgot">Forgot your password? <a href="forgot.php"> Reset</a></p>
+    <p class="forgot">New user? <a href="register.php">Register</a></p>
+	
+>>>>>>> FETCH_HEAD
  <script>
  function fblogin(){
 	 
