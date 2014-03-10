@@ -71,7 +71,7 @@
 	  }(document));
  </script>
  
-<<<<<<< HEAD
+
   <div class="container-fluid">
  		   
         <form class="well span5 offset5" action="loginFB" method=POST>
@@ -89,23 +89,15 @@
             <span> Remember me on this computer </span></br> </br> 
             
          <p style="text-align:left; margin-top:0px; margin-bottom:0px; padding:0px;"></p>
-         <img border="0" src="images/login_facebook.png" onclick="fblogin()"/>    
+         <img border="0" src="images/login_facebook.png" onclick="fblogin()"/>  &nbsp;&nbsp;&nbsp;&nbsp;   
    		 <a href="registration.html"><img src="images/rainbow.gif"></a><br/><br/>
    		  <%String register_status  = (String)request.getAttribute("register_status");
 		if (register_status != null)	
 	    	out.println("<font size=\"4\" color=\"red\">Failed: User has already registered</font>");
 	  %>
-<<<<<<< HEAD
-   		 <p class="forgot">New user? <a href="registration.html">Register</a></p>
+	<p class="forgot">New user? <a href="registration.html">Register</a></p>
    		 </form>
     </div> 
-
-=======
-	  <br>
-    <p class="forgot">Forgot your password? <a href="forgot.php"> Reset</a></p>
-    <p class="forgot">New user? <a href="register.php">Register</a></p>
-	
->>>>>>> FETCH_HEAD
  <script>
  function fblogin(){
 	 
