@@ -1,16 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
+<meta charset="utf-8" />
 <title>QueryQuest</title>
-</head>
-<body>
-<div id="fb-root"></div>
 
+<!-- Stylesheets -->
+	<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <style>
+        html,body { 
+            background: url(images/login.jpg) no-repeat center center fixed; 
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .container {
+            padding-right: 0; /*15px in bootstrap.css*/
+            padding-left: 0;  /*idem*/
+            margin-right: auto;
+            margin-left: auto;
+        }
+    </style>
+   
+</head>
+
+<body>
+
+<script src="bootstrap/js/bootstrap.js"></script>
+<!-- Facebook Login -->
 <script>
+<div id="fb-root" style="float:left; width:1px;></div>
  window.fbAsyncInit = function() 
  {
-  FB.init({
+  FB.init({"WebContent/view/register.html"
     appId      : '359402037530890',
     status     : true, // check login status
     cookie     : true, // enable cookies to allow the server to access the session
@@ -45,26 +67,9 @@
 	  }(document));
  </script>
  
-<h1> QueryQuest Login</h1>
-<form action="loginFB" method=POST>
-    Username: <input type="text" name="user"><br><br>
-    Password: <input type="password" name="password"><br/><br/>
-    <button  type="submit" value="submit" class="btn btn-primary">Submit </button>
-    <button type="reset" class="btn">Clear</button><br/><br/>
-    <input type="checkbox" id="remember" value="remember" />
-    <span>Remember me on this computer</span><br/>
-    </form> 
-    
-    <img src="login_facebook.png" onclick="fblogin()"/>    
-    <a href="registration.html"><img src="rainbow.gif"></a><br/><br/>
-    <p class="forgot">Forgot your password? <a href="forgot.php"> Reset</a></p>
-    <p class="forgot">New user? <a href="register.php">Register</a></p>
-    
- 
  <script>
  function fblogin(){
-	 
- FB.login(function(response) {
+	 FB.login(function(response) {
 	 if (response.authResponse) {
 		   FB.getLoginStatus(function(response){
 		    	console.log('Access Token = '+response.authResponse.accessToken);
@@ -80,7 +85,27 @@
 	}, {scope: 'publish_stream' ,display : 'touch'});
  }
    </script> 
-  
+   
+   <div class="container-fluid">
+        <form class="well span5 pull-right" action="loginFB" method=POST>
+            <br><br><label>Username</label>
+            <input type="email" class="span3" autofocus="autofocus" placeholder="example@xyz.com" name="email" required/> </br>
+            <label>Password </label>
+            <input type="password" class="span3" placeholder="*********" name="password" required/></br>
+            <button  type="submit" value="submit" class="btn btn-primary">Submit </button>
+            <button type="reset" class="btn">Clear</button></br></br>
+            <input type="checkbox" id="remember" value="remember" />&nbsp;&nbsp; 
+            <span> Remember me on this computer </span></br> </br>
+            
+         <p style="text-align:left; margin-top:0px; margin-bottom:0px; padding:0px;"></p>
+         <img border="0" src="login_facebook.png" onclick="fblogin()" style="cursor:pointer"/>    
+   		 <a href="registration.html"><img src="rainbow.gif"></a><br/><br/>
+    	 <p class="forgot">Forgot your password? <a href="forgot.php"> Reset</a></p>
+   		 <p class="forgot">New user? <a href="registration.html">Register</a></p>
+    </form>
+    </div> 
+   <!-- JS  -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
 
 </body>
 </html>
