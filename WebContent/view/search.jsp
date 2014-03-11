@@ -32,7 +32,7 @@
   <!-- navigation bar -->
  	<div class="container">
         <!-- Navigation bar -->
-        <nav class="navbar navbar-inner navbar-fixed-top navbar-inverse" role="navigation">
+        <nav class="navbar navbar-inner navbar-fixed-top" role="navigation">
             <ul class="nav navbar-nav nav-pills">
                 <li><img src="images/logo.png" alt="Citystory" width="50" height="50"></li>
                 <li class="active"><a href="search.jsp">Travel</a></li>
@@ -45,17 +45,15 @@
             <a href="https://www.facebook.com/citystorysf"title="Become a fan"><img src="images/facebook.jpg" height="50" width="50"></a>
         </nav>
     </div>
-    <br> <br><br><br> <br> <br> <br> <br><br><br> <br> <br>
+    <br> <br><br><br> <br> <br> <br> <br><br>
     
     <!-- Search box -->
-        <div div align="center" style="float:none; margin:0 auto">
-            <form class="centered" action="" method="post">
-                    <input name="search" class="span5" placeholder="2 day trip to Las Vegas"/>&nbsp;&nbsp;&nbsp;
-                   <button  type="submit" value="submit" class="btn btn-inverse">Search </button>
-                    </form>
-                    </div>
-
-
- 
+    	
+       <form class="well navbar-search offset5">
+       				&nbsp;&nbsp;<p>Where do you want to go?</p> <br>
+  					<input type="text" class="search-query span6" placeholder="Two day trip to Las Vegas">
+  					<button type="submit" value="submit" class="btn btn-inverse">Search
+  					<span class="glyphicon glyphicon-search"></span></button>
+					</form>
 </body>
 </html>
