@@ -71,7 +71,7 @@
 	  }(document));
  </script>
  
-
+<br> <br>
   <div class="container-fluid">
  		   
         <form class="well span5 offset5" action="loginFB" method=POST>
