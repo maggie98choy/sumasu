@@ -26,8 +26,8 @@ public class SQLQueries {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		      //con = DriverManager.getConnection("jdbc:mysql://54.193.76.21:3306/QueryQuest","cmpe295b","cmpe295b");
-		      con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/QueryQuest","admin","sa");
+		      con = DriverManager.getConnection("jdbc:mysql://54.193.76.21:3306/QueryQuest","cmpe295b","cmpe295b");
+		      //con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/QueryQuest","admin","sa");
 		   }
 		   catch (SQLException e) {
 			       System.out.println("ERRROR");

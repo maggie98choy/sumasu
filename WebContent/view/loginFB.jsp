@@ -71,7 +71,7 @@
 	  }(document));
  </script>
  
-<br> <br>
+
   <div class="container-fluid">
  		   
         <form class="well span5 offset5" action="loginFB" method=POST>
@@ -95,6 +95,11 @@
 		if (register_status != null)	
 	    	out.println("<font size=\"4\" color=\"red\">Failed: User has already registered</font>");
 	  %>
+	  <%String login_status  = (String)request.getAttribute("login_status");
+		if (login_status != null)	
+	    	out.println("<font size=\"4\" color=\"red\">Failed: User has not registered!</font>");
+	  %>
+	  
 	<p class="forgot">New user? <a href="registration.html">Register</a></p>
    		 </form>
     </div> 
