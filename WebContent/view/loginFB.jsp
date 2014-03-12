@@ -25,13 +25,6 @@
 	<script src="bootstrap/js/bootstrap.js"></script>
  <!-- JS  -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
-
-
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>QueryQuest</title>
-</head>
-<body>
-
 <div id="fb-root"></div>
 <script>
  window.fbAsyncInit = function() 
@@ -80,13 +73,13 @@
                     QueryQuest
                 </p>   
             <br><label>Username</label>
-            <input type="email" class="span3" autofocus="autofocus" placeholder="example@xyz.com" name="user" required/> </br>
+            <input type="email" class="span3" autofocus="autofocus" placeholder="example@xyz.com" name="user" required/> <br>
             <label>Password </label>
-            <input type="password" class="span3" placeholder="*********" name="password" required/></br>
+            <input type="password" class="span3" placeholder="*********" name="password" required/><br>
             <button  type="submit" value="submit" class="btn btn-primary">Submit </button>
-            <button type="reset" class="btn">Clear</button></br></br>
+            <button type="reset" class="btn">Clear</button><br><br>
             <input type="checkbox" id="remember" value="remember" />&nbsp;&nbsp; 
-            <span> Remember me on this computer </span></br> </br> 
+            <span> Remember me on this computer </span><br> <br> 
             
          <p style="text-align:left; margin-top:0px; margin-bottom:0px; padding:0px;"></p>
          <img border="0" src="images/login_facebook.png" onclick="fblogin()"/>  &nbsp;&nbsp;&nbsp;&nbsp;   
