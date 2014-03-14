@@ -12,82 +12,38 @@
 	    <layout>default</layout>
 	 </repository>
   </repositories>
-  
 	 
   <dependencies>
-  <dependency>
-	<groupId>org.scribe</groupId>
-	<artifactId>scribe</artifactId>
-	<version>1.1.0</version>
-</dependency>
-  <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.29</version>
-    </dependency>
-  <dependency>
-	<groupId>org.mongodb</groupId>
-	<artifactId>mongo-java-driver</artifactId>
-	<version>2.10.0</version>
-</dependency>
-            
-  <dependency>
-    <groupId>javax.ws.rs</groupId>
-    <artifactId>jsr311-api</artifactId>
-    <version>1.1.1</version>
-  </dependency>
-  <dependency>
-  	<groupId>com.sun.jersey</groupId>
-	<artifactId>jersey-server</artifactId>
-	<version>1.9</version>
-  </dependency>
+  	<dependency>
+  	 	<groupId>com.sun.jersey</groupId>
+	    <artifactId>jersey-server</artifactId>
+	    <version>1.9</version>
+	</dependency>
 	
-  <dependency>
-    <groupId>com.sun.jersey.contribs.jersey-oauth</groupId>
-    <artifactId>oauth-signature</artifactId>
-    <version>1.6-ea06</version>
-  </dependency>
+	<dependency>
+    	<groupId>com.sun.jersey.contribs.jersey-oauth</groupId>
+        <artifactId>oauth-signature</artifactId>
+        <version>1.6-ea06</version>
+     </dependency>
      
-  <dependency>
-   	<groupId>com.sun.jersey.contribs.jersey-oauth</groupId>
-    <artifactId>oauth-client</artifactId>
-    <version>1.6-ea06</version>
-  </dependency>
-     	
-  <dependency>
-	<groupId>com.sun.jersey</groupId>
-	<artifactId>jersey-client</artifactId>
-	<version>1.9</version>
-   </dependency>
-
-   <dependency>
-	 <groupId>com.sun.jersey</groupId>
-	 <artifactId>jersey-json</artifactId>
-	 <version>1.9</version>
-   </dependency>
+     <dependency>
+     	<groupId>com.sun.jersey.contribs.jersey-oauth</groupId>
+        <artifactId>oauth-client</artifactId>
+        <version>1.6-ea06</version>
+     </dependency>
+     
 	
-   <dependency>
-	 <groupId>com.googlecode.json-simple</groupId>
-	 <artifactId>json-simple</artifactId>
-	 <version>1.1</version>
-   </dependency>
-   
-  <dependency>
-    <groupId>org.facebook4j</groupId>
-    <artifactId>facebook4j-core</artifactId>
-    <version>[2.0,)</version>
-  </dependency>	
+    <dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-client</artifactId>
+		<version>1.9</version>
+	</dependency>
 
- 
-
-   <dependency>
-        <groupId>net.sf.json-lib</groupId>
-        <artifactId>json-lib</artifactId>
-        <version>2.2.3</version>
-        <classifier>jdk15</classifier>
-    </dependency>
-
-
-
+	<dependency>
+		<groupId>com.sun.jersey</groupId>
+		<artifactId>jersey-json</artifactId>
+		<version>1.9</version>
+	</dependency>
+	
  </dependencies> 
 </project>

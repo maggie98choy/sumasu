@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>QueryQuest</title>
+</head>
+<body>
+<div id="fb-root"></div>
+
+<script>
+ window.fbAsyncInit = function() {
+ FB.init({
+    appId      : '216724725188309',
+    status     : true, // check login status
+    cookie     : true, // enable cookies to allow the server to access the session
+    xfbml      : true  // parse XFBML
+});
+ };
+ (function(d){
+	   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+	   if (d.getElementById(id)) {return;}
+	   js = d.createElement('script'); js.id = id; js.async = true;
+	   js.src = "//connect.facebook.net/en_US/all.js";
+	   ref.parentNode.insertBefore(js, ref);
+	  }(document));
+ </script>
+ 
+<h1> QueryQuest Login</h1>
+<form action="loginFB" method=POST>
+    Username: <input type="text" name="user"><br><br>
+    Password: <input type="password" name="password"><br/><br/>
+    <button  type="submit" value="submit" class="btn btn-primary">Submit </button>
+    <button type="reset" class="btn">Clear</button><br/><br/>
+    <input type="checkbox" id="remember" value="remember" />
+    <span>Remember me on this computer</span><br/>
+    </form> 
+    
+    <img src="login_facebook.png" onclick="fblogin()"/>                           
+    <a href="register.php"><img src="rainbow.gif"></a><br/><br/>
+    <p class="forgot">Forgot your password? <a href="forgot.php"> Reset</a></p>
+    <p class="forgot">New user? <a href="register.php">Register</a></p>
+    
+ 
+ <script>
+ function fblogin(){
+	 
+ FB.login(function(response) {
+	 if (response.authResponse) {
+		   FB.getLoginStatus(function(response){
+		    	console.log('Access Token = '+response.authResponse.accessToken);
+		    	 window.location= "loginFB?accessT="+response.authResponse.accessToken;
+		    });
+			
+		  // var access = document.getElementById("accessT");
+		   //document.accessToken.action= "loginFB?accessToken="access
+		   //document.acessToken.submit();		   
+		 
+	   
+	  }
+	}, {scope: 'publish_stream' ,display : 'touch'});
+ }
+ </script> 
+ 
+</body>
+</html>
