@@ -46,7 +46,7 @@ p {
 				<li><a href="">Sports</a></li>
 				<li><a href="">Music</a></li>
 				<li><a href="">Events</a></li>
-				<li><a href="preferences.jsp">Preferences</a></li>
+				<li><a href="https://www.surveymonkey.com/s/FBSYGL5">Feedback</a></li>
 
 				<li><a href="">Sign Off</a></li>
 			</ul>
