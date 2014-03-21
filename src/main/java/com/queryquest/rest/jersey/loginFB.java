@@ -95,6 +95,7 @@ public class loginFB extends HttpServlet {
 		     JSONObject jsonObj = JSONObject.fromObject(str);
 		     System.out.println(jsonObj);
 		     mongoQuery.mongoUpdate(jsonObj,(String)jsonObject.get("email") );
+		     session.setAttribute("firstTime",false);
 			 request.getRequestDispatcher("search.jsp").forward(request, response);
 			 return;
 
