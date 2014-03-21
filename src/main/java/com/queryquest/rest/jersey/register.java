@@ -111,6 +111,7 @@ public class register extends HttpServlet {
 		     
 		     session = request.getSession(true);
 			 session.setAttribute("email", (String) jsonObject.get("email"));
+			 session.setAttribute("firstTime",true);
 			 
 		     FB4j fb4j = new FB4j();
 		     String str= fb4j.getDataFromUser(accessToken,login);
@@ -119,7 +120,7 @@ public class register extends HttpServlet {
 		         //System.out.println("Json Object: "+ jsonObj);
 				 mongoQuery.mongoInsert(jsonObj);
 				 
-				 request.getRequestDispatcher("search.jsp").forward(request, response);
+				 request.getRequestDispatcher("preferences.jsp").forward(request, response);
 				 return;
 	     }
 	     else

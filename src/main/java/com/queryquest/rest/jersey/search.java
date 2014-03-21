@@ -3,6 +3,9 @@ package com.queryquest.rest.jersey;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +17,13 @@ import javax.servlet.http.HttpSession;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.google.code.geocoder.Geocoder;
+import com.google.code.geocoder.GeocoderRequestBuilder;
+import com.google.code.geocoder.model.GeocodeResponse;
+import com.google.code.geocoder.model.GeocoderRequest;
 import com.queryquest.rest.jersey.Utility.MongoQueries;
+import com.queryquest.rest.jersey.Utility.SearchParser;
+import com.queryquest.rest.jersey.domain.SearchAnalysis;
 import com.queryquest.rest.jersey.domain.SearchResult;
 import com.queryquest.rest.jersey.fbclient.Yelp;
 
@@ -24,10 +33,11 @@ import com.queryquest.rest.jersey.fbclient.Yelp;
 @WebServlet("/search")
 public class search extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private String consumerKey = "ji0in1zmhgsL9bxJ4VMjIQ";
-	private String consumerSecret = "xxKohKewFrjhLoOpm-0xsyUMNYA";
-	private String token = "ImKKW1IiwL-7VkAWNONADx51qutF_PyE";
-	private String tokenSecret = "KS_PJKojQZuYjhAFDR7l7wFmLbo";   
+	private static final String consumerKey = "ji0in1zmhgsL9bxJ4VMjIQ";
+	private static final String consumerSecret = "xxKohKewFrjhLoOpm-0xsyUMNYA";
+	private static final String token = "ImKKW1IiwL-7VkAWNONADx51qutF_PyE";
+	private static final String tokenSecret = "KS_PJKojQZuYjhAFDR7l7wFmLbo";
+	private static final int totalNumber=15;
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -48,51 +58,83 @@ public class search extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String activity = request.getParameter("activity");
-		MongoQueries mongo = new MongoQueries();
-		mongo.mongoConnect();
-		
+
+
+		String searchTerm = request.getParameter("searchTerm");
+		SearchParser searchParser = new SearchParser();
+		//System.out.println("hello "+searchTerm);
+
+		SearchAnalysis searchAnalysis = searchParser.stringParser(searchTerm);
+
 		HttpSession session = request.getSession(true);
 		String email=(String) session.getAttribute("email");
-		String location = mongo.mongoGetLocation(email);
+		MongoQueries mongo = new MongoQueries();
+
+
+		String location="";
+		//Activities
+		ArrayList<String> actList=null;
+		if(searchAnalysis.getActivity().isEmpty()){
+			mongo.mongoConnect(1);
+			actList=mongo.mongoGetActivities(email);
+		}else
+			actList=searchAnalysis.getActivity();
+
+		//location
+		if(searchAnalysis.getLocation() == null){
+			mongo.mongoConnect();
+			location = mongo.mongoGetLocation(email);
+		}else
+			location=searchAnalysis.getLocation();
+
+
 		Yelp yelp = new Yelp(consumerKey, consumerSecret, token, tokenSecret);
-		String out = yelp.search(activity, location);
-		System.out.print("hello12"+email);
-		System.out.print("hello12"+location);
-
 		ArrayList<SearchResult> searchList = new ArrayList<SearchResult>();
-		JSONObject jsonObj = JSONObject.fromObject(out);
-		JSONArray msg = (JSONArray) jsonObj.get("businesses");
-		if(msg != null){
-			
-			Iterator<JSONObject> iterator = msg.iterator();
-			while (iterator.hasNext()) {
-				
-				SearchResult search = new SearchResult();
-				JSONObject business = iterator.next();
-				System.out.println(JSONObject.fromObject(business));
-				String name = (String) business.get("name");
-				String addr1 = JSONObject.fromObject(business.get("location")).getString("display_address");
-				String addr2 = addr1.replace("[", "");
-				String addr = addr2.replace("]", "");
-				String url = (String)business.get("url");
-				String phone =(String)business.get("phone");
 
-				search.setAddress(addr);
-				search.setName(name);
-				search.setURL(url);
-				search.setPhoneNo(phone);
-				searchList.add(search);
-				System.out.println(search.toString());
-				
+		for(int i=0;i<actList.size();i++){
+			String out=yelp.search(actList.get(i), location);
+			ArrayList<SearchResult> tmpSearchList = new ArrayList<SearchResult>();
+			//String out = yelp.search(activity, "hiking");
+			//System.out.println("hello ="+out);
+			JSONObject jsonObj = JSONObject.fromObject(out);
+			JSONArray msg = (JSONArray) jsonObj.get("businesses");
+			if(msg != null){
+				tmpSearchList = parseYelpResult(msg,(totalNumber/actList.size()));
+				searchList.addAll(tmpSearchList);
 
 			}
 		}
 
 		request.setAttribute("search_results", searchList);
+		request.setAttribute("activities", actList);
+		request.setAttribute("division", totalNumber/actList.size());
 		request.getRequestDispatcher("searchresults.jsp").forward(request, response);
 	}
-	
 
+	private ArrayList<SearchResult> parseYelpResult(JSONArray msg,int count){
+		Iterator<JSONObject> iterator = msg.iterator();
+		ArrayList<SearchResult> searchList = new ArrayList<SearchResult>();
+        
+		while (iterator.hasNext()&&count>0) {
+			SearchResult search = new SearchResult();
+			JSONObject business = iterator.next();
+			//System.out.println(JSONObject.fromObject(business));
+			String name = (String) business.get("name");
+			String addr1 = JSONObject.fromObject(business.get("location")).getString("display_address");
+			String addr2 = addr1.replace("[", "");
+			String addr = addr2.replace("]", "");
+			String url = (String)business.get("url");
+			String phone =(String)business.get("phone");
+
+			search.setAddress(addr);
+			search.setName(name);
+			search.setURL(url);
+			search.setPhoneNo(phone);
+			//System.out.println(search.toString());
+ 
+			searchList.add(search);
+			count--;
+		}
+		return searchList;
+	}
 }

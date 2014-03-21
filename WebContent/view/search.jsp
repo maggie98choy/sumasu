@@ -71,7 +71,7 @@ p {
 		&nbsp;&nbsp;
 		<p>What do you want to do?</p>
 		<br> <input type="text" class="search-query span6"
-			placeholder="Enter an activity" name="activity" id="activity">
+			placeholder="2 days hiking to Las Vegas" name="searchTerm" id="searchTerm">
 		<button type="submit" value="submit" class="btn btn-inverse">
 			Search <span class="glyphicon glyphicon-search"></span>
 		</button>

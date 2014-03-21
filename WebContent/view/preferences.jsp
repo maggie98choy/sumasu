@@ -53,48 +53,48 @@ html,body {
 	<br>
 	<br>
 	<span style="color: white">
-	<form name="form1">
+	<form name="form1" method="post" action="preferences">
 	<h3>Select your favorite Activity</h3>
 	<table class="table borderless table-nonfluid">  
 	<tr> 
 		
-		<td> <input type="checkbox" name="activity" value="aquariums"/>  Aquarium </td>
-		<td><input type="checkbox" name="activity" value="archery"/>  Archery</td>
-		<td><input type="checkbox" name="activity" value="arts"/>  Arts </td>
-		<td> <input type="checkbox" name="activity" value="beaches"/>  Beach </td>
+		<td> <input type="checkbox" name="activity" value="Aquariums"/>  Aquarium </td>
+		<td><input type="checkbox" name="activity" value="Archery"/>  Archery</td>
+		<td><input type="checkbox" name="activity" value="Arts"/>  Arts </td>
+		<td> <input type="checkbox" name="activity" value="Beaches"/>  Beach </td>
 		
 	</tr>
 	<tr>
 		
-		<td><input type="checkbox" name="activity" value="bautysvc"/>  Beauty & Spas </td>
-		<td><input type="checkbox" name="activity" value="campgrounds"/> Camp Grounds  </td>
-		<td><input type="checkbox" name="activity" value="casinos"/> Casino  </td>
-		<td><input type="checkbox" name="activity" value="yelpevents"/> Events  </td>
+		<td><input type="checkbox" name="activity" value="Beauty Spa"/>  Beauty & Spas </td>
+		<td><input type="checkbox" name="activity" value="Campgrounds"/> Camp Grounds  </td>
+		<td><input type="checkbox" name="activity" value="Casino"/> Casino  </td>
+		<td><input type="checkbox" name="activity" value="Events this weekend"/> Events this weekend </td>
 		
 	</tr>
 	
 	<tr>
-		<td><input type="checkbox" name="activity" value="fishing"/>  Fishing </td>	
-		<td><input type="checkbox" name="activity" value="fitness"/>  Fitness  </td>
-		<td><input type="checkbox" name="activity" value="golf"/>  Golf  </td>
-		<td><input type="checkbox" name="activity" value="hiking"/>  Hiking </td>
+		<td><input type="checkbox" name="activity" value="Fishing spots"/>  Fishing </td>	
+		<td><input type="checkbox" name="activity" value="Fitness"/>  Fitness  </td>
+		<td><input type="checkbox" name="activity" value="Golf"/>  Golf  </td>
+		<td><input type="checkbox" name="activity" value="Hiking"/>  Hiking </td>
 		
 	</tr>
 		
 	<tr>
 	<tr>
 		
-		<td><input type="checkbox" name="activity" value="museums"/>  Museums  </td>
-		<td><input type="checkbox" name="activity" value="nightlife"/>Night Life  </td>
-		<td><input type="checkbox" name="activity" value="rvparks"/>  RV Parks</td>	
-		<td> <input type="checkbox" name="activity" value="scuba"/> Scuba </td>
+		<td><input type="checkbox" name="activity" value="Museums"/>  Museums  </td>
+		<td><input type="checkbox" name="activity" value="Nightlife"/>Night Life  </td>
+		<td><input type="checkbox" name="activity" value="Rv park"/>  RV Parks</td>	
+		<td> <input type="checkbox" name="activity" value="Scuba"/> Scuba </td>
 		
 	</tr>
 		<tr>
-		<td><input type="checkbox" name="activity" value="shopping"/> Shopping </td>	
-		<td><input type="checkbox" name="activity" value="active"/> Sports </td>
-		<td><input type="checkbox" name="activity" value="wineries"/>  Wineries </td>
-		<td><input type="checkbox" name="activity" value="zoos"/>  Zoo </td>
+		<td><input type="checkbox" name="activity" value="Shopping"/> Shopping </td>	
+		<td><input type="checkbox" name="activity" value="Sport bars"/> Sports Bars </td>
+		<td><input type="checkbox" name="activity" value="Winery"/>  Wineries </td>
+		<td><input type="checkbox" name="activity" value="Zoo"/>  Zoo </td>
 		
 		</tr>
 		
@@ -105,14 +105,7 @@ html,body {
 <button type="reset" value="reset"  class="btn">Clear</button>
 </form>
 
-<!-- For reference -->
-<%String activities[]= request.getParameterValues("activity");
-if(activities != null){%>
-<h4>I like Activities mostly</h4>
-<ul><%for(int i=0; i<activities.length; i++){%><li><%=activities[i]%></li><%}%></ul><%}%>
-	<br><br><br><br><br>
-	
-	
+
 </div></span>
 	
 </body>

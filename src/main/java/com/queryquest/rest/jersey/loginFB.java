@@ -93,8 +93,9 @@ public class loginFB extends HttpServlet {
 		     FB4j fb4j = new FB4j();
 		     String str= fb4j.getDataFromUser(accessToken,login);
 		     JSONObject jsonObj = JSONObject.fromObject(str);
+		     System.out.println(jsonObj);
 		     mongoQuery.mongoUpdate(jsonObj,(String)jsonObject.get("email") );
-		     request.getRequestDispatcher("search.jsp").forward(request, response);
+			 request.getRequestDispatcher("search.jsp").forward(request, response);
 			 return;
 
 	     }
