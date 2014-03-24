@@ -6,8 +6,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>QQ SearchResults</title>
 <!-- Stylesheets -->
-<link type="text/css" rel="stylesheet"
-	href="bootstrap/css/bootstrap.css">
+<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.css">
+<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+<link href="star/css/star-rating.css" media="all" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="star/js/star-rating.js" type="text/javascript"></script>
 <style>
 html,body {
 	background: url(images/travel.jpg) no-repeat center center fixed;
@@ -75,12 +78,23 @@ html,body {
 					style="font-weight: normal;"> <% out.println(search.getAddress()); %>
 						<% if(search.getPhoneNo() != null) 
 	    	out.println("Phone : "+search.getPhoneNo()); %><br> <a
-						href="<%out.println(search.getURL()); %>"><%= search.getURL() %></a></span></th>
+						href="<%out.println(search.getURL()); %>"><%= search.getURL() %></a></span>
+	<!-- star rating -->
+	<form>
+	<input id="input-21" name="star" type="number" class="rating" data-show-clear="false" data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}' data-show-caption=“true” data-size="xs">
+	<button class="btn btn-primary btn-xs">Save</button>
+	<button class="btn btn-default btn-xs" type="reset">Reset</button>
+	</form>
+	</th>
 			</tr>
 
 			<% } %>
 			<% } %>
 		</table>
+		
+ <!-- For reference -->
+	<%String star= request.getParameter("star");%>
+	<% out.println(star); %>
 	</div>
 </body>
 </html>
