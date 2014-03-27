@@ -4,8 +4,9 @@
 <meta charset="ISO-8859-1">
 <title>QQ Travel</title>
 <!-- Stylesheets -->
-<link type="text/css" rel="stylesheet"
-	href="bootstrap/css/bootstrap.css">
+<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.css">
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
+ <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <style>
 #round-image {
 	border-radius: 100%;
@@ -69,13 +70,19 @@ p {
 
 	<form class="well navbar-search offset5" action="search" method="post">
 		&nbsp;&nbsp;
-		<p>What do you want to do?</p>
-		<br> <input type="text" class="search-query span6"
-			placeholder="2 days hiking to Las Vegas" name="searchTerm" id="searchTerm">
+		<p>Where do you want to go?</p>
+		<input type="text" class="search-query span6" placeholder="2 days hiking to Las Vegas" name="searchTerm" id="searchTerm">
 		<button type="submit" value="submit" class="btn btn-inverse">
 			Search <span class="glyphicon glyphicon-search"></span>
-		</button>
-	</form>
+			</button><br>
+			
+	 	<details>
+		<summary>Date</summary>
+      	<br>Start Date: <input type="date" id="startdate" name="startdate"> 
+      	<br>End  Date:  &nbsp;<input type="date" id="enddate" name="enddate">
+   		</details>
+</form>
+
 	
 </body>
 </html>
