@@ -54,9 +54,7 @@ public class preferences extends HttpServlet {
 		     HttpSession session = request.getSession();
 		     session = request.getSession(true);
 			 String email=(String) session.getAttribute("email");
-			 boolean isFirstTime =(boolean) session.getAttribute("firstTime");
-			 mongoQuery.mongoUpdateActivities(activities, email,isFirstTime);
-			 session.setAttribute("firstTime", false);
+			 mongoQuery.mongoUpdateActivities(activities, email);
 		}
 		 request.getRequestDispatcher("search.jsp").forward(request, response);
 

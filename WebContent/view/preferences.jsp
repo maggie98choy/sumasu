@@ -67,7 +67,7 @@ html,body {
 	<tr>
 		
 		<td><input type="checkbox" name="activity" value="Beauty Spa"/>  Beauty & Spas </td>
-		<td><input type="checkbox" name="activity" value="Campgrounds"/> Camp Grounds  </td>
+		<td><input type="checkbox" name="activity" value="Camping grounds"/> Camp Grounds  </td>
 		<td><input type="checkbox" name="activity" value="Casino"/> Casino  </td>
 		<td><input type="checkbox" name="activity" value="Events this weekend"/> Events this weekend </td>
 		

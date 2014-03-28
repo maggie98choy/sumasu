@@ -99,7 +99,7 @@ public class search extends HttpServlet {
 			JSONObject jsonObj = JSONObject.fromObject(out);
 			JSONArray msg = (JSONArray) jsonObj.get("businesses");
 			if(msg != null){
-				tmpSearchList = parseYelpResult(msg,(totalNumber/actList.size()));
+				tmpSearchList = parseYelpResult(msg,(totalNumber/actList.size()),email);
 				searchList.addAll(tmpSearchList);
 
 			}
@@ -111,15 +111,22 @@ public class search extends HttpServlet {
 		request.getRequestDispatcher("searchresults.jsp").forward(request, response);
 	}
 
-	private ArrayList<SearchResult> parseYelpResult(JSONArray msg,int count){
+	private ArrayList<SearchResult> parseYelpResult(JSONArray msg,int count, String email){
 		Iterator<JSONObject> iterator = msg.iterator();
 		ArrayList<SearchResult> searchList = new ArrayList<SearchResult>();
-        
+		
+		MongoQueries mongo = new MongoQueries();
+		mongo.mongoConnect(2);
+		
 		while (iterator.hasNext()&&count>0) {
 			SearchResult search = new SearchResult();
 			JSONObject business = iterator.next();
 			//System.out.println(JSONObject.fromObject(business));
 			String name = (String) business.get("name");
+			int rating= mongo.mongoGetRating(email,name);
+			
+			//if(rating == 1 || rating == 2)
+				//continue;
 			String addr1 = JSONObject.fromObject(business.get("location")).getString("display_address");
 			String addr2 = addr1.replace("[", "");
 			String addr = addr2.replace("]", "");
@@ -130,11 +137,43 @@ public class search extends HttpServlet {
 			search.setName(name);
 			search.setURL(url);
 			search.setPhoneNo(phone);
+			search.setNoOfStars(rating);
 			//System.out.println(search.toString());
  
 			searchList.add(search);
 			count--;
 		}
+		
+		
+		return sortRating(searchList);
+	}
+	
+	
+	private ArrayList<SearchResult> sortRating(ArrayList<SearchResult> searchList){
+		int nElems = searchList.size();
+		int inner, outer;
+		SearchResult tmp;
+		
+		int h=1;
+		while(h< nElems/3)
+			h=h*3+1;
+		
+		while(h>0){
+			for(outer=h; outer<nElems;outer++){
+				tmp = searchList.get(outer);
+				inner=outer;
+				
+				while(inner >h-1 && searchList.get(inner-h).getNoOfStars()< tmp.getNoOfStars()){
+					searchList.remove(inner);
+					searchList.add(inner, searchList.get(inner-h));
+					inner-=h;
+				}
+				searchList.remove(inner);
+                searchList.add(inner,tmp);
+			}
+			h=(h-1)/3;
+		}
+	
 		return searchList;
 	}
 }

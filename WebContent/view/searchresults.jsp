@@ -80,21 +80,28 @@ html,body {
 	    	out.println("Phone : "+search.getPhoneNo()); %><br> <a
 						href="<%out.println(search.getURL()); %>"><%= search.getURL() %></a></span>
 	<!-- star rating -->
-	<form>
-	<input id="input-21" name="star" type="number" class="rating" data-show-clear="false" data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}' data-show-caption=“true” data-size="xs">
+	
+	<%     
+     	session.setAttribute("actList" ,actList );
+		session.setAttribute("division", division);
+		session.setAttribute("search_results",searchList);
+	%>	
+	<form action= "searchresults" method="post">
+	<input type="hidden" id="index" name="index" value=<%= i %>>
+	<input id="input-21" name="star" value="<%=search.getNoOfStars()%>" type="number" class="rating" data-show-clear="false" data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}' data-show-caption=“true” data-size="xs">	
 	<button class="btn btn-primary btn-xs">Save</button>
-	<button class="btn btn-default btn-xs" type="reset">Reset</button>
+	<!--  <button class="btn btn-default btn-xs" type="reset">Reset</button>-->
 	</form>
 	</th>
 			</tr>
-
-			<% } %>
-			<% } %>
-		</table>
 		
- <!-- For reference -->
-	<%String star= request.getParameter("star");%>
-	<% out.println(star); %>
+<% } %>
+<% } %>
+</table>
+		
+ <!-- For reference 
+	String star= request.getParameter("star");
+	 out.println(star); --> 
 	</div>
 </body>
 </html>

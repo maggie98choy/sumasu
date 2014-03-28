@@ -5,6 +5,9 @@ public class SearchResult {
 	private String address;
 	private String phoneNo;
 	private String URL;
+	private int noOfStars;
+
+	
 	public String getName() {
 		return name;
 	}
@@ -32,7 +35,15 @@ public class SearchResult {
 	@Override
 	public String toString() {
 		return "SearchResult [name=" + name + ", address=" + address
-				+ ", phoneNo=" + phoneNo + ", URL=" + URL + "]";
+				+ ", phoneNo=" + phoneNo + ", URL=" + URL + ", noOfStars="
+				+ noOfStars + "]";
 	}
+	public int getNoOfStars() {
+		return noOfStars;
+	}
+	public void setNoOfStars(int noOfStars) {
+		this.noOfStars = noOfStars;
+	}
+	
 
 }

@@ -61,13 +61,13 @@ public class SearchParser {
 			for(int j=0;j<search.size();j++){
 				//System.out.println("activities - "+Activities[i]+ "search - "+search.get(j));
 
-				if(Activities[i].contains(search.get(j))){
+				if(Activities[i].toLowerCase().contains(search.get(j).toLowerCase())){
 					actList.add(Activities[i]);
 					System.out.println("Activity entered is "+search.get(j));
 					search.remove(j);
 
 				}
-				else if(search.get(j).contains(Activities[i])){
+				else if(search.get(j).toLowerCase().contains(Activities[i].toLowerCase())){
 					actList.add(Activities[i]);
 					System.out.println("Activity1 entered is "+search.get(j));
 					search.remove(j);

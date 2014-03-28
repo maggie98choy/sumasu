@@ -22,6 +22,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.MongoClient;
+import com.queryquest.rest.jersey.domain.Rating;
 
 
 
@@ -29,6 +30,8 @@ import com.mongodb.MongoClient;
 public class MongoQueries {
 	public DB db;
     public DBCollection collection;
+    private static final int ACTIVITY_TABLE= 1;
+    private static final int RATING_TABLE =2;
     
     public void mongoConnect(){
 		try{
@@ -47,12 +50,19 @@ public class MongoQueries {
 			MongoClient mongoClient = new MongoClient("ec2-54-193-76-21.us-west-1.compute.amazonaws.com",27017);
 			//MongoClient mongoClient = new MongoClient("127.0.0.1",27017);
 			db = mongoClient.getDB("QueryQuest");
-			collection = db.getCollection("tbl_activity");
+			
+			if(SecondTable == ACTIVITY_TABLE)
+				collection = db.getCollection("tbl_activity");
+			else if(SecondTable == RATING_TABLE)
+				collection = db.getCollection("tbl_rating");
+			
 			
 		}catch(UnknownHostException e){
 			System.out.println("Exception : "+e);
 		}
     }
+    
+    
     
     public void mongoInsert(net.sf.json.JSONObject jsonObj){
     	BasicDBObject document = new BasicDBObject();
@@ -82,19 +92,22 @@ public class MongoQueries {
    }
     
     
-  public void mongoUpdateActivities(String[] activities, String email, boolean isFirstTime){
+  public void mongoUpdateActivities(String[] activities, String email){
 	  
+	  BasicDBObject whereQuery = new BasicDBObject();
 	  BasicDBObject newDocument = new BasicDBObject();
-	  System.out.println("Email - "+email);
-	  if(isFirstTime == false){
-		BasicDBObject searchQuery = new BasicDBObject().append("email", email);
+
+	  whereQuery.put("email", email);
+	  DBCursor cursor = collection.find(whereQuery);
+	  if(cursor.hasNext()){
 		newDocument.append("$set", new BasicDBObject().append("activities",activities));
-		collection.update(searchQuery, newDocument);
+		collection.update(whereQuery, newDocument);      
 	  }else{
 		  newDocument.put("email", email);
 		  newDocument.put("activities", activities);
 		  collection.insert(newDocument);
-	  }
+	  }	 
+	  
   }
   
   public ArrayList<String> mongoGetActivities(String email){
@@ -118,4 +131,50 @@ public class MongoQueries {
 		}
 	    return activities; 
   }
+  
+  public void mongoUpdateStar(Rating rating){
+	  BasicDBObject whereQuery = new BasicDBObject();
+	  BasicDBObject newDocument = new BasicDBObject();
+
+	  whereQuery.put("email", rating.getEmail());
+	  whereQuery.put("business_name", rating.getBusinessName());
+	  DBCursor cursor = collection.find(whereQuery);
+	  if(cursor.hasNext()){
+		  newDocument.append("$set", new BasicDBObject().append("rating", rating.getRating()));
+		  collection.update(whereQuery, newDocument);      
+	  }else{
+		  newDocument.put("email", rating.getEmail());
+		  newDocument.put("business_name", rating.getBusinessName());
+		  newDocument.put("rating", rating.getRating());
+		  collection.insert(newDocument);
+	  }
+  }
+  
+  public int mongoGetRating(String email, String businessName){
+	  BasicDBObject whereQuery = new BasicDBObject();
+	  BasicDBObject fields = new BasicDBObject();
+
+	  whereQuery.put("email", email);
+	  whereQuery.put("business_name", businessName);
+	  DBCursor cursor = collection.find(whereQuery);
+	  if(cursor.hasNext()){
+			fields.put("rating", 1);
+			cursor = collection.find(whereQuery, fields);
+			if(cursor.hasNext()){
+				 int rating = (int) cursor.next().get("rating");
+				/*System.out.println("RESULT "+result);
+		  		JSONObject jsonObj = JSONObject.fromObject(result);
+		  		String rating = JSONObject.fromObject(jsonObj.getInt("rating")).toString();
+		  		System.out.println("rating "+rating);
+		  		return Integer.parseInt(rating);*/
+				 return rating;
+			}
+			
+			return 0; 	
+	  }
+	  else{
+		  return 0;
+	  }
+  }
+  
 }
