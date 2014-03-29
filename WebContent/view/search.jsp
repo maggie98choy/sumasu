@@ -4,9 +4,21 @@
 <meta charset="ISO-8859-1">
 <title>QQ Travel</title>
 <!-- Stylesheets -->
-<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.css">
+<link type="text/css" rel="stylesheet"
+	href="bootstrap/css/bootstrap.css">
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
- <script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="date/moment.js"></script>
+
+<link rel="stylesheet" href="date/bootstrap-datetimepicker.min.css" />
+<script type="text/javascript"
+	src="date/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="date/jquery-2.1.0.min.js"></script>
+<link rel="stylesheet" href="date/bootstrap-datetimepicker.css" />
+<script type="text/javascript" src="date/bootstrap-datetimepicker.js"></script>
+
+
 <style>
 #round-image {
 	border-radius: 100%;
@@ -71,18 +83,50 @@ p {
 	<form class="well navbar-search offset5" action="search" method="post">
 		&nbsp;&nbsp;
 		<p>Where do you want to go?</p>
-		<input type="text" class="search-query span6" placeholder="2 days hiking to Las Vegas" name="searchTerm" id="searchTerm">
-		<button type="submit" value="submit" class="btn btn-inverse">
-			Search <span class="glyphicon glyphicon-search"></span>
-			</button><br>
-			
-	 	<details>
-		<summary>Date</summary>
-      	<br>Start Date: <input type="date" id="startdate" name="startdate"> 
-      	<br>End  Date:  &nbsp;<input type="date" id="enddate" name="enddate">
-   		</details>
-</form>
+		<input type="text" class="search-query span6"
+			placeholder="2 days hiking to Las Vegas" name="searchTerm"
+			id="searchTerm"> <input type="button" value="Search"
+			class="btn btn-inverse"><br>
 
-	
+		<details>
+		<br>
+		
+				<div class="row">
+					<div class='col-sm-4'>
+						Start Date: <input type='text' class="form-control" id='datetimepicker6' />
+					</div>
+					<script type="text/javascript">
+						$(function() {
+							$('#datetimepicker6').datetimepicker();
+							var today = new Date();
+							$('#datetimepicker6').data("DateTimePicker")
+									.setMinDate(today);
+						});
+					</script>
+				</div>
+			
+		
+				<div class="row">
+					<div class='col-sm-4'>
+						End Date: <input type='text' class="form-control" id='datetimepicker7' />
+					</div>
+					<script type="text/javascript">
+						$(function() {
+							$('#datetimepicker7').datetimepicker();
+							var today = new Date();
+							$('#datetimepicker7').data("DateTimePicker")
+									.setMinDate(today);
+						});
+					</script>
+				</div>
+		
+
+		</details>
+	</form>
+	<!--JS for current date-->
+
+
+
+
 </body>
 </html>
