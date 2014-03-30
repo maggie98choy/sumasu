@@ -19,6 +19,7 @@
 <script type="text/javascript" src="date/bootstrap-datetimepicker.js"></script>
 
 
+
 <style>
 #round-image {
 	border-radius: 100%;
@@ -85,15 +86,21 @@ p {
 		<p>Where do you want to go?</p>
 		<input type="text" class="search-query span6"
 			placeholder="2 days hiking to Las Vegas" name="searchTerm"
-			id="searchTerm"> <input type="button" value="Search"
-			class="btn btn-inverse"><br>
-
-		<details>
+			id="searchTerm">
+		<button type="submit" value="submit" class="btn btn-inverse">
+			Search <span class="glyphicon glyphicon-search"></span>
+		</button>
 		<br>
 		
+			
+			<details>
+			<summary> Date</summary>
+				<br>
+
 				<div class="row">
 					<div class='col-sm-4'>
-						Start Date: <input type='text' class="form-control" id='datetimepicker6' />
+						Start Date: <input type='text' class="form-control"
+							id='datetimepicker6' />
 					</div>
 					<script type="text/javascript">
 						$(function() {
@@ -104,11 +111,12 @@ p {
 						});
 					</script>
 				</div>
-			
-		
+
+
 				<div class="row">
 					<div class='col-sm-4'>
-						End Date: <input type='text' class="form-control" id='datetimepicker7' />
+						End Date: <input type='text' class="form-control"
+							id='datetimepicker7' />
 					</div>
 					<script type="text/javascript">
 						$(function() {
@@ -119,9 +127,10 @@ p {
 						});
 					</script>
 				</div>
-		
 
-		</details>
+
+			</details>
+		
 	</form>
 	<!--JS for current date-->
 
