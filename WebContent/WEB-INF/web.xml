@@ -76,6 +76,44 @@
   <servlet-mapping>
     <servlet-name>preferences</servlet-name>
     <url-pattern>/view/preferences</url-pattern>
+  </servlet-mapping> 
+    <servlet>
+    <description></description>
+    <display-name>viewItinerary</display-name>
+    <servlet-name>viewItinerary</servlet-name>
+    <servlet-class>com.queryquest.rest.jersey.viewItinerary</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>com.queryquest.rest.jersey</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>viewItinerary</servlet-name>
+    <url-pattern>/view/viewItinerary</url-pattern>
+  </servlet-mapping>
+   <servlet>
+    <description></description>
+    <display-name>viewHotel</display-name>
+    <servlet-name>viewHotel</servlet-name>
+    <servlet-class>com.queryquest.rest.jersey.viewHotel</servlet-class>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>com.queryquest.rest.jersey</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>viewHotel</servlet-name>
+    <url-pattern>/view/viewHotel</url-pattern>
   </servlet-mapping>
   <servlet>
     <description></description>

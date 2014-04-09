@@ -56,8 +56,8 @@ THE SOFTWARE.
     DateTimePicker = function (element, options) {
         var defaults = {
             pickDate: true,
-            pickTime: true,
-            useMinutes: true,
+            pickTime: false,
+            useMinutes: false,
             useSeconds: false,
             useCurrent: true,
             minuteStepping: 1,
@@ -187,9 +187,9 @@ THE SOFTWARE.
             picker.setMaxDate(picker.options.maxDate);
             fillDow();
             fillMonths();
-            fillHours();
-            fillMinutes();
-            fillSeconds();
+            //fillHours();
+            //fillMinutes();
+            //fillSeconds();
             update();
             showMode();
             attachDatePickerEvents();

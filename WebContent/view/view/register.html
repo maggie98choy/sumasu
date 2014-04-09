@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>QueryQuest</title>
+</head>
+<body>
+
+<div id="fb-root"></div>
+
+<script>
+ window.fbAsyncInit = function() 
+ {
+  FB.init({
+    appId      : '359402037530890',
+    status     : true, // check login status
+    cookie     : true, // enable cookies to allow the server to access the session
+    xfbml      : true  // parse XFBML
+  });
+ 
+  // Additional init code here
+  FB.getLoginStatus(function(response) 
+  {
+   if (response.status === 'connected') 
+   {	
+	   register(response);
+   } 
+   else if (response.status === 'not_authorized') 
+   {    
+
+   } else 
+   {
+   
+   }
+  });//closes fb.getLoginStatus
+ };//closes fbAsyncInit
+ 
+ (function(d){
+	   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+	   if (d.getElementById(id)) {return;}
+	   js = d.createElement('script'); js.id = id; js.async = true;
+	   js.src = "//connect.facebook.net/en_US/all.js";
+	   ref.parentNode.insertBefore(js, ref);
+	  }(document));
+ 
+ 
+ function register(response)
+ {
+	 var accessToken = response.authResponse.accessToken;
+	 window.location= "register?accessT="+accessToken;
+ }
+ 
+ function register1(response)
+ {
+  
+	    var accessToken = response.authResponse.accessToken;
+	    var signedRequest = response.authResponse.signedRequest;
+	    var verifier = parse_signed_request(signedRequest, 'CLIENT_SECRET');
+	    var code = verifier.code;
+
+       
+       FB.api('https://graph.facebook.com/oauth/access_token?'+accessToken+'&redirect_uri=http://localhost:8080/JAXRS-QueryQuest/view/register.html&code=' + code, function(response1) 
+       {
+           alert(response1.toString());
+
+       });
+	   
+ }
+ 
+ function parse_signed_request(signed_request, secret) {
+
+     encoded_data = signed_request.split('.',2);
+     // decode the data
+     sig = encoded_data[0];
+     json = decode64(encoded_data[1]);
+     data = JSON.parse(json); 
+
+     // check algorithm - not relevant to error
+     if (!data.algorithm || data.algorithm.toUpperCase() != 'HMAC-SHA256') {
+         console.error('Unknown algorithm. Expected HMAC-SHA256');
+         return null;
+     }
+
+     // check sig - not relevant to error
+
+     console.log(data);
+     return data;
+ }
+
+ function decode64(s) {
+     var e={},i,b=0,c,x,l=0,a,r='',w=String.fromCharCode,L=s.length;
+     var A="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+     for(i=0;i<64;i++){e[A.charAt(i)]=i;}
+     for(x=0;x<L;x++){
+         c=e[s.charAt(x)];b=(b<<6)+c;l+=6;
+         while(l>=8){((a=(b>>>(l-=8))&0xff)||(x<(L-2)))&&(r+=w(a));}
+     }
+     return r;
+ };
+ </script>
+
+</body>
+</html>

@@ -58,33 +58,85 @@ html,body {
 	</form>
 	<br><br><br><br><br> -->
 		<% 
-	ArrayList<String> actList = new ArrayList<String>();
-    actList = (ArrayList<String>)request.getAttribute("activities");
-    int division = (Integer)request.getAttribute("division");
-	ArrayList<SearchResult> searchList = new ArrayList<SearchResult>();
-        searchList= (ArrayList<SearchResult>)request.getAttribute("search_results");
-        int j=0;
-		if (searchList != null)	{
-			for(int i=0; i<searchList.size();i++){
+	
+	ArrayList<SearchResult> recomSearchList = new ArrayList<SearchResult>();
+	ArrayList<SearchResult> ratedSearchList	= new ArrayList<SearchResult>();
+	
+	String startDate = (String)request.getAttribute("startdate");
+	String endDate = (String)request.getAttribute("enddate");
+	String currentLocation = (String)request.getAttribute("currentLocation");
+	String travelDestination = (String)request.getAttribute("travelDestination");
+	
+        recomSearchList= (ArrayList<SearchResult>)request.getAttribute("recom_search_results");
+        ratedSearchList =(ArrayList<SearchResult>)request.getAttribute("rated_search_results");
+        String act="";
+        
+        //*****************RECOMMENDED RESULTS **********
+		if (recomSearchList != null)	{
+			for(int i=0; i<recomSearchList.size();i++){
 				SearchResult search = new SearchResult();	
-				search = searchList.get(i);
-				if(i% division == 0){%>
+				search = recomSearchList.get(i);
+				if(!act.equals(search.getActivity())){
+					act=search.getActivity();%>
 				<h3 style="color:white;">
-				<% out.println(actList.get(j++));} %></h3>
+				<% out.println(act);} %></h3>
 
 		<table class="table table-bordered table-striped ">
 			<tr>
 				<th><%= search.getName() %><br> <span
-					style="font-weight: normal;"> <% out.println(search.getAddress()); %>
+					style="font-weight: normal;"> <% out.println(search.getAddress()); %><br>
 						<% if(search.getPhoneNo() != null) 
-	    	out.println("Phone : "+search.getPhoneNo()); %><br> <a
-						href="<%out.println(search.getURL()); %>"><%= search.getURL() %></a></span>
+	    	out.println("Phone : "+search.getPhoneNo()); %><br> 
+	    	<a href="<%out.println(search.getURL()); %>"><%= search.getURL() %></a></span>
 	<!-- star rating -->
 	
-	<%     
-     	session.setAttribute("actList" ,actList );
-		session.setAttribute("division", division);
-		session.setAttribute("search_results",searchList);
+     <% session.setAttribute("recom_search_results",recomSearchList); %>	
+	
+	<form action= "searchresults" method="post">
+	<input type="hidden" id="index" name="index" value=<%= i+100 %>>
+	<input id="input-21" name="star"  type="number" class="rating" data-show-clear="false" data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}' data-show-caption=“true” data-size="xs">	
+	<button class="btn btn-primary btn-xs">Save</button>
+	<!--  <button class="btn btn-default btn-xs" type="reset">Reset</button>-->
+	</form>
+	   <% if(search.isRecommended())
+		   out.println("Recommended Rating: "+search.getRecommendedRating());%><br/>
+		<a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">view airflight</a><br>
+		<a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">view hotel</a>
+		</th>
+	</tr>
+		
+<% } %>
+<% } %>
+</table>
+	
+ <% 	
+	//************* RATED RESULTS ***************** 
+	
+	if (ratedSearchList != null)	{
+		act="";
+			for(int i=0; i<ratedSearchList.size();i++){
+				SearchResult search = new SearchResult();	
+				search = ratedSearchList.get(i);
+				String activity= ratedSearchList.get(i).getActivity();
+				if(!act.equals(activity)){%>
+				<h3 style="color:white;">
+				<% out.println(activity);act=new String(activity);
+				} 
+				else
+				System.out.println(search.toString());    %></h3>
+				
+
+		<table class="table table-bordered table-striped ">
+			<tr>
+				<th><%= search.getName() %><br> <span
+					style="font-weight: normal;"> <% out.println(search.getAddress()); %><br>
+						<% if(search.getPhoneNo() != null) 
+	    	out.println("Phone : "+search.getPhoneNo()); %><br> 
+	    	<a href="<%out.println(search.getURL()); %>"><%= search.getURL() %></a></span>
+	<!-- star rating -->
+	
+	<%  
+	    session.setAttribute("rated_search_results", ratedSearchList);
 	%>	
 	<form action= "searchresults" method="post">
 	<input type="hidden" id="index" name="index" value=<%= i %>>
@@ -92,16 +144,14 @@ html,body {
 	<button class="btn btn-primary btn-xs">Save</button>
 	<!--  <button class="btn btn-default btn-xs" type="reset">Reset</button>-->
 	</form>
-	</th>
-			</tr>
+		<a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">view airflight</a><br>
+		<a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">view hotel</a>
+		</th>
+	</tr>
 		
 <% } %>
 <% } %>
-</table>
-		
- <!-- For reference 
-	String star= request.getParameter("star");
-	 out.println(star); --> 
+</table> 
 	</div>
 </body>
 </html>

@@ -6,7 +6,9 @@ public class SearchResult {
 	private String phoneNo;
 	private String URL;
 	private int noOfStars;
-
+    private boolean isRecommended;
+    private float recommendedRating;
+    private String activity;
 	
 	public String getName() {
 		return name;
@@ -36,13 +38,33 @@ public class SearchResult {
 	public String toString() {
 		return "SearchResult [name=" + name + ", address=" + address
 				+ ", phoneNo=" + phoneNo + ", URL=" + URL + ", noOfStars="
-				+ noOfStars + "]";
+				+ noOfStars + ", isRecommended=" + isRecommended
+				+ ", recommendedRating=" + recommendedRating + ", activity="
+				+ activity + "]";
 	}
 	public int getNoOfStars() {
 		return noOfStars;
 	}
 	public void setNoOfStars(int noOfStars) {
 		this.noOfStars = noOfStars;
+	}
+	public boolean isRecommended() {
+		return isRecommended;
+	}
+	public void setRecommended(boolean isRecommended) {
+		this.isRecommended = isRecommended;
+	}
+	public float getRecommendedRating() {
+		return recommendedRating;
+	}
+	public void setRecommendedRating(float recommendedRating) {
+		this.recommendedRating = recommendedRating;
+	}
+	public String getActivity() {
+		return activity;
+	}
+	public void setActivity(String activity) {
+		this.activity = activity;
 	}
 	
 

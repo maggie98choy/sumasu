@@ -17,10 +17,6 @@ import javax.servlet.http.HttpSession;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import com.google.code.geocoder.Geocoder;
-import com.google.code.geocoder.GeocoderRequestBuilder;
-import com.google.code.geocoder.model.GeocodeResponse;
-import com.google.code.geocoder.model.GeocoderRequest;
 import com.queryquest.rest.jersey.Utility.MongoQueries;
 import com.queryquest.rest.jersey.Utility.SearchParser;
 import com.queryquest.rest.jersey.domain.SearchAnalysis;
@@ -38,6 +34,23 @@ public class search extends HttpServlet {
 	private static final String token = "ImKKW1IiwL-7VkAWNONADx51qutF_PyE";
 	private static final String tokenSecret = "KS_PJKojQZuYjhAFDR7l7wFmLbo";
 	private static final int totalNumber=15;
+	
+	private class FinalResults{
+		private ArrayList<SearchResult> recommendedResults;
+		private ArrayList<SearchResult> ratedResults;
+		public ArrayList<SearchResult> getRecommendedResults() {
+			return recommendedResults;
+		}
+		public void setRecommendedResults(ArrayList<SearchResult> recommendedResults) {
+			this.recommendedResults = recommendedResults;
+		}
+		public ArrayList<SearchResult> getRatedResults() {
+			return ratedResults;
+		}
+		public void setRatedResults(ArrayList<SearchResult> ratedResults) {
+			this.ratedResults = ratedResults;
+		}
+	}
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
@@ -62,7 +75,11 @@ public class search extends HttpServlet {
 
 		String searchTerm = request.getParameter("searchTerm");
 		SearchParser searchParser = new SearchParser();
-		//System.out.println("hello "+searchTerm);
+		System.out.println("hello "+searchTerm);
+		String startdate = request.getParameter("startdate");
+		String enddate = request.getParameter("enddate");
+		String currentLocation;
+		String travelDestination;
 
 		SearchAnalysis searchAnalysis = searchParser.stringParser(searchTerm);
 
@@ -80,17 +97,22 @@ public class search extends HttpServlet {
 		}else
 			actList=searchAnalysis.getActivity();
 
+		mongo.mongoConnect();
 		//location
-		if(searchAnalysis.getLocation() == null){
-			mongo.mongoConnect();
+		if(searchAnalysis.getLocation() == null)
+		{
+			
 			location = mongo.mongoGetLocation(email);
 		}else
 			location=searchAnalysis.getLocation();
 
+		currentLocation = mongo.mongoGetLocation(email);
+		travelDestination = location;
 
 		Yelp yelp = new Yelp(consumerKey, consumerSecret, token, tokenSecret);
-		ArrayList<SearchResult> searchList = new ArrayList<SearchResult>();
-
+		ArrayList<SearchResult> recomSearchList = new ArrayList<SearchResult>();
+        ArrayList<SearchResult> ratedSearchList = new ArrayList<SearchResult>();
+        
 		for(int i=0;i<actList.size();i++){
 			String out=yelp.search(actList.get(i), location);
 			ArrayList<SearchResult> tmpSearchList = new ArrayList<SearchResult>();
@@ -99,21 +121,32 @@ public class search extends HttpServlet {
 			JSONObject jsonObj = JSONObject.fromObject(out);
 			JSONArray msg = (JSONArray) jsonObj.get("businesses");
 			if(msg != null){
-				tmpSearchList = parseYelpResult(msg,(totalNumber/actList.size()),email);
-				searchList.addAll(tmpSearchList);
+				FinalResults finalResults= new FinalResults();
+				finalResults = parseYelpResult(msg,(totalNumber/actList.size()),actList.get(i),email);
+				recomSearchList.addAll(finalResults.getRecommendedResults());
+				ratedSearchList.addAll(finalResults.getRatedResults());
 
 			}
 		}
 
-		request.setAttribute("search_results", searchList);
-		request.setAttribute("activities", actList);
-		request.setAttribute("division", totalNumber/actList.size());
+		
+		System.out.println("start date:"+startdate);
+		request.setAttribute("recom_search_results", recomSearchList);
+		request.setAttribute("rated_search_results", ratedSearchList);
+		request.setAttribute("startdate", startdate);
+		request.setAttribute("enddate", enddate);
+		request.setAttribute("currentLocation", currentLocation);
+		request.setAttribute("travelDestination", travelDestination);	
 		request.getRequestDispatcher("searchresults.jsp").forward(request, response);
+		
 	}
 
-	private ArrayList<SearchResult> parseYelpResult(JSONArray msg,int count, String email){
+	private FinalResults parseYelpResult(JSONArray msg,int count, String activity, String email){
 		Iterator<JSONObject> iterator = msg.iterator();
-		ArrayList<SearchResult> searchList = new ArrayList<SearchResult>();
+		
+		ArrayList<SearchResult> finalSearchList = new ArrayList<SearchResult>();
+		ArrayList<SearchResult> recomSearchList = new ArrayList<SearchResult>();
+		ArrayList<SearchResult> ratedSearchList = new ArrayList<SearchResult>();
 		
 		MongoQueries mongo = new MongoQueries();
 		mongo.mongoConnect(2);
@@ -124,7 +157,14 @@ public class search extends HttpServlet {
 			//System.out.println(JSONObject.fromObject(business));
 			String name = (String) business.get("name");
 			int rating= mongo.mongoGetRating(email,name);
-			
+			float avgRating;
+			if(rating == 0){
+				avgRating = mongo.mongoGetRecommendedRating(name);
+				search.setRecommended(true);
+				search.setRecommendedRating(avgRating);
+			}else
+				search.setRecommended(false);
+		    
 			//if(rating == 1 || rating == 2)
 				//continue;
 			String addr1 = JSONObject.fromObject(business.get("location")).getString("display_address");
@@ -138,18 +178,25 @@ public class search extends HttpServlet {
 			search.setURL(url);
 			search.setPhoneNo(phone);
 			search.setNoOfStars(rating);
+			search.setActivity(activity);
 			//System.out.println(search.toString());
- 
-			searchList.add(search);
-			count--;
+             
+			if(search.isRecommended()){
+				recomSearchList.add(search);
+				count--;
+			}
+			else
+				ratedSearchList.add(search);
 		}
 		
-		
-		return sortRating(searchList);
+		FinalResults finalResults = new FinalResults();
+		//SortSearchResults sort = new SortSearchResults();
+		finalResults.setRecommendedResults(sortRating(recomSearchList,true));
+		finalResults.setRatedResults(sortRating(ratedSearchList,false));
+		return finalResults;				
 	}
 	
-	
-	private ArrayList<SearchResult> sortRating(ArrayList<SearchResult> searchList){
+ private ArrayList<SearchResult> sortRating(ArrayList<SearchResult> searchList, boolean isRecom){
 		int nElems = searchList.size();
 		int inner, outer;
 		SearchResult tmp;
@@ -163,7 +210,7 @@ public class search extends HttpServlet {
 				tmp = searchList.get(outer);
 				inner=outer;
 				
-				while(inner >h-1 && searchList.get(inner-h).getNoOfStars()< tmp.getNoOfStars()){
+				while(inner >h-1 && (isRecom? searchList.get(inner-h).getRecommendedRating():searchList.get(inner-h).getNoOfStars())< (isRecom?tmp.getRecommendedRating():tmp.getNoOfStars())){
 					searchList.remove(inner);
 					searchList.add(inner, searchList.get(inner-h));
 					inner-=h;
@@ -173,7 +220,13 @@ public class search extends HttpServlet {
 			}
 			h=(h-1)/3;
 		}
-	
+		if(isRecom==false){
+			for(int i=0;i<searchList.size();i++){
+			 //   System.out.println(searchList.get(i).toString());
+
+			}
+		}
 		return searchList;
 	}
+	 
 }

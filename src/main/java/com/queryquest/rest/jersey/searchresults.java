@@ -45,29 +45,44 @@ public class searchresults extends HttpServlet {
 		int star= Integer.parseInt(request.getParameter("star"));
 		//int index = (Integer)session.getAttribute("index");
 		int index = Integer.parseInt(request.getParameter("index"));
-		//System.out.println("INDEX "+index);
-	    int division = (Integer)session.getAttribute("division");
-	    ArrayList<String> actList = (ArrayList<String>)session.getAttribute("actList");
-	    ArrayList<SearchResult> searchList= (ArrayList<SearchResult>)session.getAttribute("search_results");
-	    
-	    searchList.get(index).setNoOfStars(star);
-	   
+
+		
+	    ArrayList<SearchResult> recomSearchList= (ArrayList<SearchResult>)session.getAttribute("recom_search_results");
+	    ArrayList<SearchResult> ratedSearchList=(ArrayList<SearchResult>)session.getAttribute("rated_search_results");
 	    Rating rating = new Rating();
 	    rating.setEmail((String)session.getAttribute("email"));
-	    rating.setBusinessName(searchList.get(index).getName());
-	    rating.setRating(searchList.get(index).getNoOfStars());
-	    MongoQueries mongoQueries = new MongoQueries();
-	    mongoQueries.mongoConnect(2);
-	    mongoQueries.mongoUpdateStar(rating);
+	     if(index >= 100 ){ // RECOMMENDED RESULTS ARE RATED 
+	    	// System.out.println("I M HERE");
+	    	 index=index-100;
+	    	 SearchResult searchResult = recomSearchList.get(index);
+	    	 recomSearchList.remove(index);
+	    	 searchResult.setNoOfStars(star);
+	    	 searchResult.setRecommended(false);
+	    	ratedSearchList.add(searchResult);
+	    	 
+	 	    rating.setEmail((String)session.getAttribute("email"));
+	 	    rating.setBusinessName(searchResult.getName());
+		    rating.setRating(searchResult.getNoOfStars());
+	    	 
+	     }
+	     else { //RATED RESULTS ARE ALTERED
+	    	 //System.out.println("I M HERE TOO");
+	    	 ratedSearchList.get(index).setNoOfStars(star);
+	    	 rating.setBusinessName(ratedSearchList.get(index).getName());
+	    	 rating.setRating(ratedSearchList.get(index).getNoOfStars());
+	     }
+	    	 MongoQueries mongoQueries = new MongoQueries();
+	    	 mongoQueries.mongoConnect(2);
+	    	 mongoQueries.mongoUpdateStar(rating);
 	    /*SearchResult searchResult = searchList.get(index);
 	    searchResult.setNoOfStars(star);
 	    searchList.remove(index);
 	    searchList.add(index,searchResult);*/
 	    
-	    System.out.println(searchList.toString());
-	    request.setAttribute("search_results", searchList);
-		request.setAttribute("activities", actList);
-		request.setAttribute("division", division);
+	    //System.out.println(searchList.toString());
+	   // SortSearchResults sort = new SortSearchResults();	 
+	    request.setAttribute("recom_search_results", (recomSearchList));
+	    request.setAttribute("rated_search_results", (ratedSearchList));
 		request.getRequestDispatcher("searchresults.jsp").forward(request, response);
 		 
 	}

@@ -150,6 +150,29 @@ public class MongoQueries {
 	  }
   }
   
+  public float mongoGetRecommendedRating(String businessName){
+	  float avgRating =0; 
+	  int num=0,rating=0;
+	  BasicDBObject whereQuery= new BasicDBObject();
+	  BasicDBObject fields = new BasicDBObject();
+	  
+	  whereQuery.put("business_name", businessName);
+	  DBCursor cursor = collection.find(whereQuery);
+	  
+	  while(cursor.hasNext()){
+		  num++;
+		  rating += (int) cursor.next().get("rating");
+	  }
+	  
+	  if(num ==0 )
+		  System.out.println("Num is zero");
+	  else  
+		  avgRating = (float)rating/num;
+	  
+	  System.out.println("Avg Rating "+avgRating);
+	  return avgRating;
+  }
+  
   public int mongoGetRating(String email, String businessName){
 	  BasicDBObject whereQuery = new BasicDBObject();
 	  BasicDBObject fields = new BasicDBObject();
@@ -161,7 +184,7 @@ public class MongoQueries {
 			fields.put("rating", 1);
 			cursor = collection.find(whereQuery, fields);
 			if(cursor.hasNext()){
-				 int rating = (int) cursor.next().get("rating");
+				 int rating = (Integer) cursor.next().get("rating");
 				/*System.out.println("RESULT "+result);
 		  		JSONObject jsonObj = JSONObject.fromObject(result);
 		  		String rating = JSONObject.fromObject(jsonObj.getInt("rating")).toString();
