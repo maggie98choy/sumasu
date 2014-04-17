@@ -6,10 +6,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>QQ SearchResults</title>
 <!-- Stylesheets -->
-<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.css">
-<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-<link href="star/css/star-rating.css" media="all" rel="stylesheet" type="text/css"/>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="bootstrap/css/bootstrap.css">
+<link type="text/css" rel="stylesheet"
+	href="bootstrap/css/bootstrap.min.css">
+<link href="star/css/star-rating.css" media="all" rel="stylesheet"
+	type="text/css" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="star/js/star-rating.js" type="text/javascript"></script>
 <style>
 html,body {
@@ -19,6 +23,18 @@ html,body {
 	-o-background-size: cover; /* Opera*/
 	background-size: cover; /* Generic*/
 }
+
+.panel-heading a:after {
+	font-family: 'Glyphicons Halflings';
+	content: "\e114";
+	float: right;
+	color: grey;
+}
+
+.panel-heading a.collapsed:after {
+	content: "\e080";
+}
+
 </style>
 </head>
 <%@ page
@@ -47,111 +63,184 @@ html,body {
 			width="50"></a> </nav>
 		<br> <br> <br> <br>
 
-		<!-- CANNT DO THIS HERE : GIVES ERROR  
-  <form class="navbar-search" action="search" method="post">
-		
-		<br> <input type="text" class="search-query span6"
-			placeholder="Enter an activity" name="activity" id="activity">&nbsp;&nbsp;
-		<button type="submit" value="submit" class="btn btn-inverse">
-			Search <span class="glyphicon glyphicon-search"></span>
-		</button>
-	</form>
-	<br><br><br><br><br> -->
-		<% 
-	
-	ArrayList<SearchResult> recomSearchList = new ArrayList<SearchResult>();
-	ArrayList<SearchResult> ratedSearchList	= new ArrayList<SearchResult>();
-	
-	String startDate = (String)request.getAttribute("startdate");
-	String endDate = (String)request.getAttribute("enddate");
-	String currentLocation = (String)request.getAttribute("currentLocation");
-	String travelDestination = (String)request.getAttribute("travelDestination");
-	
-        recomSearchList= (ArrayList<SearchResult>)request.getAttribute("recom_search_results");
-        ratedSearchList =(ArrayList<SearchResult>)request.getAttribute("rated_search_results");
-        String act="";
-        
-        //*****************RECOMMENDED RESULTS **********
-		if (recomSearchList != null)	{
-			for(int i=0; i<recomSearchList.size();i++){
-				SearchResult search = new SearchResult();	
-				search = recomSearchList.get(i);
-				if(!act.equals(search.getActivity())){
-					act=search.getActivity();%>
-				<h3 style="color:white;">
-				<% out.println(act);} %></h3>
+		<div class="row">
+			<div class="col-sm-11">
+				<div class="panel panel-default panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title">Places</h3>
+					</div>
+					<div class="panel-body">
 
-		<table class="table table-bordered table-striped ">
-			<tr>
-				<th><%= search.getName() %><br> <span
-					style="font-weight: normal;"> <% out.println(search.getAddress()); %><br>
-						<% if(search.getPhoneNo() != null) 
-	    	out.println("Phone : "+search.getPhoneNo()); %><br> 
-	    	<a href="<%out.println(search.getURL()); %>"><%= search.getURL() %></a></span>
-	<!-- star rating -->
-	
-     <% session.setAttribute("recom_search_results",recomSearchList); %>	
-	
-	<form action= "searchresults" method="post">
-	<input type="hidden" id="index" name="index" value=<%= i+100 %>>
-	<input id="input-21" name="star"  type="number" class="rating" data-show-clear="false" data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}' data-show-caption=“true” data-size="xs">	
-	<button class="btn btn-primary btn-xs">Save</button>
-	<!--  <button class="btn btn-default btn-xs" type="reset">Reset</button>-->
-	</form>
-	   <% if(search.isRecommended())
-		   out.println("Recommended Rating: "+search.getRecommendedRating());%><br/>
-		<a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">view airflight</a><br>
-		<a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">view hotel</a>
-		</th>
-	</tr>
-		
-<% } %>
-<% } %>
-</table>
-	
- <% 	
-	//************* RATED RESULTS ***************** 
-	
-	if (ratedSearchList != null)	{
-		act="";
-			for(int i=0; i<ratedSearchList.size();i++){
-				SearchResult search = new SearchResult();	
-				search = ratedSearchList.get(i);
-				String activity= ratedSearchList.get(i).getActivity();
-				if(!act.equals(activity)){%>
-				<h3 style="color:white;">
-				<% out.println(activity);act=new String(activity);
-				} 
-				else
-				System.out.println(search.toString());    %></h3>
-				
 
-		<table class="table table-bordered table-striped ">
-			<tr>
-				<th><%= search.getName() %><br> <span
-					style="font-weight: normal;"> <% out.println(search.getAddress()); %><br>
-						<% if(search.getPhoneNo() != null) 
-	    	out.println("Phone : "+search.getPhoneNo()); %><br> 
-	    	<a href="<%out.println(search.getURL()); %>"><%= search.getURL() %></a></span>
-	<!-- star rating -->
-	
-	<%  
-	    session.setAttribute("rated_search_results", ratedSearchList);
-	%>	
-	<form action= "searchresults" method="post">
-	<input type="hidden" id="index" name="index" value=<%= i %>>
-	<input id="input-21" name="star" value="<%=search.getNoOfStars()%>" type="number" class="rating" data-show-clear="false" data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}' data-show-caption=“true” data-size="xs">	
-	<button class="btn btn-primary btn-xs">Save</button>
-	<!--  <button class="btn btn-default btn-xs" type="reset">Reset</button>-->
-	</form>
-		<a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">view airflight</a><br>
-		<a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">view hotel</a>
-		</th>
-	</tr>
-		
-<% } %>
-<% } %>
-</table> 
+						<div class="panel-group" id="accordion">
+							<div class="panel panel-default panel-info">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion"
+											href="#collapseOne"> New Adventures </a>
+									</h4>
+								</div>
+								<div id="collapseOne" class="panel-collapse collapse">
+									<div class="panel-body" style="background-color: #AFEEEE;">
+										<!--Body-->
+										<%
+											ArrayList<SearchResult> recomSearchList = new ArrayList<SearchResult>();
+											ArrayList<SearchResult> ratedSearchList = new ArrayList<SearchResult>();
+
+											String startDate = (String) request.getAttribute("startdate");
+											String endDate = (String) request.getAttribute("enddate");
+											String currentLocation = (String) request
+													.getAttribute("currentLocation");
+											String travelDestination = (String) request
+													.getAttribute("travelDestination");
+
+											recomSearchList = (ArrayList<SearchResult>) request
+													.getAttribute("recom_search_results");
+											ratedSearchList = (ArrayList<SearchResult>) request
+													.getAttribute("rated_search_results");
+											String act = "";
+
+											//*****************RECOMMENDED RESULTS **********
+											if (recomSearchList != null) {
+												for (int i = 0; i < recomSearchList.size(); i++) {
+													SearchResult search = new SearchResult();
+													search = recomSearchList.get(i);
+													if (!act.equals(search.getActivity())) {
+														act = search.getActivity();
+										%>
+										<h4 style="color: black;">
+											<%
+												out.println(act);
+														}
+											%>
+										</h4>
+												<div class="well"  style="background-color: #F0F8FF;">
+												<div class="row">
+												<div class="col-md-8">
+												<strong><%=search.getName()%></strong> <br> <br>
+												<%out.println("Address: " + search.getAddress());%><br>
+  												<%if (search.getPhoneNo() != null)out.println("Phone: " + search.getPhoneNo());%><br><br>
+												</div> 
+												<div class="col-md-4">
+												<!-- star rating --> 
+												<% session.setAttribute("recom_search_results",recomSearchList);%>
+													<form action="searchresults" method="post">
+														<input type="hidden" id="index" name="index"
+															value=<%=i + 100%>> <input id="input-21"
+															name="star" type="number" class="rating"
+															data-show-clear="false"
+															data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}'
+															data-show-caption=“true” data-size="xs"><button class="btn btn-primary btn-xs">Save</button>
+													</form><strong> <%if (search.isRecommended())out.println("QQ Rating: "+ search.getRecommendedRating());%> </strong>
+												</div>
+												</div>
+												<div class="row"> 
+												<div class="col-md-2">
+												<a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight <span class="glyphicon glyphicon-plane"></span></a>
+												</div>
+												<div class="col-md-2">
+												<a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="glyphicon glyphicon-cutlery"></span></a>
+												</div>
+												</div>												
+																	
+												</div>
+											<%
+												}
+											%>
+											<%
+												}
+											%>
+										
+
+
+
+
+										<!--end of 1st body-->
+									</div>
+								</div>
+							</div>
+
+							<!--second panel-->
+							<div class="panel panel-default panel-info">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion"
+											href="#collapseTwo"> Old Memories </a>
+									</h4>
+								</div>
+								<div id="collapseTwo" class="panel-collapse collapse">
+									<div class="panel-body" style="background-color: #AFEEEE;">
+										<!--second body-->
+										<%
+											if (ratedSearchList != null) {
+												act = "";
+												for (int i = 0; i < ratedSearchList.size(); i++) {
+													SearchResult search = new SearchResult();
+													search = ratedSearchList.get(i);
+													String activity = ratedSearchList.get(i).getActivity();
+													if (!act.equals(activity)) {
+										%>
+										<h4 style="color: black;">
+											<%
+												out.println(activity);
+															act = new String(activity);
+														} else
+															System.out.println(search.toString());
+											%>
+										</h4>
+												<div class="well" style="background-color: #F0F8FF;">
+												<div class="row">
+												<div class="col-md-8">
+													<strong><%=search.getName()%></strong><br> <br>
+													<%out.println("Address: "+search.getAddress());%><br> 
+													<%if (search.getPhoneNo() != null) out.println("Phone: " + search.getPhoneNo());%><br><br>
+													</div>
+													<div class="col-md-4">
+													<!-- star rating --> 
+													<%session.setAttribute("rated_search_results",ratedSearchList);%>
+													<form action="searchresults" method="post">
+														<input type="hidden" id="index" name="index" value=<%=i%>>
+														<input id="input-21" name="star"
+															value="<%=search.getNoOfStars()%>" type="number"
+															class="rating" data-show-clear="false"
+															data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}'
+															data-show-caption=“true” data-size="xs">
+														<button class="btn btn-primary btn-xs">Save</button>
+													</form> 
+													</div>
+													</div>
+													<div class="row">  
+													<div class="col-md-2">
+													<a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight <span class="glyphicon glyphicon-plane"></span></a>
+													</div>
+													<div class="col-md-2">
+													<a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="glyphicon glyphicon-cutlery"></span></a>
+													</div>
+													</div>													
+														</div>
+
+											<%
+												}
+											%>
+											<%
+												}
+											%>
+									
+
+
+										<!--end of second body-->
+									</div>
+								</div>
+							</div>
+
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
+
 </body>
 </html>

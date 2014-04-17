@@ -70,11 +70,13 @@
 	   ref.parentNode.insertBefore(js, ref);
 	  }(document));
  </script>
- 
+ <br>
+ <br>
+ <br>
 
   <div class="container-fluid">
  		   
-        <form class="well span5 offset5" action="loginFB" method=POST>
+        <form class="well span5 offset5" style="background-color:#CCE680" action="loginFB" method=POST>
         	<p style="text-align:center; margin-top:0px; margin-bottom:0px; padding:0px;">
                     <img src="images/logo.png" alt="queryquest" width=100 height=100/><br>
                     QueryQuest
