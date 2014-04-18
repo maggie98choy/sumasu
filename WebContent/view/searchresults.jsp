@@ -142,17 +142,17 @@ html,body {
 												{
 												%>
 												<div class="col-md-2">
-												<a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight <span class="glyphicon glyphicon-plane"></span></a>
+												<font size="3"><a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight <span class="icon-large icon-plane"></span></a></font>
 												</div>
 												<%} 
 												else 
 												{%>
 												<div class="col-md-4">
-												<a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a>
+												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
 												</div>
 												<%} %>
 												<div class="col-md-2">
-												<a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="glyphicon glyphicon-cutlery"></span></a>
+												<font size="3"><a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="icon-large icon-cutlery"></span></a></font>
 												</div>											
 												
 												</div>																													
