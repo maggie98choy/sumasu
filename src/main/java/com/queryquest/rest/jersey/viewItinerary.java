@@ -101,7 +101,9 @@ public class viewItinerary extends HttpServlet {
 					e.printStackTrace();
 				}
 				
-				if(request.getParameter("startDate") != null)
+				Date date = new Date();
+				
+				if(request.getParameter("startDate") != null && request.getParameter("startDate") != "")
 				{
 					try 
 					{
@@ -110,15 +112,28 @@ public class viewItinerary extends HttpServlet {
 					{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+					}										
 					
-					Date date = new Date();
-					departureDayFromToday = TimeUnit.DAYS.convert(startDate.getTime() -date.getTime(), TimeUnit.MILLISECONDS);					
-					departureDayFromToday=departureDayFromToday+1;
-					//System.out.println("departure Day From Today after:"+ departureDayFromToday);
+				}
+				else
+				{
+						//if startdate is not picked, set startdate to today's date
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+						try {
+							startDate = dateFormat.parse(dateFormat.format(date));
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 				}
 				
-				if(request.getParameter("endDate") != null)
+				//departure day is always one date after picked date
+				departureDayFromToday = TimeUnit.DAYS.convert(startDate.getTime() -date.getTime(), TimeUnit.MILLISECONDS);					
+				departureDayFromToday = departureDayFromToday+1;
+				System.out.println("departure Day From Today after:"+ departureDayFromToday);
+				
+				int adj_returnDay=0; //if enddate is not picked, set enddate to startdate + 1
+				if(request.getParameter("endDate") != null && request.getParameter("endDate") != "")
 				{
 					try 
 					{
@@ -128,11 +143,23 @@ public class viewItinerary extends HttpServlet {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					
-					returnDayFromToday  = TimeUnit.DAYS.convert(endDate.getTime() - startDate.getTime(), TimeUnit.MILLISECONDS) + departureDayFromToday;
-					System.out.println("Days:"+ returnDayFromToday);
-	
 				}
+				else
+				{
+
+						SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+						try {
+							endDate = dateFormat.parse(dateFormat.format(startDate));	
+							adj_returnDay = 1;
+						} catch (ParseException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+				}
+				
+				returnDayFromToday  = TimeUnit.DAYS.convert(endDate.getTime() - startDate.getTime(), TimeUnit.MILLISECONDS) + departureDayFromToday;
+				returnDayFromToday =returnDayFromToday + adj_returnDay;
+				System.out.println("Days:"+ returnDayFromToday);
 			}
 						
 			System.out.println("search air tix paramters from session:"+session.getAttribute("searchAirTixParameters"));

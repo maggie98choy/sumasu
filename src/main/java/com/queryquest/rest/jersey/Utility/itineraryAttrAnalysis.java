@@ -34,7 +34,6 @@ public class itineraryAttrAnalysis
 		Node target_node = null;
 		Node carrier_node = null;
 		char[] charArrayCityName = cityName.toCharArray();
-		//Character[] charObjectArray = ArrayUtils.toObject(charArrayCityName);		
 		String sCityName = ""; 
 		int tmp_noCarrier = 0 ;
 		

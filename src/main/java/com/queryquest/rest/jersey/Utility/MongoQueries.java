@@ -161,7 +161,7 @@ public class MongoQueries {
 	  
 	  while(cursor.hasNext()){
 		  num++;
-		  rating += (int) cursor.next().get("rating");
+		  rating += (Integer) cursor.next().get("rating");
 	  }
 	  
 	  if(num ==0 )

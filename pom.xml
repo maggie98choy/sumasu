@@ -83,8 +83,7 @@
     <artifactId>facebook4j-core</artifactId>
     <version>[2.0,)</version>
   </dependency>	
-
-
+  
     <dependency>
         <groupId>org.apache.cxf</groupId>
         <artifactId>cxf-rt-frontend-jaxws</artifactId>
@@ -102,14 +101,17 @@
         <version>2.7.10</version>
     </dependency>
 
- 
-
    <dependency>
         <groupId>net.sf.json-lib</groupId>
         <artifactId>json-lib</artifactId>
         <version>2.2.3</version>
         <classifier>jdk15</classifier>
     </dependency>
+    <dependency>
+		<groupId>com.googlecode.json-simple</groupId>
+		<artifactId>json-simple</artifactId>
+		<version>1.1</version>
+  	</dependency>
 
 
 

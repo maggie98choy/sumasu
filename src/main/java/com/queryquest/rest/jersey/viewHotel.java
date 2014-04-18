@@ -49,7 +49,7 @@ public class viewHotel extends HttpServlet {
 		HttpSession session = request.getSession();
 		String travelDestination = "";
 		String airport = "";
-		ArrayList<QHotel> hotelList = new ArrayList<QHotel> ();
+		Object hotelList = new ArrayList<QHotel> ();
 		Date startDate = new Date();
 		Date endDate = new Date();
 		long returnDayFromToday = 0;
@@ -60,79 +60,59 @@ public class viewHotel extends HttpServlet {
 		
 		hotelList = null;
 		
-		System.out.println("travel destination:" + request.getParameter("travelDestination"));
-		if(request.getParameter("travelDestination") != null)
+		ArrayList arrList = new ArrayList<QHotel> ();
+		arrList = (ArrayList) session.getAttribute("hotelList");
+		
+		if ((!request.getParameter("travelDestination").equals(session.getAttribute("travelDestination"))) || arrList.isEmpty())
 		{
-			travelDestination = request.getParameter("travelDestination");
-				
-			try 
+		
+			System.out.println("travel destination:" + request.getParameter("travelDestination"));
+			if(request.getParameter("travelDestination") != null)
 			{
-				airport = itinAnalysis.airPortLookUp(travelDestination);
-				System.out.println("airport: "+airport);
+				travelDestination = request.getParameter("travelDestination");
+					
+				try 
+				{
+					airport = itinAnalysis.airPortLookUp(travelDestination);
+					System.out.println("airport: "+airport);
+					} 
+					catch (SAXException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ParserConfigurationException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+							
+				SearchHotel searchHotel = new SearchHotel();
+				try 
+				{
+					hotelList = searchHotel.searchHotel(airport);
+					System.out.println("hotelList:"+hotelList);
 				} 
-				catch (SAXException e) 
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ParserConfigurationException e) 
+				catch (HotelFaultMessage e) 
 				{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				if(request.getParameter("startDate") != null)
-				{
-					try 
-					{
-						startDate = new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("startDate"));
-					} catch (ParseException e) 
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					Date date = new Date();
-					departureDayFromToday = TimeUnit.DAYS.convert(startDate.getTime() -date.getTime(), TimeUnit.MILLISECONDS);
-					//System.out.println("departureDayFromToday: " +departureDayFromToday);
-					if (departureDayFromToday==0)
-					{
-						departureDayFromToday = 1;
-					}
-					System.out.println("departure Day From Today:"+ departureDayFromToday);
-				}
-				
-				if(request.getParameter("endDate") != null)
-				{
-					try 
-					{
-						endDate = new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("endDate"));
-					} catch (ParseException e) 
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					returnDayFromToday  = TimeUnit.DAYS.convert(endDate.getTime() - startDate.getTime(), TimeUnit.MILLISECONDS) + departureDayFromToday;
-					System.out.println("Days:"+ returnDayFromToday);
-	
-				}
-			}
-						
-			SearchHotel searchHotel = new SearchHotel();
-			try 
-			{
-				hotelList = searchHotel.searchHotel(airport);
-			} 
-			catch (HotelFaultMessage e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			System.out.println("travel destination:" + travelDestination);
-			request.setAttribute("hotelList", hotelList);
-			request.setAttribute("travelDestination", travelDestination);
-			request.getRequestDispatcher("hotelResult.jsp").forward(request, response);
+		}
+		else
+		{
+			hotelList = session.getAttribute("hotelList");
+			travelDestination = (String) session.getAttribute("travelDestination");
+		}
+		
+			session.setAttribute("hotelList", hotelList);
+		session.setAttribute("travelDestination", travelDestination);
+		
+		System.out.println("travel destination:" + travelDestination);
+		request.setAttribute("hotelList", hotelList);
+		request.setAttribute("travelDestination", travelDestination);
+		request.getRequestDispatcher("hotelResult.jsp").forward(request, response);
 
 	}
 				

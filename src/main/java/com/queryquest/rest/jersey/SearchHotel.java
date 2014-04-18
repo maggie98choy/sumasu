@@ -118,7 +118,6 @@ public class SearchHotel
 	    	        }
 	    	        
 	    	        System.out.println(qhotel.toString());
-	    	        qhotelList.add(qhotel);
 	    	        qhotelList.add(new QHotel(qhotel.getHotelName(),qhotel.getHotelChain(), qhotel.getHotelCode(),qhotel.getHotelAddress(),
 	    	        		qhotel.getHotelMinAmt(),qhotel.getHotelMaxAmt(), qhotel.getHotelRating(), qhotel.getHotelDistance(),
 	    	        		qhotel.getHotelAttraction(), qhotel.getHotelLongtitude(), qhotel.getHotelLatitude()));

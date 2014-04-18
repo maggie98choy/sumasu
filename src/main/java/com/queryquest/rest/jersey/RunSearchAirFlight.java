@@ -12,7 +12,7 @@ public class RunSearchAirFlight
 		//SearchAirFlight searchAirFlight = new SearchAirFlight();
 		//searchAirFlight.SearchAirTix(air1, air2);
 		Lesson3 l3 = new Lesson3();
-	    l3.RunLesson3("SFO", "LGA", 7, 10);
+	  //  l3.RunLesson3("SFO", "LGA", 7, 10);
 	}
 	
 }
