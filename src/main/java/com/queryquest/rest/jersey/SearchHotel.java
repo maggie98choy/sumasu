@@ -44,100 +44,7 @@ public class SearchHotel
 	 public ArrayList<QHotel> searchHotel(String cityCode) throws HotelFaultMessage 
 	 //public static void main(String[] argv) throws HotelFaultMessage
 	 {
-/*		
-	
-		HotelSearchServicePortType port = WSDLService.hotelShop.get();
-        
-        This port ends up not being provided by some providers so it isn't
-        used by the lesson's code
-        HotelMediaLinksServicePortType media = WSDLService.hotelMedia.get();
-        WSDLService.hotelMedia.showXML(true);
 
-        the hotel search parametrs
-        int numAdults=2, numRooms=2, distanceInKm=25, maxScreens=4;
-        int daysToCheckin = 90, daysToDeparture = 97;
-        Collection<QHotel> qhotelList = null; 
-        qhotelList = new ArrayList<QHotel> ();
-        QHotel qhotel = new QHotel();
-        String pointOfInterestName="Mall of America";
-        String pointOfInterestName = ptOfInterestName;
-      
-        try {
-            
-            WSDLService.hotelShop.showXML(true);
-            
-            HotelSearchResult[] result= 
-                findLowestPriceAndClosestToAttraction(port, pointOfInterestName, distanceInKm,
-                maxScreens, numAdults, numRooms, daysToCheckin, 
-                daysToDeparture, /*don't care about guaranteefalse);
-        
-            printHotel(result[0], pointOfInterestName, media);
-           printHotel(result[1], pointOfInterestName, media);
-            
-            
-            for (int i= 0 ; i<result.length; i++ )
-            {
-            HotelMediaLinksReq req = new HotelMediaLinksReq();
-	         req.setBillingPointOfSaleInfo(Helper.tutorialBPOSInfo(6, 2));
-	         req.getHotelProperty().add(result[i].getHotelProperty()); 
-	         HotelMediaLinksRsp rsp = media.service(req);
-	         
-
-	        at the moment, it doesn't appear that there is any really useful
-	       information in the vendor location map... that may vary by provider
-	        HotelProperty p = result[i].getHotelProperty();
-	        	        
-	        qhotel.setHotelAddress(p.getPropertyAddress().getAddress().get(0));
-	        qhotel.setHotelCode(p.getHotelCode());
-	        qhotel.setHotelChain(p.getHotelChain());
-	        qhotel.setHotelName(p.getName());
-	        qhotel.setHotelRating(flattenRatingsToText(result[0].getHotelProperty().getHotelRating()));
-	        qhotel.setHotelMinAmt(result[i].getMinimumAmount());
-	        qhotel.setHotelMaxAmt(result[i].getMaximumAmount());
-	        qhotel.setHotelAttraction(pointOfInterestName);
-	        qhotel.setHotelDistance(p.getDistance().getValue());
-	        if (result[i].getHotelProperty().getCoordinateLocation() != null) 
-	        {
-	        	qhotel.setHotelLatitude(result[i].getHotelProperty().getCoordinateLocation().getLatitude());
-	        	qhotel.setHotelLongtitude(result[i].getHotelProperty().getCoordinateLocation().getLongitude());
-	        }
-	        qhotelList.add(qhotel);
-	        
-	        Formatter fmt = new Formatter(System.out);
-	        fmt.format("%-30s [%s:%s]\n", p.getName(), p.getHotelChain(), p.getHotelCode());
-
-	        String addr = p.getPropertyAddress().getAddress().get(0);
-	        fmt.format("%10s %s\n", "", addr);
-
-	        String ratingsText = flattenRatingsToText(result[i].getHotelProperty().getHotelRating());
-	        fmt.format("%10s %-10s to %-10s \n", "", result[i].getMinimumAmount(), result[i].getMaximumAmount());
-	        fmt.format("%10s %s%s from %s\n", "", p.getDistance().getValue(), 
-	                p.getDistance().getUnits(), pointOfInterestName);
-	        if (!ratingsText.equals("")) {
-	            fmt.format("%10s %s\n", "", ratingsText);
-	        }
-	        fmt.format("%10s RESERVATION REQUIREMENT IS %s\n", "", result[0].getHotelProperty().getReserveRequirement());
-
-	        if (result[i].getHotelProperty().getCoordinateLocation() != null) {
-	            float lat = result[i].getHotelProperty().getCoordinateLocation().getLatitude();
-	            float lon = result[i].getHotelProperty().getCoordinateLocation().getLongitude();
-	            fmt.format("%5s http://maps.google.com/?q=%.6f,%.6f\n", "", lat, lon);
-	        }
-            }
-            
-            searchVehicle("CDG", daysToCheckin, daysToDeparture);
-
-        } catch (NumberFormatException e) {
-            System.err.println("unable to parse hotel price: " + e.getMessage());
-        } catch (HotelFaultMessage e) {
-            System.err.println("error reading hotel data: " + e.getMessage());
-        } catch (VehicleFaultMessage e) {
-            System.err.println("error reading vehicle data: " + e.getMessage());
-       }	
-        
-        return qhotelList;
-        
-        */
 		 //Collection<QHotel> qhotelList = null; 
 		 ArrayList<QHotel> qhotelList = new ArrayList<QHotel> ();
 	     QHotel qhotel = new QHotel();
@@ -152,8 +59,8 @@ public class SearchHotel
         req.setTargetBranch(target_branch);
         
         //hotel location is paris france
-        HotelLocation location = Lesson4.createCityLocation("LAS");
-        //HotelLocation location= Lesson4.createCityLocation(cityCode);
+       // HotelLocation location = Lesson4.createCityLocation("SAT");
+        HotelLocation location= Lesson4.createCityLocation(cityCode);
         //near the eiffel tower
         req.setHotelLocation(location);
         //mods.setReferencePoint("EIFFEL TOWER");
@@ -226,21 +133,9 @@ public class SearchHotel
         } while (rsp.getNextResultReference().size()>0);
         */
             
-            return qhotelList;
+           return qhotelList;
     }
       
-
-	
-	   private void QHotel(String hotelName, String hotelChain, String hotelCode,
-			String hotelAddress, String hotelMinAmt, String hotelMaxAmt,
-			String hotelRating, BigInteger hotelDistance,
-			String hotelAttraction, float hotelLongtitude, float hotelLatitude) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
 	public static HotelSearchResult[] findLowestPriceAndClosestToAttraction(HotelSearchServicePortType port, 
 	            String pointOfInterest, int searchRadiusInKM, int maxScreens, 
 	            int numAdults, int numRooms, int daysInFutureForCheckIn, 

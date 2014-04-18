@@ -100,7 +100,7 @@ p {
 				<div class="row">
 					<div class='col-sm-4'>
 						Start Date: <input type='text' class="form-control"
-							id='datetimepicker6' data-date-format="YYYY/MM/DD" />
+							id='datetimepicker6' name="datetimepicker6" data-date-format="YYYY/MM/DD" />
 					</div>
 					<script type="text/javascript">
 						$(function() {
@@ -116,7 +116,7 @@ p {
 				<div class="row">
 					<div class='col-sm-4'>
 						End Date: <input type='text' class="form-control"
-							id='datetimepicker7' data-date-format="YYYY/MM/DD" />
+							id='datetimepicker7' name="datetimepicker7" data-date-format="YYYY/MM/DD" />
 					</div>
 					<script type="text/javascript">
 						$(function() {

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.jasper.tagplugins.jstl.core.Out;
 import org.xml.sax.SAXException;
 
 import com.queryquest.rest.jersey.Utility.itineraryAttrAnalysis;
@@ -51,14 +52,12 @@ public class viewItinerary extends HttpServlet {
 		String travelDestination = "";
 		String airport1 = "";
 		String airport2 = "";
-		ArrayList<QItinerary> itiList = new ArrayList<QItinerary> ();
+		Object itiList = new ArrayList<QItinerary> ();
 		ArrayList<QHotel> hotelList = new ArrayList<QHotel> ();
 		Date startDate = new Date();
 		Date endDate = new Date();
 		long returnDayFromToday = 0;
 		long departureDayFromToday = 1 ;
-		final int totalNumber=5;
-		
 		itineraryAttrAnalysis itinAnalysis = new itineraryAttrAnalysis();
 		
 		itiList = null;
@@ -106,7 +105,7 @@ public class viewItinerary extends HttpServlet {
 				{
 					try 
 					{
-						startDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("startDate"));
+						startDate = new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("startDate"));
 					} catch (ParseException e) 
 					{
 						// TODO Auto-generated catch block
@@ -114,20 +113,16 @@ public class viewItinerary extends HttpServlet {
 					}
 					
 					Date date = new Date();
-					departureDayFromToday = TimeUnit.DAYS.convert(startDate.getTime() -date.getTime(), TimeUnit.MILLISECONDS);
-					//System.out.println("departureDayFromToday: " +departureDayFromToday);
-					if (departureDayFromToday==0)
-					{
-						departureDayFromToday = 1;
-					}
-					System.out.println("departure Day From Today:"+ departureDayFromToday);
+					departureDayFromToday = TimeUnit.DAYS.convert(startDate.getTime() -date.getTime(), TimeUnit.MILLISECONDS);					
+					departureDayFromToday=departureDayFromToday+1;
+					//System.out.println("departure Day From Today after:"+ departureDayFromToday);
 				}
 				
 				if(request.getParameter("endDate") != null)
 				{
 					try 
 					{
-						endDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("endDate"));
+						endDate = new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("endDate"));
 					} catch (ParseException e) 
 					{
 						// TODO Auto-generated catch block
@@ -139,29 +134,25 @@ public class viewItinerary extends HttpServlet {
 	
 				}
 			}
+						
+			System.out.println("search air tix paramters from session:"+session.getAttribute("searchAirTixParameters"));
+			System.out.println("air tix parameter new:" + airport1+airport2+departureDayFromToday+returnDayFromToday);
+			System.out.println("itiList: "+session.getAttribute("itiList"));
 			
+			ArrayList arrList = new ArrayList<QItinerary> ();
+			arrList = (ArrayList) session.getAttribute("itiList");
 			
-			SearchAirFlight searchAirFlight = new SearchAirFlight();
-			itiList = searchAirFlight.SearchAirTix(airport1, airport2, departureDayFromToday, returnDayFromToday);			
-			
-			/*try {
-				Thread.sleep(15000);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			*/
-			/*SearchHotel searchHotel = new SearchHotel();
-			try 
+			if ((!(airport1+airport2+departureDayFromToday+returnDayFromToday).equals(session.getAttribute("searchAirTixParameters"))) || arrList.isEmpty())
 			{
-				hotelList = searchHotel.searchHotel(airport2);
-			} 
-			catch (HotelFaultMessage e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				SearchAirFlight searchAirFlight = new SearchAirFlight();
+				itiList = searchAirFlight.SearchAirTix(airport1, airport2, departureDayFromToday, returnDayFromToday);			
+				session.setAttribute("itiList", itiList);
+				session.setAttribute("searchAirTixParameters",airport1+airport2+departureDayFromToday+returnDayFromToday);
 			}
-			*/
+			else
+			{
+				itiList = session.getAttribute("itiList");
+			}
 			
 		}
 		

@@ -12,6 +12,7 @@
 	href="bootstrap/css/bootstrap.min.css">
 <link href="star/css/star-rating.css" media="all" rel="stylesheet"
 	type="text/css" />
+	<link href="bootstrap/css/bootstrap.icon-large.min.css" rel="stylesheet">
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="star/js/star-rating.js" type="text/javascript"></script>
@@ -134,15 +135,27 @@ html,body {
 													</form><strong> <%if (search.isRecommended())out.println("QQ Rating: "+ search.getRecommendedRating());%> </strong>
 												</div>
 												</div>
+											
 												<div class="row"> 
+												<% int distance = (Integer) request.getAttribute("distance");
+												if (distance > 500) 
+												{
+												%>
 												<div class="col-md-2">
 												<a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight <span class="glyphicon glyphicon-plane"></span></a>
 												</div>
+												<%} 
+												else 
+												{%>
+												<div class="col-md-4">
+												<a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a>
+												</div>
+												<%} %>
 												<div class="col-md-2">
 												<a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="glyphicon glyphicon-cutlery"></span></a>
-												</div>
-												</div>												
-																	
+												</div>											
+												
+												</div>																													
 												</div>
 											<%
 												}
@@ -150,10 +163,6 @@ html,body {
 											<%
 												}
 											%>
-										
-
-
-
 
 										<!--end of 1st body-->
 									</div>

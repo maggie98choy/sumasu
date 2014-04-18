@@ -45,7 +45,7 @@ public class SearchAirFlight
 		AirSearchRsp rsp = null;
 			
 		try {
-			//System.out.println("waiting for first response from a provider...");
+			System.out.println("waiting for first response from a provider...");
 			//WSDLService.airShopAsync.showXML(true);
 			LowFareSearchAsynchRsp lowCostRsp = WSDLService.airShopAsync.get().service(req);
 			HashMap<String, Long> partMap = new HashMap<String, Long>();
@@ -126,20 +126,11 @@ public class SearchAirFlight
 						Date dep = Helper.dateFromISO8601(leg.getDepartureTime());
 						
 						//System.out.println("AIR Departing from "+ leg.getOrigin() + " to " +leg.getDestination() +" on " +  dep);
-									
-						//fmt.format("AIR Departing from %3s to %3s on %Tc\n",
-						//		leg.getOrigin(), 
-						//		leg.getDestination(), dep);
-						
-						/*System.out.println("Flight " + leg.getCarrier() + "[" + leg.getFlightNumber() + "]" + 
+															
+						System.out.println("Flight " + leg.getCarrier() + "[" + leg.getFlightNumber() + "]" + 
 											". Flight time:" + leg.getFlightTime() + ". Arrive: " + leg.getArrivalTime());
-						*/
-						/*fmt.format("         Flight [%2s]#%4s  Flight time: %s minutes\n", 
-								leg.getCarrier(), 
-								leg.getFlightNumber(), leg.getFlightTime());
-						fmt.format("                           Arrive %Tc\n", 
-								Helper.dateFromISO8601(leg.getArrivalTime()));
-						*/
+						
+						
 						if (currentProvider.equalsIgnoreCase("1V"))
 						{
 							iti.setOrigin(leg.getOrigin());
@@ -165,12 +156,12 @@ public class SearchAirFlight
 						}
 						
 						String roundTripTurnaround = destination;
-						if (leg.getDestination().equals(roundTripTurnaround)) 
+						/*if (leg.getDestination().equals(roundTripTurnaround)) 
 						{
 
 				
 						}
-	
+						 */
 								
 					}					
 					++count;

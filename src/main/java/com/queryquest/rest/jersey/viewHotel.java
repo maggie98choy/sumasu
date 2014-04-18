@@ -84,7 +84,7 @@ public class viewHotel extends HttpServlet {
 				{
 					try 
 					{
-						startDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("startDate"));
+						startDate = new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("startDate"));
 					} catch (ParseException e) 
 					{
 						// TODO Auto-generated catch block
@@ -105,7 +105,7 @@ public class viewHotel extends HttpServlet {
 				{
 					try 
 					{
-						endDate = new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("endDate"));
+						endDate = new SimpleDateFormat("yyyy/MM/dd").parse(request.getParameter("endDate"));
 					} catch (ParseException e) 
 					{
 						// TODO Auto-generated catch block

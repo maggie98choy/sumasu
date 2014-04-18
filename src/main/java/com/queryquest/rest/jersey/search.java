@@ -13,10 +13,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.queryquest.rest.jersey.Utility.DistanceCalculation;
 import com.queryquest.rest.jersey.Utility.MongoQueries;
 import com.queryquest.rest.jersey.Utility.SearchParser;
 import com.queryquest.rest.jersey.domain.SearchAnalysis;
@@ -76,8 +80,12 @@ public class search extends HttpServlet {
 		String searchTerm = request.getParameter("searchTerm");
 		SearchParser searchParser = new SearchParser();
 		System.out.println("hello "+searchTerm);
-		String startdate = request.getParameter("startdate");
-		String enddate = request.getParameter("enddate");
+		String startdate = request.getParameter("datetimepicker6");
+		String enddate = request.getParameter("datetimepicker7");
+		
+		System.out.println("start date:"+startdate);
+		System.out.println("end date:"+enddate);
+				
 		String currentLocation;
 		String travelDestination;
 
@@ -129,13 +137,40 @@ public class search extends HttpServlet {
 			}
 		}
 
+		//Get distance in miles between 2 cities		
+		DistanceCalculation dc = new DistanceCalculation();
+		int distance = 0;
+		try 
+		{
+			distance =dc.calculateDistance(currentLocation, travelDestination);
+		} catch (ParserConfigurationException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		System.out.println("start date:"+startdate);
+		
+		//remove space in city string
+		char[] charArrayCurrentLocation = currentLocation.toCharArray();
+		String new_currentLocation = "";
+		for (int i=0; i<currentLocation.length(); i++)
+		{
+			if (charArrayCurrentLocation[i] != ' ')
+			{
+				new_currentLocation = new_currentLocation + charArrayCurrentLocation[i];
+			}
+		}
+		
+		request.setAttribute("distance", distance);
 		request.setAttribute("recom_search_results", recomSearchList);
 		request.setAttribute("rated_search_results", ratedSearchList);
 		request.setAttribute("startdate", startdate);
 		request.setAttribute("enddate", enddate);
-		request.setAttribute("currentLocation", currentLocation);
+		request.setAttribute("currentLocation", new_currentLocation);
 		request.setAttribute("travelDestination", travelDestination);	
 		request.getRequestDispatcher("searchresults.jsp").forward(request, response);
 		

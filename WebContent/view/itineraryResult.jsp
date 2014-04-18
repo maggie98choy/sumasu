@@ -4,20 +4,42 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>QQ Itinerary Results</title>
+<title>QQ FlightResults</title>
 <!-- Stylesheets -->
-<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.css">
-<link type="text/css" rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-<link href="star/css/star-rating.css" media="all" rel="stylesheet" type="text/css"/>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="bootstrap/css/bootstrap.css">
+<link type="text/css" rel="stylesheet"
+	href="bootstrap/css/bootstrap.min.css">
+<link href="star/css/star-rating.css" media="all" rel="stylesheet"
+	type="text/css" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="star/js/star-rating.js" type="text/javascript"></script>
 <style>
 html,body {
-	background: url(images/travel.jpg) no-repeat center center fixed;
+	background: url(images/airport.jpg) no-repeat center center fixed;
 	-webkit-background-size: cover; /* For WebKit*/
 	-moz-background-size: cover; /* Mozilla*/
 	-o-background-size: cover; /* Opera*/
 	background-size: cover; /* Generic*/
+}
+
+.panel-heading a:after {
+	font-family: 'Glyphicons Halflings';
+	content: "\e114";
+	float: right;
+	color: grey;
+}
+
+hr{
+color: wheat;
+background-color: wheat;
+height: 6px;
+width: 100%;
+}
+
+.panel-heading a.collapsed:after {
+	content: "\e080";
 }
 </style>
 </head>
@@ -39,7 +61,6 @@ html,body {
 			<li><a href="">Music</a></li>
 			<li><a href="">Events</a></li>
 			<li><a href="preferences.jsp">Preferences</a></li>
-
 			<li><a href="">Sign Off</a></li>
 		</ul>
 		&nbsp; <a href="https://www.facebook.com/citystorysf"
@@ -47,54 +68,117 @@ html,body {
 			width="50"></a> </nav>
 		<br> <br> <br> <br>
 
-		<!-- CANNT DO THIS HERE : GIVES ERROR  
-  <form class="navbar-search" action="search" method="post">
-		
-		<br> <input type="text" class="search-query span6"
-			placeholder="Enter an activity" name="activity" id="activity">&nbsp;&nbsp;
-		<button type="submit" value="submit" class="btn btn-inverse">
-			Search <span class="glyphicon glyphicon-search"></span>
-		</button>
-	</form>
-	<br><br><br><br><br> -->
-	</div>
-	<% 
-	ArrayList<QItinerary> itiList = new ArrayList<QItinerary>();
-	itiList = (ArrayList<QItinerary>)request.getAttribute("itiList");
-	String airport1 = (String) request.getAttribute("airport1");
-	//int division = (Integer)request.getAttribute("division");
-    
-	%><font size="6" color="white">	Air Flight</font><br><br><br>
-	
-	<font size="3" color="white">
-	<%
-	int j=0;
-		if (itiList != null)	
-		{
-			for(int i=0; i<itiList.size();i++)
-			{
-				QItinerary itin = new QItinerary();	
-				itin = itiList.get(i);				
-				%>
-			    AIR Departing from <% out.println(itin.getOrigin()); %> to <% out.println(itin.getDestination()); %> on 
-				<% out.println(itin.getDepartureTime()); %><br>
-					&nbsp;&nbsp; Flight <% out.println(itin.getCarrier()); %><% out.println(itin.getFlightNo()); %> Flight time: <% out.println(itin.getFlightTime()); %> minutes<br>
-						      &nbsp;&nbsp;&nbsp;&nbsp; Arrive <% out.println(itin.getArrivalTime()); %><br>
-				<% if(itin.getNonStop())
-				{
-				 %> <br> <%
-				}
-				%>
-				<%		      
-				if (itin.getDestination().equals((String) request.getAttribute("airport1")))
-				{%>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Base Price: <% out.println(itin.getPrice());%><br>
-					<%out.println("------------------------------------------------------------------------"); %><br><br>
-					
-			    <%}
-			
-		   } 
-	 } %></font>
+		<!-- panel -->
 
+		<div class="row">
+			<div class="col-sm-11">
+				<div class="panel panel-default panel-warning">
+					<div class="panel-heading">
+						<h3 class="panel-title">Flight Itinerary</h3>
+					</div>
+					<div class="panel-body">
+
+
+						<div class="panel-group" id="accordion">
+							<div class="panel panel-default">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion"
+											href="#collapseOne"> Availability </a>
+									</h4>
+								</div>
+								<div id="collapseOne" class="panel-collapse collapse">
+									<div class="panel-body" style="background-color: wheat;">
+										<!--Body-->
+
+										<%ArrayList<QItinerary> itiList = new ArrayList<QItinerary>();
+											itiList = (ArrayList<QItinerary>) request.getAttribute("itiList");
+											String airport1 = (String) request.getAttribute("airport1");
+										//int division = (Integer)request.getAttribute("division");
+										%>
+
+										
+										<div class="well" style="background-color:#FFF7EC;">
+											<div class="row">
+												
+													<%int j = 0;
+										if (itiList != null)
+										{
+											for (int i = 0; i < itiList.size(); i++) 
+											{
+ 												QItinerary itin = new QItinerary();
+ 												itin = itiList.get(i);
+									   %>
+									  <br>
+										<div class="col-md-6">
+										From : 
+										<strong><%out.println(itin.getOrigin()); %></strong><br> </div>
+										<div class="col-md-4"> 
+										To :
+										<strong><%out.println(itin.getDestination());%></strong> </div>
+										
+										<div class="col-md-6"> 
+										Departure :
+										<%out.println(itin.getDepartureTime());%>
+										<br> 
+										</div>
+										
+										<div class="col-md-6"> 
+										Arrival :
+										<%out.println(itin.getArrivalTime());%><br>
+										</div>
+										<div class="col-md-6"> 
+										Flight :
+										<strong> <%out.println(itin.getCarrier());%>
+										<%out.println(itin.getFlightNo());%></strong>
+										<br>
+										</div>
+										<br> 
+										<div class="col-md-4"> 
+										Total time :
+										<strong>
+										<%out.println(itin.getFlightTime());%>
+										minutes</strong></div><br>
+										
+										<%
+											if (itin.getNonStop()) {%>
+										<br>
+										<%
+ 										}
+ 										%>
+										<%
+ 											if (itin.getDestination().equals(
+ 											(String) request.getAttribute("airport1"))) {
+ 										%><br>
+ 										<div class="col-md-4"> 
+										Price :
+										<strong><%out.println(itin.getPrice());%></strong><br></div>
+										<br> <br>
+										
+										<hr>
+								
+										<%
+ 	} 
+ 								
+
+ 		 } %>
+ 		 
+ 		</div>
+			</div>
+ 	<% } %>										
+
+										<!--end of 1st body-->
+								
+								</div>
+							</div>
+							</div>	
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
