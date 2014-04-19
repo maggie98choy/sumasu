@@ -104,6 +104,13 @@ html,body {
 												for (int i = 0; i < recomSearchList.size(); i++) {
 													SearchResult search = new SearchResult();
 													search = recomSearchList.get(i);
+													
+													String address = search.getAddress();
+													String zipCode = "";
+													
+													//substring zipCode from address string
+													zipCode = address.substring(address.length()-6, address.length());						
+													
 													if (!act.equals(search.getActivity())) {
 														act = search.getActivity();
 										%>
@@ -153,7 +160,7 @@ html,body {
 												else 
 												{%>
 												<div class="col-md-4">
-												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
+												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=zipCode%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
 												</div>
 												<%} 
 												session.setAttribute("distance",distance);
@@ -193,6 +200,13 @@ html,body {
 												for (int i = 0; i < ratedSearchList.size(); i++) {
 													SearchResult search = new SearchResult();
 													search = ratedSearchList.get(i);
+													
+													String address = search.getAddress();
+													String zipCode = "";
+													
+													//substring zipCode from address string
+													zipCode = address.substring(address.length()-6, address.length());			
+													
 													String activity = ratedSearchList.get(i).getActivity();
 													if (!act.equals(activity)) {
 										%>
@@ -242,7 +256,7 @@ html,body {
 												else 
 												{%>
 												<div class="col-md-4">
-												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
+												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=zipCode%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
 												</div>
 												<%}
 												session.setAttribute("distance",distance);%>
