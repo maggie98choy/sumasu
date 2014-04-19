@@ -25,6 +25,7 @@ public class SearchParser {
     "Ice Cream", "Frozen Yogurt","Internet Cafe","Juice Bar", "Smoothy","Smoothies","Pretzel","Shaved Ice", "Specialty Food","Candy Store","Cheese Shop","Chocolatiers", "Shop", "Ethnic Food","Fruits & Veggies","Health Market ","Herb", "Spice", "Meat Shop","Seafood Market","Street Vendor","Tea Room","Wineries","Winery", "Airport","Bed & Breakfast", "Car Rental","Guest House","Health Retreat ","Hostel", "Hotel","Motorcycle Rental", "RV Park","RV Rental", 
     "Resort","Tour","Train Station", "Airport Shuttle", "Limo","Public Transportation", "Taxi","Travel Service","Vacation Rental Agent","Vacation Rental","Adult Entertainment","Bar","Comedy Club","Country Dance Hall","Jazz & Blues","Karaoke","Music Venue","Piano","Pool Hall","Campground","Casino","Day Camp","Disc Golf","Diving","Events this weekend","Fishing","Fitness","Golf","Hiking","Museums","Nightlife","Rv park","Scuba","Shopping","Sport bar","Zoo"};
 	
+	private static final String[] ignore={"vacation", "trip"};
 	private static final int ACTSIZE =3;
 	
 	public SearchAnalysis stringParser(String searchTerm){
@@ -76,6 +77,17 @@ public class SearchParser {
 			String sub = (String) st.nextElement();
 			if(sub.length() >= ACTSIZE)
 				search.add(sub);	
+		}
+		
+		for(int j=0;j<search.size();j++){
+			for(int i=0; i< ignore.length;i++){
+				if((ignore[i].toLowerCase().equals(search.get(j).toLowerCase()))){
+					search.remove(j);
+				}
+				else if (ignore[i].toLowerCase().concat("s").equals(search.get(j).toLowerCase())){
+					search.remove(j);
+				}
+			}
 		}
 		
 		//GET the activity 
@@ -134,6 +146,8 @@ public class SearchParser {
 				}*/
 			
 		}
+		
+		
 		//GET the location
 		ClientConfig clientConfig = new DefaultClientConfig();
 		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,Boolean.TRUE);

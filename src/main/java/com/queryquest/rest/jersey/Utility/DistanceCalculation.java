@@ -109,6 +109,16 @@ public class DistanceCalculation
 		
 		System.out.println("new distance:"+new_s_distance);
 		
+		if (new_s_distance.equals("0"))
+		{
+			new_s_distance="1";
+		}
+		
+		if (new_s_distance.equals(""))
+		{
+			new_s_distance="0";
+		}
+		
 		return Integer.parseInt(new_s_distance);
 		
 	}
