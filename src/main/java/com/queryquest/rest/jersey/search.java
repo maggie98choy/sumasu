@@ -193,12 +193,16 @@ public class search extends HttpServlet {
 			//System.out.println(JSONObject.fromObject(business));
 			String name = (String) business.get("name");
 			System.out.println("name "+name);
-			JSONArray categories = business.getJSONArray("categories");
+			
 			List<String> catList = new ArrayList<String>();
+			if((business.get("categories"))instanceof JSONArray){
+				JSONArray categories = business.getJSONArray("categories");
 			for(int i=0;i<categories.size();i++){
 				catList.add(categories.getString(i));
+				
 			}
-
+			System.out.println("categories "+catList.toString());
+			}
 			int match=0;
 			for(int i=0;i<catList.size();i++){
 				//System.out.println("ALL "+catList.get(i)+"  "+activity);
