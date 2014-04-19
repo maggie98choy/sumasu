@@ -95,10 +95,8 @@ html,body {
 											String travelDestination = (String) request
 													.getAttribute("travelDestination");
 
-											recomSearchList = (ArrayList<SearchResult>) request
-													.getAttribute("recom_search_results");
-											ratedSearchList = (ArrayList<SearchResult>) request
-													.getAttribute("rated_search_results");
+											recomSearchList = (ArrayList<SearchResult>) request.getAttribute("recom_search_results");
+											ratedSearchList = (ArrayList<SearchResult>) request.getAttribute("rated_search_results");
 											String act = "";
 
 											//*****************RECOMMENDED RESULTS **********
@@ -124,7 +122,14 @@ html,body {
 												</div> 
 												<div class="col-md-4">
 												<!-- star rating --> 
-												<% session.setAttribute("recom_search_results",recomSearchList);%>
+												<% session.setAttribute("recom_search_results",recomSearchList);
+											    session.setAttribute("rated_search_results",ratedSearchList);
+												session.setAttribute("traveldestination",travelDestination);
+												session.setAttribute("currentLocation",currentLocation);
+												session.setAttribute("startdate",startDate);
+												session.setAttribute("enddate",endDate);
+												%>
+												
 													<form action="searchresults" method="post">
 														<input type="hidden" id="index" name="index"
 															value=<%=i + 100%>> <input id="input-21"
@@ -150,7 +155,9 @@ html,body {
 												<div class="col-md-4">
 												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
 												</div>
-												<%} %>
+												<%} 
+												session.setAttribute("distance",distance);
+												%>
 												<div class="col-md-2">
 												<font size="3"><a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="icon-large icon-cutlery"></span></a></font>
 												</div>											
@@ -205,8 +212,13 @@ html,body {
 													<%if (search.getPhoneNo() != null) out.println("Phone: " + search.getPhoneNo());%><br><br>
 													</div>
 													<div class="col-md-4">
-													<!-- star rating --> 
-													<%session.setAttribute("rated_search_results",ratedSearchList);%>
+													<!-- star rating -->
+												    <%session.setAttribute("recom_search_results",recomSearchList); 
+													session.setAttribute("rated_search_results",ratedSearchList);
+													session.setAttribute("traveldestination",travelDestination);
+												session.setAttribute("currentLocation",currentLocation);
+												session.setAttribute("startdate",startDate);
+												session.setAttribute("enddate",endDate);%>
 													<form action="searchresults" method="post">
 														<input type="hidden" id="index" name="index" value=<%=i%>>
 														<input id="input-21" name="star"
@@ -232,7 +244,8 @@ html,body {
 												<div class="col-md-4">
 												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
 												</div>
-												<%} %>
+												<%}
+												session.setAttribute("distance",distance);%>
 												<div class="col-md-2">
 												<font size="3"><a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="icon-large icon-cutlery"></span></a></font>
 												</div>											

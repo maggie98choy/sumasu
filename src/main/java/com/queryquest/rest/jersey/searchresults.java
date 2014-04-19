@@ -49,6 +49,12 @@ public class searchresults extends HttpServlet {
 		
 	    ArrayList<SearchResult> recomSearchList= (ArrayList<SearchResult>)session.getAttribute("recom_search_results");
 	    ArrayList<SearchResult> ratedSearchList=(ArrayList<SearchResult>)session.getAttribute("rated_search_results");
+	    int distance = (Integer)session.getAttribute("distance");
+	    String travelDestination= (String)session.getAttribute("traveldestination");
+		String currentLocation=(String)session.getAttribute("currentLocation");
+		String startDate =(String)session.getAttribute("startdate");
+		String endDate= (String)session.getAttribute("enddate");
+		
 	    Rating rating = new Rating();
 	    rating.setEmail((String)session.getAttribute("email"));
 	     if(index >= 100 ){ // RECOMMENDED RESULTS ARE RATED 
@@ -80,7 +86,12 @@ public class searchresults extends HttpServlet {
 	    searchList.add(index,searchResult);*/
 	    
 	    //System.out.println(searchList.toString());
-	   // SortSearchResults sort = new SortSearchResults();	 
+	   // SortSearchResults sort = new SortSearchResults();
+	    request.setAttribute("distance", distance);
+	    request.setAttribute("travelDestination",travelDestination);
+		request.setAttribute("currentLocation",currentLocation);
+		request.setAttribute("startdate",startDate);
+		request.setAttribute("enddate",endDate);
 	    request.setAttribute("recom_search_results", (recomSearchList));
 	    request.setAttribute("rated_search_results", (ratedSearchList));
 		request.getRequestDispatcher("searchresults.jsp").forward(request, response);

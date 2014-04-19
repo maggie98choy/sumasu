@@ -164,12 +164,13 @@ public class MongoQueries {
 		  rating += (Integer) cursor.next().get("rating");
 	  }
 	  
-	  if(num ==0 )
-		  System.out.println("Num is zero");
+	  if(num ==0 ){
+		//  System.out.println("Num is zero");
+	  }
 	  else  
 		  avgRating = (float)rating/num;
 	  
-	  System.out.println("Avg Rating "+avgRating);
+	  //System.out.println("Avg Rating "+avgRating);
 	  return avgRating;
   }
   

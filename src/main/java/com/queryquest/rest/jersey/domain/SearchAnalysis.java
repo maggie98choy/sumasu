@@ -7,6 +7,10 @@ public class SearchAnalysis {
 	private int numOfDays;
 	private ArrayList<String> activity;
 	private String location;
+	
+	public void addNumOfDays(int numOfDays){
+		this.numOfDays+=numOfDays;
+	}
 	public int getNumOfDays() {
 		return numOfDays;
 	}
