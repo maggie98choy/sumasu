@@ -37,21 +37,35 @@ public class DistanceCalculation
 		clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING,Boolean.TRUE);
 		Client client= Client.create(clientConfig);
 
-		String cityName = city1; 
-		char[] charArrayCityName = cityName.toCharArray();
-		String sCityName = ""; 
+		String cityName1 = city1; 
+		char[] charArrayCityName1 = cityName1.toCharArray();
+		String sCityName1 = ""; 
 		
 		//To substitude space for '%'
-		for (int i=0; i<cityName.length(); i++)
+		for (int i=0; i<cityName1.length(); i++)
 		{
-			if (charArrayCityName[i] != ' ')
+			if (charArrayCityName1[i] != ' ')
 			{
-				sCityName = sCityName + charArrayCityName[i];
+				sCityName1 = sCityName1 + charArrayCityName1[i];
 			}
 
 		}
 		
-		WebResource webResource = client.resource("http://maps.googleapis.com/maps/api/distancematrix/xml?origins="+sCityName+"&units=imperial&destinations="+city2+"&sensor=false");
+		String cityName2 = city2; 
+		char[] charArrayCityName2 = cityName2.toCharArray();
+		String sCityName2 = ""; 
+		
+		//To substitude space for '%'
+		for (int i=0; i<cityName2.length(); i++)
+		{
+			if (charArrayCityName2[i] != ' ')
+			{
+				sCityName2 = sCityName2 + charArrayCityName2[i];
+			}
+
+		}
+		
+		WebResource webResource = client.resource("http://maps.googleapis.com/maps/api/distancematrix/xml?origins="+sCityName1+"&units=imperial&destinations="+sCityName2+"&sensor=false");
 		String s = webResource.get(String.class);
 		
 		System.out.println("webResource: "+webResource);	
