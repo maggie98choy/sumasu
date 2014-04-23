@@ -9,6 +9,7 @@ public class SearchResult {
     private boolean isRecommended;
     private float recommendedRating;
     private String activity;
+    private String category;
 	
 	public String getName() {
 		return name;
@@ -40,7 +41,7 @@ public class SearchResult {
 				+ ", phoneNo=" + phoneNo + ", URL=" + URL + ", noOfStars="
 				+ noOfStars + ", isRecommended=" + isRecommended
 				+ ", recommendedRating=" + recommendedRating + ", activity="
-				+ activity + "]";
+				+ activity + ", category=" + category + "]";
 	}
 	public int getNoOfStars() {
 		return noOfStars;
@@ -65,6 +66,12 @@ public class SearchResult {
 	}
 	public void setActivity(String activity) {
 		this.activity = activity;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	
 

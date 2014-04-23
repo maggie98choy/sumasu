@@ -79,16 +79,7 @@ public class SearchParser {
 				search.add(sub);	
 		}
 		
-		for(int j=0;j<search.size();j++){
-			for(int i=0; i< ignore.length;i++){
-				if((ignore[i].toLowerCase().equals(search.get(j).toLowerCase()))){
-					search.remove(j);
-				}
-				else if (ignore[i].toLowerCase().concat("s").equals(search.get(j).toLowerCase())){
-					search.remove(j);
-				}
-			}
-		}
+		
 		
 		//GET the activity 
 		ArrayList<String> actList = new ArrayList<String>();

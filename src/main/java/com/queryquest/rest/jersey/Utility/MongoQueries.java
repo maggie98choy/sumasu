@@ -32,7 +32,7 @@ public class MongoQueries {
     public DBCollection collection;
     private static final int ACTIVITY_TABLE= 1;
     private static final int RATING_TABLE =2;
-    
+    private static final int BUSINESS_TABLE=3;
     public void mongoConnect(){
 		try{
 			MongoClient mongoClient = new MongoClient("ec2-54-193-76-21.us-west-1.compute.amazonaws.com",27017);
@@ -55,7 +55,8 @@ public class MongoQueries {
 				collection = db.getCollection("tbl_activity");
 			else if(SecondTable == RATING_TABLE)
 				collection = db.getCollection("tbl_rating");
-			
+			else if(SecondTable == BUSINESS_TABLE)
+				collection=db.getCollection("tbl_business");
 			
 		}catch(UnknownHostException e){
 			System.out.println("Exception : "+e);
@@ -146,6 +147,7 @@ public class MongoQueries {
 		  newDocument.put("email", rating.getEmail());
 		  newDocument.put("business_name", rating.getBusinessName());
 		  newDocument.put("rating", rating.getRating());
+		  newDocument.put("category", rating.getCategory());
 		  collection.insert(newDocument);
 	  }
   }
@@ -200,5 +202,6 @@ public class MongoQueries {
 		  return 0;
 	  }
   }
+  
   
 }

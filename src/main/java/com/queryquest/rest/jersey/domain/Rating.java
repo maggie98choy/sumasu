@@ -4,6 +4,8 @@ public class Rating {
  private String email;
  private int rating;
  private String businessName;
+ private String category;
+ 
 public String getEmail() {
 	return email;
 }
@@ -25,7 +27,13 @@ public void setBusinessName(String businessName) {
 @Override
 public String toString() {
 	return "Rating [email=" + email + ", rating=" + rating + ", businessName="
-			+ businessName + "]";
+			+ businessName + ", category=" + category + "]";
+}
+public String getCategory() {
+	return category;
+}
+public void setCategory(String category) {
+	this.category = category;
 }
  
  

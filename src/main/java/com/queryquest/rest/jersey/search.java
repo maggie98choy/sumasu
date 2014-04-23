@@ -117,12 +117,15 @@ public class search extends HttpServlet {
 
 		currentLocation = mongo.mongoGetLocation(email);
 		travelDestination = location;
-
+           
+		
 		Yelp yelp = new Yelp(consumerKey, consumerSecret, token, tokenSecret);
 		ArrayList<SearchResult> recomSearchList = new ArrayList<SearchResult>();
 		ArrayList<SearchResult> ratedSearchList = new ArrayList<SearchResult>();
 
 		for(int i=0;i<actList.size();i++){
+		//	mongo.mongoConnect(3);
+		//	mongo.mongoGetBusiness(location, actList.get(i));
 			String out=yelp.search(actList.get(i), location);
 			ArrayList<SearchResult> tmpSearchList = new ArrayList<SearchResult>();
 			//String out = yelp.search(activity, "hiking");
@@ -190,9 +193,9 @@ public class search extends HttpServlet {
 		while (iterator.hasNext()&&count>0) {
 			SearchResult search = new SearchResult();
 			JSONObject business = iterator.next();
-			//System.out.println(JSONObject.fromObject(business));
+		//	System.out.println(JSONObject.fromObject(business));
 			String name = (String) business.get("name");
-			System.out.println("name "+name);
+			//System.out.println("name "+name);
 			
 			List<String> catList = new ArrayList<String>();
 			if((business.get("categories"))instanceof JSONArray){
@@ -251,7 +254,8 @@ public class search extends HttpServlet {
 			search.setPhoneNo(phone);
 			search.setNoOfStars(rating);
 			search.setActivity(activity);
-		//	System.out.println(search.toString());
+			search.setCategory(catList.toString());
+	    	System.out.println(search.toString());
 
 			if(search.isRecommended()){
 				recomSearchList.add(search);

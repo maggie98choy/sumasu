@@ -60,43 +60,37 @@ html,body {
 		
 		<td> <input type="checkbox" name="activity" value="Aquarium"/>  Aquarium </td>
 		<td><input type="checkbox" name="activity" value="Archery"/>  Archery</td>
-		<td><input type="checkbox" name="activity" value="Art"/>  Arts </td>
 		<td> <input type="checkbox" name="activity" value="Beaches"/>  Beach </td>
 		
 	</tr>
 	<tr>
 		
-		<td><input type="checkbox" name="activity" value="Beauty Spa"/>  Beauty & Spas </td>
 		<td><input type="checkbox" name="activity" value="Campground"/> Camp Grounds  </td>
 		<td><input type="checkbox" name="activity" value="Casino"/> Casino  </td>
-		<td><input type="checkbox" name="activity" value="Events this weekend"/> Events this weekend </td>
+		<td><input type="checkbox" name="activity" value="Fishing"/>  Fishing </td>	
 		
+	
 	</tr>
 	
 	<tr>
-		<td><input type="checkbox" name="activity" value="Fishing"/>  Fishing </td>	
-		<td><input type="checkbox" name="activity" value="Fitness Gyms"/>  Fitness  </td>
 		<td><input type="checkbox" name="activity" value="Golf"/>  Golf  </td>
 		<td><input type="checkbox" name="activity" value="Hiking"/>  Hiking </td>
+	    <td><input type="checkbox" name="activity" value="Museum"/>  Museums  </td>
+				<td><input type="checkbox" name="activity" value="Zoo"/>  Zoo </td>
+		
 		
 	</tr>
 		
 	<tr>
 	<tr>
 		
-		<td><input type="checkbox" name="activity" value="Museum"/>  Museums  </td>
 		<td><input type="checkbox" name="activity" value="Nightlife"/>Night Life  </td>
-		<td><input type="checkbox" name="activity" value="Rv park"/>  RV Parks</td>	
 		<td> <input type="checkbox" name="activity" value="Scuba"/> Scuba </td>
+				<td><input type="checkbox" name="activity" value="Shopping"/> Shopping </td>	
+		
 		
 	</tr>
-		<tr>
-		<td><input type="checkbox" name="activity" value="Shopping"/> Shopping </td>	
-		<td><input type="checkbox" name="activity" value="Sport bar"/> Sports Bars </td>
-		<td><input type="checkbox" name="activity" value="Winery"/>  Wineries </td>
-		<td><input type="checkbox" name="activity" value="Zoo"/>  Zoo </td>
-		
-		</tr>
+
 		
 		
 	

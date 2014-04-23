@@ -69,6 +69,9 @@ public class searchresults extends HttpServlet {
 	 	    rating.setEmail((String)session.getAttribute("email"));
 	 	    rating.setBusinessName(searchResult.getName());
 		    rating.setRating(searchResult.getNoOfStars());
+	    	rating.setCategory(searchResult.getCategory());
+
+		    
 	    	 
 	     }
 	     else { //RATED RESULTS ARE ALTERED
@@ -76,6 +79,8 @@ public class searchresults extends HttpServlet {
 	    	 ratedSearchList.get(index).setNoOfStars(star);
 	    	 rating.setBusinessName(ratedSearchList.get(index).getName());
 	    	 rating.setRating(ratedSearchList.get(index).getNoOfStars());
+	    	 rating.setCategory(ratedSearchList.get(index).getCategory());
+	    
 	     }
 	    	 MongoQueries mongoQueries = new MongoQueries();
 	    	 mongoQueries.mongoConnect(2);
