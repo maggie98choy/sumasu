@@ -1,28 +1,28 @@
 package com.queryquest.rest.jersey.Utility;
 
 import java.net.UnknownHostException;
-
-
-
-
-
-
 import java.util.ArrayList;
-import java.util.Map;
+
+
 
 import javax.servlet.http.HttpSession;
 
-import org.bson.BSONObject;
+
+
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.QueryBuilder;
 import com.queryquest.rest.jersey.domain.Rating;
+import com.queryquest.rest.jersey.domain.SearchResult;
 
 
 
@@ -201,6 +201,132 @@ public class MongoQueries {
 	  else{
 		  return 0;
 	  }
+  }
+  
+  public ArrayList<JSONObject> mongoGetRatingByEmail(String email)
+  {
+	  BasicDBObject whereQuery = new BasicDBObject();
+	  BasicDBObject fields = new BasicDBObject();
+
+	  whereQuery.put("email", email);
+	  DBCursor cursor = collection.find(whereQuery, fields);		  
+	  ArrayList<JSONObject> JSONObj_ArrayList = new ArrayList<JSONObject>();
+	  
+		while (cursor.hasNext()) 
+		{
+			String result = cursor.next().toString();
+			JSONObject jsonObj = JSONObject.fromObject(result);
+			JSONObj_ArrayList.add(jsonObj);
+		 }   
+		return JSONObj_ArrayList;
+  }
+  
+  
+  public String mongoGetBussIdByBussName(String bussName)
+  {
+	  BasicDBObject whereQuery = new BasicDBObject();
+	  //BasicDBObject distinctQuery = new BasicDBObject();
+	  BasicDBObject fields = new BasicDBObject();
+	  String bussId ="";
+	
+	  whereQuery.put("businessname", bussName);	  
+	  DBObject obj = collection.findOne(whereQuery, fields);  
+	  
+	  JSONObject jsonObj = JSONObject.fromObject(obj);
+	  if (!jsonObj.isEmpty())
+	  {
+		  bussId = jsonObj.getString("businessid");
+	  }
+	 
+	  return bussId;
+  }
+  
+  
+  public boolean mongoMatchCategory(String activity)
+  {
+	  boolean found = false;
+	  
+	  //manipulate keyword
+	  char[] act_charArray = activity.toCharArray();
+	  String activity_uppercase = "";
+	  String activity_lowercase = "";
+	  
+	  if (!Character.isUpperCase(act_charArray[0]))
+	  {
+		  activity_lowercase = activity;
+		  
+		  for(int i=0; i<activity.length(); i++)
+		  {
+			  if (i==0)
+			  {
+				  activity_uppercase =Character.toString(Character.toUpperCase(act_charArray[0]));
+			  }
+			  else
+				  activity_uppercase = activity_uppercase + act_charArray[i];
+		  }
+	  }
+	  else
+	  {
+		  activity_uppercase = activity;
+		  for(int i=0; i<activity.length(); i++)
+		  {
+			  if (i==0)
+			  {
+				  activity_lowercase =Character.toString(Character.toLowerCase(act_charArray[0]));
+			  }
+			  else
+				  activity_lowercase = activity_lowercase + act_charArray[i];
+		  }
+	  }
+	  
+	  System.out.println("activity_uppercase:"+activity_uppercase);
+	  System.out.println("activity_lowercase:"+activity_lowercase);
+	  
+	  //String[][] item =  {{"campgrounds","Campgrounds"}};
+	  String[][] item =  {{activity_uppercase,activity_lowercase}};
+	  DBObject inClause = BasicDBObjectBuilder.start()
+			  .push("Category")
+			  .add("$in", item)
+			  .get();
+	  
+	  System.out.println("inClause:"+inClause.toString());
+	  DBObject obj = collection.findOne(inClause);
+	  
+	  JSONObject jsonObj = JSONObject.fromObject(obj);
+	  
+	  //db.tbl_business.find({Category: {$in: [["Campgrounds", "campgrounds"]]}});
+	  System.out.println("jsonObj"+jsonObj.toString());
+	  if (!jsonObj.isEmpty())
+	  {
+		  found = true;
+	  }
+	 
+	  return found;
+  }
+  
+  public SearchResult mongoGetBussDetailByBId(Long BId)
+  {
+	  BasicDBObject whereQuery = new BasicDBObject();
+	  BasicDBObject fields = new BasicDBObject();
+	  SearchResult result = new SearchResult();
+	  
+	  int i_BId;
+	  
+	  i_BId = BId.intValue();
+	  whereQuery.put("businessid", i_BId);
+	  DBObject obj = collection.findOne(whereQuery, fields);		  
+	   
+	  System.out.println("obj: "+obj);
+	  JSONObject jsonObj = JSONObject.fromObject(obj);
+	  if (!jsonObj.equals(null))
+	  {
+		  result.setName(jsonObj.getString("businessname"));
+		  result.setAddress(jsonObj.getString("address"));
+		  result.setCategory(jsonObj.getString("Category"));
+		  result.setPhoneNo(jsonObj.getString("Phone"));
+	  }
+	 
+	  return result;
   }
   
   
