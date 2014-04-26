@@ -87,6 +87,7 @@ html,body {
 										<%
 											ArrayList<SearchResult> recomSearchList = new ArrayList<SearchResult>();
 											ArrayList<SearchResult> ratedSearchList = new ArrayList<SearchResult>();
+											ArrayList<SearchResult> realRecomSearchList = new ArrayList<SearchResult>();
 
 											String startDate = (String) request.getAttribute("startdate");
 											String endDate = (String) request.getAttribute("enddate");
@@ -97,6 +98,7 @@ html,body {
 
 											recomSearchList = (ArrayList<SearchResult>) request.getAttribute("recom_search_results");
 											ratedSearchList = (ArrayList<SearchResult>) request.getAttribute("rated_search_results");
+											realRecomSearchList = (ArrayList<SearchResult>)request.getAttribute("real_recom_search_results");
 											String act = "";
 
 											//*****************RECOMMENDED RESULTS **********
@@ -111,6 +113,7 @@ html,body {
 													//substring zipCode from address string
 													zipCode = address.substring(address.length()-6, address.length());						
 													
+													if(act!=null){
 													if (!act.equals(search.getActivity())) {
 														act = search.getActivity();
 										%>
@@ -118,6 +121,7 @@ html,body {
 											<%
 												out.println(act);
 														}
+													}
 											%>
 										</h4>
 												<div class="well"  style="background-color: #F0F8FF;">
@@ -129,7 +133,11 @@ html,body {
 												</div> 
 												<div class="col-md-4">
 												<!-- star rating --> 
-												<% session.setAttribute("recom_search_results",recomSearchList);
+																								  
+												
+												<%
+											    session.setAttribute("real_recom_search_results", realRecomSearchList);
+												session.setAttribute("recom_search_results",recomSearchList);
 											    session.setAttribute("rated_search_results",ratedSearchList);
 												session.setAttribute("traveldestination",travelDestination);
 												session.setAttribute("currentLocation",currentLocation);
@@ -208,6 +216,7 @@ html,body {
 													zipCode = address.substring(address.length()-6, address.length());			
 													
 													String activity = ratedSearchList.get(i).getActivity();
+													if(act != null){
 													if (!act.equals(activity)) {
 										%>
 										<h4 style="color: black;">
@@ -216,6 +225,7 @@ html,body {
 															act = new String(activity);
 														} else
 															System.out.println(search.toString());
+													}
 											%>
 										</h4>
 												<div class="well" style="background-color: #F0F8FF;">
@@ -227,7 +237,11 @@ html,body {
 													</div>
 													<div class="col-md-4">
 													<!-- star rating -->
-												    <%session.setAttribute("recom_search_results",recomSearchList); 
+													
+												    <%
+												    session.setAttribute("real_recom_search_results", realRecomSearchList);
+
+												    session.setAttribute("recom_search_results",recomSearchList); 
 													session.setAttribute("rated_search_results",ratedSearchList);
 													session.setAttribute("traveldestination",travelDestination);
 												session.setAttribute("currentLocation",currentLocation);
@@ -277,6 +291,98 @@ html,body {
 
 
 										<!--end of second body-->
+									</div>
+								</div>
+							</div>
+
+<!--Third panel-->
+							<div class="panel panel-default panel-info">
+								<div class="panel-heading">
+									<h4 class="panel-title">
+										<a data-toggle="collapse" data-parent="#accordion"
+											href="#collapseThree"> QQ Recommendation </a>
+									</h4>
+								</div>
+								<div id="collapseThree" class="panel-collapse collapse">
+									<div class="panel-body" style="background-color: #AFEEEE;">
+										<!--second body-->
+										<%
+											if (realRecomSearchList != null) {
+												act = "";
+												for (int i = 0; i < realRecomSearchList.size(); i++) {
+													SearchResult search = new SearchResult();
+													search = realRecomSearchList.get(i);
+													
+													String address = search.getAddress();
+													String zipCode = "";
+													
+													//substring zipCode from address string
+													zipCode = address.substring(address.length()-6, address.length());			
+													
+													String activity = realRecomSearchList.get(i).getActivity(); %>
+											
+				
+												<div class="well" style="background-color: #F0F8FF;">
+												<div class="row">
+												<div class="col-md-8">
+													<strong><%=search.getName()%></strong><br> <br>
+													<%out.println("Category: "+search.getCategory()); %><br/>
+													<%out.println("Address: "+search.getAddress());%><br> 
+													<%if (search.getPhoneNo() != null) out.println("Phone: " + search.getPhoneNo());%><br><br>
+													</div>
+													<div class="col-md-4">
+													<!-- star rating -->
+												    <%
+												    session.setAttribute("real_recom_search_results", realRecomSearchList);
+												    session.setAttribute("recom_search_results",recomSearchList); 
+													session.setAttribute("rated_search_results",ratedSearchList);
+													session.setAttribute("traveldestination",travelDestination);
+												session.setAttribute("currentLocation",currentLocation);
+												session.setAttribute("startdate",startDate);
+												session.setAttribute("enddate",endDate);%>
+													<form action="searchresults" method="post">
+														<input type="hidden" id="index" name="index" value=<%=i+200%>>
+														<input id="input-21" name="star" type="number"
+															class="rating" data-show-clear="false"
+															data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}'
+															data-show-caption=“true” data-size="xs">
+														<button class="btn btn-primary btn-xs">Save</button>
+													</form> 
+													</div>
+													</div>
+												<div class="row"> 
+												<% int distance = (Integer) request.getAttribute("distance");
+												if (distance > 500) 
+												{
+												%>
+												<div class="col-md-2">
+												<font size="3"><a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight <span class="icon-large icon-plane"></span></a></font>
+												</div>
+												<%} 
+												else 
+												{%>
+												<div class="col-md-4">
+												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=zipCode%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
+												</div>
+												<%}
+												session.setAttribute("distance",distance);%>
+												<div class="col-md-2">
+												<font size="3"><a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="icon-large icon-cutlery"></span></a></font>
+												</div>											
+												
+												</div>														
+												</div>
+
+											<%
+												}
+											%>
+											<%
+												}
+											%>
+									
+
+
+										<!--end of third body-->
 									</div>
 								</div>
 							</div>

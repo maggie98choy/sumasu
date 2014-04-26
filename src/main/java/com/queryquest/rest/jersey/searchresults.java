@@ -49,6 +49,8 @@ public class searchresults extends HttpServlet {
 		
 	    ArrayList<SearchResult> recomSearchList= (ArrayList<SearchResult>)session.getAttribute("recom_search_results");
 	    ArrayList<SearchResult> ratedSearchList=(ArrayList<SearchResult>)session.getAttribute("rated_search_results");
+	    ArrayList<SearchResult> realRecomSearchList= (ArrayList<SearchResult>)session.getAttribute("real_recom_search_results");
+
 	    int distance = (Integer)session.getAttribute("distance");
 	    String travelDestination= (String)session.getAttribute("traveldestination");
 		String currentLocation=(String)session.getAttribute("currentLocation");
@@ -57,7 +59,7 @@ public class searchresults extends HttpServlet {
 		
 	    Rating rating = new Rating();
 	    rating.setEmail((String)session.getAttribute("email"));
-	     if(index >= 100 ){ // RECOMMENDED RESULTS ARE RATED 
+	     if(index >= 100 && index <200){ // RECOMMENDED RESULTS ARE RATED 
 	    	// System.out.println("I M HERE");
 	    	 index=index-100;
 	    	 SearchResult searchResult = recomSearchList.get(index);
@@ -72,6 +74,22 @@ public class searchresults extends HttpServlet {
 	    	rating.setCategory(searchResult.getCategory());
 
 		    
+	    	 
+	     }
+	     else if(index >= 200){ //QQ RECOMMENDATION RATED
+	    	 index= index-200;
+	    	 SearchResult searchResult = realRecomSearchList.get(index);
+	    	 realRecomSearchList.remove(index);
+	    	 searchResult.setNoOfStars(star);
+	    	 searchResult.setRecommended(false);
+	    	 searchResult.setActivity(searchResult.getCategory());
+	    	ratedSearchList.add(searchResult);
+	    	 
+	 	    rating.setEmail((String)session.getAttribute("email"));
+	 	    rating.setBusinessName(searchResult.getName());
+		    rating.setRating(searchResult.getNoOfStars());
+	    	rating.setCategory(searchResult.getCategory());
+
 	    	 
 	     }
 	     else { //RATED RESULTS ARE ALTERED
@@ -99,6 +117,7 @@ public class searchresults extends HttpServlet {
 		request.setAttribute("enddate",endDate);
 	    request.setAttribute("recom_search_results", (recomSearchList));
 	    request.setAttribute("rated_search_results", (ratedSearchList));
+        request.setAttribute("real_recom_search_results", realRecomSearchList);
 		request.getRequestDispatcher("searchresults.jsp").forward(request, response);
 		 
 	}

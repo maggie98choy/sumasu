@@ -10,6 +10,7 @@ public class SearchResult {
     private float recommendedRating;
     private String activity;
     private String category;
+    private String stateCode;
 	
 	public String getName() {
 		return name;
@@ -72,6 +73,12 @@ public class SearchResult {
 	}
 	public void setCategory(String category) {
 		this.category = category;
+	}
+	public String getStateCode() {
+		return stateCode;
+	}
+	public void setStateCode(String stateCode) {
+		this.stateCode = stateCode;
 	}
 	
 

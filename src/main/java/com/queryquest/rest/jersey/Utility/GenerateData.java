@@ -15,17 +15,17 @@ import com.queryquest.rest.jersey.domain.SearchResult;
 import com.queryquest.rest.jersey.fbclient.Yelp;
 
 public class GenerateData {
-	private static final String consumerKey = "Gsx6wYWW-ktA3mH1I8EoQg";
-	private static final String consumerSecret = "r00BY7aVOD-i6Ev6uXp5L3Gw0Wg";
-	private static final String token = "wr6QtS8VG7NVLMMKn6MDwxRSaJKLClkv";
-	private static final String tokenSecret = "3xi7n2vBdjS4ws89jskn9IpuGws";
+	private static final String consumerKey = "S2b1Z5akbX2Ep6IUKXxTZw";
+	private static final String consumerSecret = "KSpUspbiBY7_C4wcMWyS3xwLYe4";
+	private static final String token = "Z3QmxmmVosore5XczhtllzgP6lBVFlHY";
+	private static final String tokenSecret = "f3bwOxHPiXpywmQ3K3bAMK9ikrE";
 	private static  long businessId=0L;
 	/*private static final String[] Activities={"Aquarium","Archery","Art","Badminton","Basketball Court","Bowling","Boating","Beaches","Beauty Spa", "Go Kart","Golf","Gun Range","Rifle Range","Gymnastic","Hang Gliding","Horse Racing", "Horseback Riding", "Hot Air Balloon","Kiteboarding",  "Lake", "Leisure Center", "Mini Golf", "Mountain Biking","Paddleboarding","Paintball","Park" ,"Playground","Rafting", "Kayaking",
 	    "Recreation Center", "Rock Climbing", "Skating Rink","Skydiving", "Sledding", "Soccer", "Sports Club","Sport Club", "Squash", "Summer Camp", "Surfing","Swimming Pool" ,"Tennis","Trampoline Park","Tubing",  "Arcade","Art Gallery", "Art Galleries", "Botanical Garden", "Cabaret","Casino" ,"Cinema","movie theater","Cultural Center", "Festival", "Jazz  Blue", "Music Venue", "Opera & Ballet","Performing Art","Professional Sport Team","Psychics  Astrologers",
 	    "Race Track", "Social Club", "Stadium","Arena","Ticket Sale","Wineries","Barber", "Cosmetic", "Beauty Supply","Eyelash Service","Hair Extension", "Hair Removal", "Laser Hair Removal","Hair Salon","Blow Dry/Out Service", "Hair Stylist","Mens Hair Salon", "Makeup Artist","Massage", "Medical Spa","Nail Salon", "Permanent Makeup","Piercing","Rolfing","Skin Care", "Tanning","Tattoo","Bagel","Bakeries","Bakery","Beer", "Wine", "Spirit","Breweries","Bubble Tea","Butcher","CSA","Coffee & Tea", "Convenience Store","Cupcake","Dessert", "Distilleries",  "Donut","Farmers Market", "Food Delivery Service", "Food Truck","Gelato","Grocery",
 	    "Ice Cream", "Frozen Yogurt","Internet Cafe","Juice Bar", "Smoothy","Smoothies","Pretzel","Shaved Ice", "Specialty Food","Candy Store","Cheese Shop","Chocolatiers", "Shop", "Ethnic Food","Fruits & Veggies","Health Market ","Herb", "Spice", "Meat Shop","Seafood Market","Street Vendor","Tea Room","Wineries","Winery", "Airport","Bed & Breakfast", "Car Rental","Guest House","Health Retreat ","Hostel", "Hotel","Motorcycle Rental", "RV Park","RV Rental", 
 	    "Resort","Tour","Train Station", "Airport Shuttle", "Limo","Public Transportation", "Taxi","Travel Service","Vacation Rental Agent","Vacation Rental","Adult Entertainment","Bar","Comedy Club","Country Dance Hall","Jazz & Blues","Karaoke","Music Venue","Piano","Pool Hall","Campground","Casino","Day Camp","Disc Golf","Diving","Events this weekend","Fishing","Fitness","Golf","Hiking","Museums","Nightlife","Rv park","Scuba","Shopping","Sport bar","Zoo"};*/
-	private static final String[] Activities = {"Aquarium","Archery","Beaches","Campground","Casino","Diving","Fishing","Golf","Hiking","Museum","Nightlife","Scuba","Shopping","Zoo"};
+	private static final String[] Activities = {"Aquarium","Archery","Beaches","Campground","Casino","Diving","Fishing","Golf","Hiking","Museum","Nightlife","Scuba","Shopping","Wineries","Zoo"};
 	//private static final String[] Cities={"San Jose"};
 	/*private static final String[] Cities ={"San Jose","Sunnyvale","Santa Clara", "San Francisco",
 		"Fremount", "Palo Alto", "Campbell","Los Gatos", "Los Angeles","Las Vegas"};*/
@@ -148,8 +148,8 @@ public class GenerateData {
 						
 					    JSONObject location= JSONObject.fromObject(business.get("location"));
 						String addr1 = JSONObject.fromObject(business.get("location")).getString("display_address");
-						String addr2 = addr1.replace("[", "");
-						String addr = addr2.replace("]", "");
+						String addr2 = addr1.replaceAll("[^0-9a-zA-Z\\s]", "");
+						String addr = "\""+addr2+"\"";
 						String url = (String)business.get("url");
 						String phone ="\""+(String)business.get("phone")+"\"";
 						String city= "\""+(String)location.get("city")+"\"";

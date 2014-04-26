@@ -23,6 +23,7 @@ import net.sf.json.JSONObject;
 
 import com.queryquest.rest.jersey.Utility.DistanceCalculation;
 import com.queryquest.rest.jersey.Utility.MongoQueries;
+import com.queryquest.rest.jersey.Utility.RetrieveBusiness;
 import com.queryquest.rest.jersey.Utility.SearchParser;
 import com.queryquest.rest.jersey.domain.SearchAnalysis;
 import com.queryquest.rest.jersey.domain.SearchResult;
@@ -96,13 +97,14 @@ public class search extends HttpServlet {
 		String email=(String) session.getAttribute("email");
 		MongoQueries mongo = new MongoQueries();
 
-
+        boolean isPreferredActivities=false;
 		String location="";
 		//Activities
 		ArrayList<String> actList=null;
 		if(searchAnalysis.getActivity().isEmpty()){
 			mongo.mongoConnect(1);
 			actList=mongo.mongoGetActivities(email);
+			isPreferredActivities=true;
 		}else
 			actList=searchAnalysis.getActivity();
 
@@ -122,10 +124,13 @@ public class search extends HttpServlet {
 		Yelp yelp = new Yelp(consumerKey, consumerSecret, token, tokenSecret);
 		ArrayList<SearchResult> recomSearchList = new ArrayList<SearchResult>();
 		ArrayList<SearchResult> ratedSearchList = new ArrayList<SearchResult>();
-
+		ArrayList<SearchResult> realRecomSearchList = new ArrayList<SearchResult>();
+		
+		
 		for(int i=0;i<actList.size();i++){
 		//	mongo.mongoConnect(3);
 		//	mongo.mongoGetBusiness(location, actList.get(i));
+								
 			String out=yelp.search(actList.get(i), location);
 			ArrayList<SearchResult> tmpSearchList = new ArrayList<SearchResult>();
 			//String out = yelp.search(activity, "hiking");
@@ -168,7 +173,23 @@ public class search extends HttpServlet {
 				new_currentLocation = new_currentLocation + charArrayCurrentLocation[i];
 			}
 		}
-
+		
+		String activity="";
+        if(!isPreferredActivities)
+        	activity=actList.get(0);
+        else 
+        	activity=null;
+        
+        String State="";
+        if(!recomSearchList.isEmpty())
+        	State= recomSearchList.get(0).getStateCode();
+        
+        RetrieveBusiness retrieveBusiness = new RetrieveBusiness();
+        realRecomSearchList= retrieveBusiness.getBusinessNames(email, activity,State);
+        if(realRecomSearchList==null)
+            realRecomSearchList=recomSearchList; 
+        
+        request.setAttribute("real_recom_search_results", realRecomSearchList);
 		request.setAttribute("distance", distance);
 		request.setAttribute("recom_search_results", recomSearchList);
 		request.setAttribute("rated_search_results", ratedSearchList);
@@ -193,7 +214,7 @@ public class search extends HttpServlet {
 		while (iterator.hasNext()&&count>0) {
 			SearchResult search = new SearchResult();
 			JSONObject business = iterator.next();
-		//	System.out.println(JSONObject.fromObject(business));
+			System.out.println(JSONObject.fromObject(business));
 			String name = (String) business.get("name");
 			//System.out.println("name "+name);
 			
@@ -204,7 +225,7 @@ public class search extends HttpServlet {
 				catList.add(categories.getString(i));
 				
 			}
-			System.out.println("categories "+catList.toString());
+			//System.out.println("categories "+catList.toString());
 			}
 			int match=0;
 			for(int i=0;i<catList.size();i++){
@@ -242,11 +263,14 @@ public class search extends HttpServlet {
 
 			//if(rating == 1 || rating == 2)
 			//continue;
+		    JSONObject location= JSONObject.fromObject(business.get("location"));
 			String addr1 = JSONObject.fromObject(business.get("location")).getString("display_address");
 			String addr2 = addr1.replace("[", "");
 			String addr = addr2.replace("]", "");
 			String url = (String)business.get("url");
 			String phone =(String)business.get("phone");
+			String stateCode =(String)location.get("state_code");
+			
 
 			search.setAddress(addr);
 			search.setName(name);
@@ -255,7 +279,8 @@ public class search extends HttpServlet {
 			search.setNoOfStars(rating);
 			search.setActivity(activity);
 			search.setCategory(catList.toString());
-	    	System.out.println(search.toString());
+			search.setStateCode(stateCode);
+	    	//System.out.println(search.toString());
 
 			if(search.isRecommended()){
 				recomSearchList.add(search);

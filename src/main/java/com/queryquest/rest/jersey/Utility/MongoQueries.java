@@ -2,13 +2,8 @@ package com.queryquest.rest.jersey.Utility;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-
-
-
 import javax.servlet.http.HttpSession;
-
-
-
+import static java.lang.Math.abs;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -206,10 +201,9 @@ public class MongoQueries {
   public ArrayList<JSONObject> mongoGetRatingByEmail(String email)
   {
 	  BasicDBObject whereQuery = new BasicDBObject();
-	  BasicDBObject fields = new BasicDBObject();
 
 	  whereQuery.put("email", email);
-	  DBCursor cursor = collection.find(whereQuery, fields);		  
+	  DBCursor cursor = collection.find(whereQuery);		  
 	  ArrayList<JSONObject> JSONObj_ArrayList = new ArrayList<JSONObject>();
 	  
 		while (cursor.hasNext()) 
@@ -225,12 +219,10 @@ public class MongoQueries {
   public String mongoGetBussIdByBussName(String bussName)
   {
 	  BasicDBObject whereQuery = new BasicDBObject();
-	  //BasicDBObject distinctQuery = new BasicDBObject();
-	  BasicDBObject fields = new BasicDBObject();
-	  String bussId ="";
+	  String bussId = "";
 	
 	  whereQuery.put("businessname", bussName);	  
-	  DBObject obj = collection.findOne(whereQuery, fields);  
+	  DBObject obj = collection.findOne(whereQuery);  
 	  
 	  JSONObject jsonObj = JSONObject.fromObject(obj);
 	  if (!jsonObj.isEmpty())
@@ -296,7 +288,7 @@ public class MongoQueries {
 	  
 	  //db.tbl_business.find({Category: {$in: [["Campgrounds", "campgrounds"]]}});
 	  System.out.println("jsonObj"+jsonObj.toString());
-	  if (!jsonObj.isEmpty())
+	  if (!jsonObj.toString().equals("null"))
 	  {
 		  found = true;
 	  }
@@ -307,18 +299,42 @@ public class MongoQueries {
   public SearchResult mongoGetBussDetailByBId(Long BId)
   {
 	  BasicDBObject whereQuery = new BasicDBObject();
-	  BasicDBObject fields = new BasicDBObject();
 	  SearchResult result = new SearchResult();
 	  
 	  int i_BId;
+	  int total_rating = 0 ;
+	  int avg_rating = 0;
+	  int count = 0;
 	  
 	  i_BId = BId.intValue();
 	  whereQuery.put("businessid", i_BId);
-	  DBObject obj = collection.findOne(whereQuery, fields);		  
-	   
-	  System.out.println("obj: "+obj);
-	  JSONObject jsonObj = JSONObject.fromObject(obj);
-	  if (!jsonObj.equals(null))
+	  DBCursor cursor = collection.find(whereQuery);
+	  JSONObject jsonObj=null;	   
+	  while(cursor.hasNext())
+	  {
+		  String queryResult = cursor.next().toString();
+		  jsonObj = JSONObject.fromObject(queryResult);
+		  //count++;
+		  //total_rating += (Integer) cursor.next().get("rating");
+		//  System.out.println(cursor.curr().get("businessname") +" is " +"rating:" +cursor.curr().get("rating"));
+		  
+	  }
+	  
+	  //float a = (float)total_rating/count;
+	 // System.out.println("float a  :" +a);
+	  //double value = (double) total_rating/count;
+	 // avg_rating = (int) Math.rint(value);
+	  
+	 // System.out.println("rounded rating :" +avg_rating);
+	 
+	 // result.setNoOfStars(avg_rating);
+	  //String queryResult = cursor.next().toString();
+	 // String queryResult = cursor.curr().toString();
+	  //JSONObject jsonObj = JSONObject.fromObject(queryResult);
+	
+	  //System.out.println("obj: "+jsonObj);
+
+	  if (jsonObj != null)
 	  {
 		  result.setName(jsonObj.getString("businessname"));
 		  result.setAddress(jsonObj.getString("address"));
