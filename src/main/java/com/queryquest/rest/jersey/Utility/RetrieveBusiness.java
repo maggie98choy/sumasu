@@ -11,7 +11,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.mahout.cf.taste.common.TasteException;
 import org.apache.mahout.cf.taste.impl.model.file.FileDataModel;
@@ -167,16 +169,13 @@ public class RetrieveBusiness
 				remBussId_arraylist = ItemRecommendation(category, bussId_arraylist);
 			} catch (TasteException e) {
 				System.out.println(" error with taste recommendation ");
+				e.printStackTrace();
+				
 			}
 
 			//TODO: Call Sush's recommendation engine
 			//Sush, uncomment this function when calling recommendation engine 
 
-			try {
-				remBussId_arraylist = ItemRecommendation(category, bussId_arraylist);
-			} catch (TasteException e) {
-				System.out.println(" error with taste recommendation ");
-			}
 
 			//TODO: Call Sush's recommendation engine
 
@@ -413,6 +412,7 @@ public class RetrieveBusiness
 
 		return found;
 	}
+	
 	public static String getBusinessName(JSONObject jsonObject, String activity, boolean NoOppositeCat)
 	{
 
@@ -431,7 +431,7 @@ public class RetrieveBusiness
 			}
 		}
 
-		System.out.println("new_catStr:"+new_catStr);				
+		//System.out.println("new_catStr:"+new_catStr);				
 		String[] cat_array= new_catStr.split(",");		
 
 		found =  true;
@@ -440,7 +440,7 @@ public class RetrieveBusiness
 		{
 			if (NoOppositeCat)
 			{
-				if (activity.equals(cat_array[b]))
+				if (activity.toLowerCase().equals(cat_array[b].toLowerCase()))
 				{
 					System.out.println("category:"+cat_array[b]);						
 					bussName = jsonObject.getString("business_name");
@@ -480,45 +480,62 @@ public class RetrieveBusiness
 	public static ArrayList<Long> ItemRecommendation(String category,ArrayList<Long> businessId ) throws TasteException
 	{
 		DataModel model = null;
+
 		if(category!=null)
 		{
-			String filename="dataset/"+category+".csv"; 
-			try {
-				BufferedWriter b = new BufferedWriter(new FileWriter("DataSet/hello.txt"));
-				model = new FileDataModel(new File(filename));
-			} catch (IOException e) {
-				System.out.println("file not found - "+filename.toString());
-				return null;
-			}
+			String filename="/Users/maggie/Downloads/eclipse/dataset/"+category+".csv"; 
 
-		}
+			try 
+			{
+
+			//BufferedWriter b = new BufferedWriter(new FileWriter("DataSet/hello.txt"));		
+			model = new FileDataModel(new File(filename));		
+			} catch (IOException e) 
+			{
+				System.out.println("file not found - "+filename.toString());
+				return null;		
+			}		
+	
+		}	
 		else 
 		{
-			try {
-				model = new FileDataModel(new File("dataset/CleanData.csv"));
-			} catch (IOException e) {
-				System.out.println("clean Dataset file not found");
-				return null;
-			}
+	
+		try 
+		{
+	
+		model = new FileDataModel(new File("/Users/maggie/Downloads/eclipse/dataset/CleanData.csv"));
+		} catch (IOException e) 
+		{
+			System.out.println("clean Dataset file not found");
+			return null;	
 		}
-
-		ArrayList<Long> recomm =new ArrayList<Long>();
-
+		}
+	
+		Set<Long> recomm =new HashSet<Long>();
 		ItemSimilarity similarity = new LogLikelihoodSimilarity(model);
+	
 		GenericItemBasedRecommender recommender =new GenericItemBasedRecommender(model, similarity) ;
 		for(long item : businessId)
 		{
-
 			List<RecommendedItem> recommendations = recommender.mostSimilarItems(item,50);
 			for(RecommendedItem recommendation : recommendations)
 			{
 				System.out.println(item+ ","+recommendation.getItemID()+","+recommendation.getValue());
 				recomm.add(recommendation.getItemID());
-
+	
 			}
+	
 		}
-		return recomm;
-
-	}
+	
+		ArrayList<Long> result = new ArrayList<Long>();
+		for(long id: recomm)
+		{
+			result.add(id);
+	
+		//System.out.println(id);
+		}
+	
+		return result;
+		}
 
 }
