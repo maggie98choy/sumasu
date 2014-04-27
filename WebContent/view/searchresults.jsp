@@ -12,7 +12,7 @@
 	href="bootstrap/css/bootstrap.min.css">
 <link href="star/css/star-rating.css" media="all" rel="stylesheet"
 	type="text/css" />
-	<link href="bootstrap/css/bootstrap.icon-large.min.css" rel="stylesheet">
+<link href="bootstrap/css/bootstrap.icon-large.min.css" rel="stylesheet">
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="star/js/star-rating.js" type="text/javascript"></script>
@@ -35,7 +35,6 @@ html,body {
 .panel-heading a.collapsed:after {
 	content: "\e080";
 }
-
 </style>
 </head>
 <%@ page
@@ -96,9 +95,12 @@ html,body {
 											String travelDestination = (String) request
 													.getAttribute("travelDestination");
 
-											recomSearchList = (ArrayList<SearchResult>) request.getAttribute("recom_search_results");
-											ratedSearchList = (ArrayList<SearchResult>) request.getAttribute("rated_search_results");
-											realRecomSearchList = (ArrayList<SearchResult>)request.getAttribute("real_recom_search_results");
+											recomSearchList = (ArrayList<SearchResult>) request
+													.getAttribute("recom_search_results");
+											ratedSearchList = (ArrayList<SearchResult>) request
+													.getAttribute("rated_search_results");
+											realRecomSearchList = (ArrayList<SearchResult>) request
+													.getAttribute("real_recom_search_results");
 											String act = "";
 
 											//*****************RECOMMENDED RESULTS **********
@@ -106,92 +108,112 @@ html,body {
 												for (int i = 0; i < recomSearchList.size(); i++) {
 													SearchResult search = new SearchResult();
 													search = recomSearchList.get(i);
-													
+
 													String address = search.getAddress();
 													String zipCode = "";
-													
+
 													//substring zipCode from address string
-													zipCode = address.substring(address.length()-6, address.length());						
-													
-													if(act!=null){
-													if (!act.equals(search.getActivity())) {
-														act = search.getActivity();
+													zipCode = address.substring(address.length() - 6,
+															address.length());
+
+													if (act != null) {
+														if (!act.equals(search.getActivity())) {
+															act = search.getActivity();
 										%>
 										<h4 style="color: black;">
 											<%
 												out.println(act);
+															}
 														}
-													}
 											%>
 										</h4>
-												<div class="well"  style="background-color: #F0F8FF;">
-												<div class="row">
+										<div class="well" style="background-color: #F0F8FF;">
+											<div class="row">
 												<div class="col-md-8">
-												<strong><%=search.getName()%></strong> <br> <br>
-												<%out.println("Address: " + search.getAddress());%><br>
-  												<%if (search.getPhoneNo() != null)out.println("Phone: " + search.getPhoneNo());%><br><br>
-												</div> 
+													<strong><%=search.getName()%></strong> <br> <br>
+													<%
+														out.println("Address: " + search.getAddress());
+													%><br>
+													<%
+														if (search.getPhoneNo() != null)
+																	out.println("Phone: " + search.getPhoneNo());
+													%><br>
+													<br>
+												</div>
 												<div class="col-md-4">
-												<!-- star rating --> 
-																								  
-												
-												<%
-											    session.setAttribute("real_recom_search_results", realRecomSearchList);
-												session.setAttribute("recom_search_results",recomSearchList);
-											    session.setAttribute("rated_search_results",ratedSearchList);
-												session.setAttribute("traveldestination",travelDestination);
-												session.setAttribute("currentLocation",currentLocation);
-												session.setAttribute("startdate",startDate);
-												session.setAttribute("enddate",endDate);
-												%>
-												
+													<!-- star rating -->
+
+
+													<%
+														session.setAttribute("real_recom_search_results",
+																		realRecomSearchList);
+																session.setAttribute("recom_search_results",
+																		recomSearchList);
+																session.setAttribute("rated_search_results",
+																		ratedSearchList);
+																session.setAttribute("traveldestination", travelDestination);
+																session.setAttribute("currentLocation", currentLocation);
+																session.setAttribute("startdate", startDate);
+																session.setAttribute("enddate", endDate);
+													%>
+
 													<form action="searchresults" method="post">
 														<input type="hidden" id="index" name="index"
 															value=<%=i + 100%>> <input id="input-21"
 															name="star" type="number" class="rating"
 															data-show-clear="false"
 															data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}'
-															data-show-caption=“true” data-size="xs"><button class="btn btn-primary btn-xs">Save</button>
-													</form><strong> <%if (search.isRecommended())out.println("QQ Rating: "+ search.getRecommendedRating());%> </strong>
+															data-show-caption=âtrueâ data-size="xs">
+														<button class="btn btn-primary btn-xs">Save</button>
+													</form>
 												</div>
-												</div>
-											
-												<div class="row"> 
-												<% int distance = (Integer) request.getAttribute("distance");
-												if (distance > 500) 
-												{
+											</div>
+
+											<div class="row">
+												<%
+													int distance = (Integer) request.getAttribute("distance");
+															if (distance > 500) {
 												%>
 												<div class="col-md-2">
-												<font size="3"><a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight <span class="icon-large icon-plane"></span></a></font>
+													<font size="3"><a
+														href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight
+															<span class="icon-large icon-plane"></span>
+													</a></font>
 												</div>
-												<%} 
-												else 
-												{%>
+												<%
+													} else {
+												%>
 												<div class="col-md-4">
-												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=zipCode%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
+													<font size="3"><a
+														href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=zipCode%>"
+														target="_blank">Map Directions <span
+															class="icon-large icon-car"></span></a></font>
 												</div>
-												<%} 
-												session.setAttribute("distance",distance);
+												<%
+													}
+															session.setAttribute("distance", distance);
 												%>
 												<div class="col-md-2">
-												<font size="3"><a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="icon-large icon-cutlery"></span></a></font>
-												</div>											
-												
-												</div>																													
+													<font size="3"><a
+														href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel
+															<span class="icon-large icon-cutlery"></span>
+													</a></font>
 												</div>
-											<%
-												}
-											%>
-											<%
-												}
-											%>
+
+											</div>
+										</div>
+										<%
+											}
+										%>
+										<%
+											}
+										%>
 
 										<!--end of 1st body-->
 									</div>
 								</div>
 							</div>
 
-							<!--second panel-->
 							<div class="panel panel-default panel-info">
 								<div class="panel-heading">
 									<h4 class="panel-title">
@@ -209,44 +231,40 @@ html,body {
 													SearchResult search = new SearchResult();
 													search = ratedSearchList.get(i);
 													
-													String address = search.getAddress();
-													String zipCode = "";
-													
-													//substring zipCode from address string
-													zipCode = address.substring(address.length()-6, address.length());			
-													
 													String activity = ratedSearchList.get(i).getActivity();
-													if(act != null){
-													if (!act.equals(activity)) {
+													if (act != null) {
+														if (!act.equals(activity)) {
 										%>
 										<h4 style="color: black;">
 											<%
 												out.println(activity);
-															act = new String(activity);
-														} else
-															System.out.println(search.toString());
-													}
+																act = new String(activity);
+															} else
+																System.out.println(search.toString());
+														}
 											%>
 										</h4>
-												<div class="well" style="background-color: #F0F8FF;">
-												<div class="row">
+										<div class="well" style="background-color: #F0F8FF;">
+											<div class="row">
 												<div class="col-md-8">
-													<strong><%=search.getName()%></strong><br> <br>
-													<%out.println("Address: "+search.getAddress());%><br> 
-													<%if (search.getPhoneNo() != null) out.println("Phone: " + search.getPhoneNo());%><br><br>
-													</div>
-													<div class="col-md-4">
+													<strong><%=search.getName()%></strong><br> 
+												</div>
+												<div class="col-md-4">
 													<!-- star rating -->
-													
-												    <%
-												    session.setAttribute("real_recom_search_results", realRecomSearchList);
 
-												    session.setAttribute("recom_search_results",recomSearchList); 
-													session.setAttribute("rated_search_results",ratedSearchList);
-													session.setAttribute("traveldestination",travelDestination);
-												session.setAttribute("currentLocation",currentLocation);
-												session.setAttribute("startdate",startDate);
-												session.setAttribute("enddate",endDate);%>
+													<%
+														session.setAttribute("real_recom_search_results",
+																		realRecomSearchList);
+
+																session.setAttribute("recom_search_results",
+																		recomSearchList);
+																session.setAttribute("rated_search_results",
+																		ratedSearchList);
+																session.setAttribute("traveldestination", travelDestination);
+																session.setAttribute("currentLocation", currentLocation);
+																session.setAttribute("startdate", startDate);
+																session.setAttribute("enddate", endDate);
+													%>
 													<form action="searchresults" method="post">
 														<input type="hidden" id="index" name="index" value=<%=i%>>
 														<input id="input-21" name="star"
@@ -255,39 +273,19 @@ html,body {
 															data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}'
 															data-show-caption=“true” data-size="xs">
 														<button class="btn btn-primary btn-xs">Save</button>
-													</form> 
-													</div>
-													</div>
-												<div class="row"> 
-												<% int distance = (Integer) request.getAttribute("distance");
-												if (distance > 500) 
-												{
-												%>
-												<div class="col-md-2">
-												<font size="3"><a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight <span class="icon-large icon-plane"></span></a></font>
+													</form>
 												</div>
-												<%} 
-												else 
-												{%>
-												<div class="col-md-4">
-												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=zipCode%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
-												</div>
-												<%}
-												session.setAttribute("distance",distance);%>
-												<div class="col-md-2">
-												<font size="3"><a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="icon-large icon-cutlery"></span></a></font>
-												</div>											
-												
-												</div>														
-												</div>
+											</div>
+											
+										</div>
 
-											<%
-												}
-											%>
-											<%
-												}
-											%>
-									
+										<%
+											}
+										%>
+										<%
+											}
+										%>
+
 
 
 										<!--end of second body-->
@@ -295,7 +293,9 @@ html,body {
 								</div>
 							</div>
 
-<!--Third panel-->
+
+
+							<!--Third panel-->
 							<div class="panel panel-default panel-info">
 								<div class="panel-heading">
 									<h4 class="panel-title">
@@ -312,74 +312,100 @@ html,body {
 												for (int i = 0; i < realRecomSearchList.size(); i++) {
 													SearchResult search = new SearchResult();
 													search = realRecomSearchList.get(i);
-													
+
 													String address = search.getAddress();
 													String zipCode = "";
-													
+
 													//substring zipCode from address string
-													zipCode = address.substring(address.length()-6, address.length());			
-													
-													String activity = realRecomSearchList.get(i).getActivity(); %>
-											
-				
-												<div class="well" style="background-color: #F0F8FF;">
-												<div class="row">
+													zipCode = address.substring(address.length() - 6,
+															address.length());
+
+													//String activity = realRecomSearchList.get(i).getActivity();
+										%>
+
+
+										<div class="well" style="background-color: #F0F8FF;">
+											<div class="row">
 												<div class="col-md-8">
 													<strong><%=search.getName()%></strong><br> <br>
-													<%out.println("Category: "+search.getCategory()); %><br/>
-													<%out.println("Address: "+search.getAddress());%><br> 
-													<%if (search.getPhoneNo() != null) out.println("Phone: " + search.getPhoneNo());%><br><br>
-													</div>
-													<div class="col-md-4">
+													<%
+														out.println("Category: " + search.getCategory());
+													%><br />
+													<%
+														out.println("Address: " + search.getAddress());
+													%><br>
+													<%
+														if (search.getPhoneNo() != null)
+																	out.println("Phone: " + search.getPhoneNo());
+													%><br>
+													<br>
+												</div>
+												<div class="col-md-4">
 													<!-- star rating -->
-												    <%
-												    session.setAttribute("real_recom_search_results", realRecomSearchList);
-												    session.setAttribute("recom_search_results",recomSearchList); 
-													session.setAttribute("rated_search_results",ratedSearchList);
-													session.setAttribute("traveldestination",travelDestination);
-												session.setAttribute("currentLocation",currentLocation);
-												session.setAttribute("startdate",startDate);
-												session.setAttribute("enddate",endDate);%>
+													<%
+														session.setAttribute("real_recom_search_results",
+																		realRecomSearchList);
+																session.setAttribute("recom_search_results",
+																		recomSearchList);
+																session.setAttribute("rated_search_results",
+																		ratedSearchList);
+																session.setAttribute("traveldestination", travelDestination);
+																session.setAttribute("currentLocation", currentLocation);
+																session.setAttribute("startdate", startDate);
+																session.setAttribute("enddate", endDate);
+													%>
 													<form action="searchresults" method="post">
-														<input type="hidden" id="index" name="index" value=<%=i+200%>>
-														<input id="input-21" name="star" type="number"
-															class="rating" data-show-clear="false"
+														<input type="hidden" id="index" name="index"
+															value=<%=i + 200%>> <input id="input-21"
+															name="star" type="number" class="rating"
+															data-show-clear="false"
 															data-star-captions='{"1": "Very Poor", "2": "Poor", "3": "Ok", "4": "Good", "5": "Excellent"}'
-															data-show-caption=“true” data-size="xs">
+															data-show-caption=âtrueâ data-size="xs">
 														<button class="btn btn-primary btn-xs">Save</button>
-													</form> 
-													</div>
-													</div>
-												<div class="row"> 
-												<% int distance = (Integer) request.getAttribute("distance");
-												if (distance > 500) 
-												{
+													</form>
+												</div>
+											</div>
+											<div class="row">
+												<%
+													int distance = (Integer) request.getAttribute("distance");
+															if (distance > 500) {
 												%>
 												<div class="col-md-2">
-												<font size="3"><a href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight <span class="icon-large icon-plane"></span></a></font>
+													<font size="3"><a
+														href="viewItinerary?currentLocation=<%=currentLocation%>&travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Airflight
+															<span class="icon-large icon-plane"></span>
+													</a></font>
 												</div>
-												<%} 
-												else 
-												{%>
+												<%
+													} else {
+												%>
 												<div class="col-md-4">
-												<font size="3"><a href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=zipCode%>"  target="_blank">Map Directions <span class="icon-large icon-car"></span></a></font>
+													<font size="3"><a
+														href="mapDirection.jsp?currentLocation=<%=currentLocation%>&travelDestination=<%=zipCode%>"
+														target="_blank">Map Directions <span
+															class="icon-large icon-car"></span></a></font>
 												</div>
-												<%}
-												session.setAttribute("distance",distance);%>
+												<%
+													}
+															session.setAttribute("distance", distance);
+												%>
 												<div class="col-md-2">
-												<font size="3"><a href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel <span class="icon-large icon-cutlery"></span></a></font>
-												</div>											
-												
-												</div>														
+													<font size="3"><a
+														href="viewHotel?travelDestination=<%=travelDestination%>&startDate=<%=startDate%>&endDate=<%=endDate%>">Hotel
+															<span class="icon-large icon-cutlery"></span>
+													</a></font>
 												</div>
 
-											<%
-												}
-											%>
-											<%
-												}
-											%>
-									
+											</div>
+										</div>
+
+										<%
+											}
+										%>
+										<%
+											}
+										%>
+
 
 
 										<!--end of third body-->

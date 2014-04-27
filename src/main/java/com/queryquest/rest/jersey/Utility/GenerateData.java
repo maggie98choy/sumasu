@@ -4,9 +4,13 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -25,7 +29,8 @@ public class GenerateData {
 	    "Race Track", "Social Club", "Stadium","Arena","Ticket Sale","Wineries","Barber", "Cosmetic", "Beauty Supply","Eyelash Service","Hair Extension", "Hair Removal", "Laser Hair Removal","Hair Salon","Blow Dry/Out Service", "Hair Stylist","Mens Hair Salon", "Makeup Artist","Massage", "Medical Spa","Nail Salon", "Permanent Makeup","Piercing","Rolfing","Skin Care", "Tanning","Tattoo","Bagel","Bakeries","Bakery","Beer", "Wine", "Spirit","Breweries","Bubble Tea","Butcher","CSA","Coffee & Tea", "Convenience Store","Cupcake","Dessert", "Distilleries",  "Donut","Farmers Market", "Food Delivery Service", "Food Truck","Gelato","Grocery",
 	    "Ice Cream", "Frozen Yogurt","Internet Cafe","Juice Bar", "Smoothy","Smoothies","Pretzel","Shaved Ice", "Specialty Food","Candy Store","Cheese Shop","Chocolatiers", "Shop", "Ethnic Food","Fruits & Veggies","Health Market ","Herb", "Spice", "Meat Shop","Seafood Market","Street Vendor","Tea Room","Wineries","Winery", "Airport","Bed & Breakfast", "Car Rental","Guest House","Health Retreat ","Hostel", "Hotel","Motorcycle Rental", "RV Park","RV Rental", 
 	    "Resort","Tour","Train Station", "Airport Shuttle", "Limo","Public Transportation", "Taxi","Travel Service","Vacation Rental Agent","Vacation Rental","Adult Entertainment","Bar","Comedy Club","Country Dance Hall","Jazz & Blues","Karaoke","Music Venue","Piano","Pool Hall","Campground","Casino","Day Camp","Disc Golf","Diving","Events this weekend","Fishing","Fitness","Golf","Hiking","Museums","Nightlife","Rv park","Scuba","Shopping","Sport bar","Zoo"};*/
-	private static final String[] Activities = {"Aquarium","Archery","Beaches","Campground","Casino","Diving","Fishing","Golf","Hiking","Museum","Nightlife","Scuba","Shopping","Wineries","Zoo"};
+	private static final String[] Activities = {"Aquariums","Archery","Beaches","Campgrounds","Casinos","Fishing","Golf","Hiking","Museums","Nightlife","Scuba","Shopping","Wineries","Zoos"};
+	//private static final String[] Activities ={"Scuba","Aquariums","Beaches","Casinos","Diving","Fishing","Golf","Archery","Hiking","Campgrounds","Museums","Nightlife","Shopping","Wineries","Zoos"};
 	//private static final String[] Cities={"San Jose"};
 	/*private static final String[] Cities ={"San Jose","Sunnyvale","Santa Clara", "San Francisco",
 		"Fremount", "Palo Alto", "Campbell","Los Gatos", "Los Angeles","Las Vegas"};*/
@@ -54,6 +59,7 @@ public class GenerateData {
 
 
 	private void writeToLog(String s, String filename) throws IOException {
+		System.out.println("Filename "+filename);
 		BufferedWriter aWriter = new BufferedWriter(new FileWriter(filename,true));
 		aWriter.write(s);
 		aWriter.newLine();
@@ -82,6 +88,8 @@ public class GenerateData {
 		//System.out.println("Act size "+Activities.length);
 		//System.out.println("cities size "+Cities.length);
 		Yelp yelp = new Yelp(consumerKey, consumerSecret, token, tokenSecret);
+        Set<String> bName= new HashSet<String>();
+		Map<String,Long> map= new HashMap<String,Long>();
 
 		for(int k=0;k<Cities.length;k++){
 			for(int j=0;j<Activities.length;j++){
@@ -93,7 +101,7 @@ public class GenerateData {
 				if(msg != null){
 					Iterator<JSONObject> iterator = msg.iterator();
 					while (iterator.hasNext()){
-						String dataset1="", dataset2="";
+						String dataset1="", dataset2="", dataset3="";
 						int[] users= new int[20];
 						for(int i=0;i<users.length;i++){
 							int user=getRandomNumberFrom(1, 10000);
@@ -108,11 +116,10 @@ public class GenerateData {
 
 						SearchResult search = new SearchResult();
 						JSONObject business = iterator.next();
-						System.out.println(JSONObject.fromObject(business));
+						//System.out.println(JSONObject.fromObject(business));
 						String name = (String) business.get("name");
-						System.out.println("name "+name);
-
-
+						//System.out.println("name "+name);
+                        
 						List<String> catList = new ArrayList<String>();
 						if((business.get("categories"))instanceof JSONArray){
 							JSONArray categories = business.getJSONArray("categories");
@@ -123,10 +130,16 @@ public class GenerateData {
 						int match=0;
 						
 						for(int i=0;i<catList.size();i++){
+							
 							//System.out.println("ALL "+catList.get(i)+"  "+activity);
 							String[] cat = catList.get(i).split(",");
 							for(int z=0;z<cat.length;z++){
-								//System.out.println("ooo "+cat[j].toLowerCase()+" "+activity.toLowerCase());
+								//if(name.equals("Carmel Bay Divers"));
+									//System.out.println("ooo "+cat[z].toLowerCase().replaceAll("\\W", "")+" act-  "+Activities[j].toLowerCase());
+								if((cat[z].toLowerCase().replaceAll("\\W", "")).equals(Activities[j].toLowerCase())){
+									match=1;
+									break;
+								}
 								if(((cat[z].toLowerCase().replaceAll("\\W", "")).contains(Activities[j].toLowerCase()))){
 									match=1; 
 								//	System.out.println("CAT "+catList.get(i));
@@ -146,6 +159,10 @@ public class GenerateData {
 						if(match==0)
 							continue;
 						
+						System.out.println("Activities at --- "+Activities[j]);
+						String activityFileName="./".concat((Activities[j].concat(".csv"))); 
+
+						
 					    JSONObject location= JSONObject.fromObject(business.get("location"));
 						String addr1 = JSONObject.fromObject(business.get("location")).getString("display_address");
 						String addr2 = addr1.replaceAll("[^0-9a-zA-Z\\s]", "");
@@ -154,17 +171,51 @@ public class GenerateData {
 						String phone ="\""+(String)business.get("phone")+"\"";
 						String city= "\""+(String)location.get("city")+"\"";
 						String zipcode= "\""+(String)location.get("postal_code")+"\"";
+						String state ="\""+(String)location.get("state_code")+"\"";
+						
+						
+						Long b=businessId++;
+						if(!bName.add(name)){
+                        	System.out.println("ALREADY EXISTING!!!!! - "+name);
+                        	b=map.get(name);
+                        }
+						else{
+							map.put(name, b);
+						}
+						
 						name="\""+name+"\"";
-						businessId++;
+						
+						
+						
+						
 						for(int i=0;i<users.length;i++){
 							int rate=getRandomNumberFrom(1, 5);
-							dataset1=("{\"userid\":"+users[i]+",\"businessid\":"+businessId+",\"rating\":"+rate+",\"businessname\":"+name+",\"address\":"+addr+",\"city\":"+city+",\"zipcode\":"+zipcode+",\"Phone\":"+phone+",\"Category\":"+catList.toString())+"}";
-							dataset2=(users[i]+","+businessId+","+rate);
-							String activityFileName="./".concat((Activities[j].concat(".csv"))); 
+							dataset1=("{\"userid\":"+users[i]+",\"businessid\":"+b+",\"rating\":"+rate+",\"businessname\":"+name+",\"address\":"+addr+",\"city\":"+city+",\"statecode\":"+state+",\"zipcode\":"+zipcode+",\"Phone\":"+phone+",\"Category\":"+catList.toString())+"}";
+							dataset2=(users[i]+","+b+","+rate);
+							dataset3=(users[i]+","+b+","+rate);
+							
 							try {
 								writeToLog(dataset1,"./YelpDataSet.txt");
+								//writeToLog(dataset2,"./CleanData.csv");
+								//writeToLog(dataset3,activityFileName);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							
+
+							try {
+								//writeToLog(dataset1,"./YelpDataSet.txt");
 								writeToLog(dataset2,"./CleanData.csv");
-								writeToLog(dataset2,activityFileName);
+								//writeToLog(dataset3,activityFileName);
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							try {
+								//writeToLog(dataset1,"./YelpDataSet.txt");
+								//writeToLog(dataset2,"./CleanData.csv");
+								writeToLog(dataset3,activityFileName);
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();

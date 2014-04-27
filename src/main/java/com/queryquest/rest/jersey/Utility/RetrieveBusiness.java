@@ -206,25 +206,16 @@ public class RetrieveBusiness
 							   	
 								if(count==5)
 									break;
-								result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i));
+								result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i),activity);
 								if (result!=null)
 								{
                                   resultList.add(result);
 									String result_category= result.getCategory();
-									String result_address=result.getAddress();
-									//System.out.println(" act "+activity+" resulcate "+result.getCategory());
+									String result_statecode=result.getStateCode();
+								
 									if(result.getCategory()!=null){
 										if(MatchCategory(activity,result_category)){
-											String[] addressList = result_address.split(" ");
-											boolean sameState=false;
-											for(int n=0; n<addressList.length ; n++){
-												if(addressList[n].toLowerCase().equals(stateCode.toLowerCase())){
-													sameState=true;
-													break;
-												}
-											}
-
-											if(sameState){
+											if(result_statecode.equals(stateCode)){
 												result_arraylist.add(result);
 												count++;
 											}
@@ -243,8 +234,7 @@ public class RetrieveBusiness
     								{
 
     									String result_category= result.getCategory();
-    									String result_address=result.getAddress();
-    									//System.out.println(" act "+activity+" resulcate "+result.getCategory());
+    								
     									if(result.getCategory()!=null){
     										if(MatchCategory(activity,result_category)){
 					    						result_arraylist.add(result);
@@ -261,7 +251,7 @@ public class RetrieveBusiness
 
 							for (int i=0; i<10; i++)
 							{
-								result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i));
+								result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i),activity);
 								if (result!=null)
 								{
 									result_arraylist.add(result);
@@ -279,27 +269,13 @@ public class RetrieveBusiness
 							{
 								if(count==5)
 									break;
-								result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i));
+								result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i),activity);
 								if (result!=null)
 								{
 
-									String result_address=result.getAddress();
-									String[] addressList = result_address.split(" ");
-									boolean sameState=false;
-									for(int n=0; n<addressList.length ; n++){
-										if(stateCode==""){
-											sameState=true;
-											break;
-										}
-										System.out.println(" address - "+addressList[n]+ "  stateCode "+stateCode);
-										if(addressList[n].toLowerCase().equals(stateCode.toLowerCase())){
-
-											sameState=true;
-											break;
-										}
-									}
-
-									if(sameState){
+									String result_statecode=result.getStateCode();
+								
+									if(result_statecode.equals(stateCode)){
 										result_arraylist.add(result);
 										count++;
 									}
@@ -320,21 +296,13 @@ public class RetrieveBusiness
 								break;
 							}
 
-							result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i));
+							result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i),activity);
 
 							if (result!=null)
 							{
-								String result_address=result.getAddress();
-								String[] addressList = result_address.split(" ");
-								boolean sameState=false;
-								for(int n=0; n<addressList.length ; n++){
-									if(addressList[n].toLowerCase().equals(stateCode.toLowerCase())){
-										sameState=true;
-										break;
-									}
-								}
-
-								if(sameState){
+								String result_statecode=result.getStateCode();
+								
+								if(result_statecode.equals(stateCode)){
 									result_arraylist.add(result);
 									j++;
 								}
@@ -483,7 +451,8 @@ public class RetrieveBusiness
 
 		if(category!=null)
 		{
-			String filename="/Users/maggie/Downloads/eclipse/dataset/"+category+".csv"; 
+			//String filename="/Users/maggie/Downloads/eclipse/dataset/"+category+".csv";
+    		String filename="dataset/"+category+".csv"; 
 
 			try 
 			{
@@ -503,7 +472,9 @@ public class RetrieveBusiness
 		try 
 		{
 	
-		model = new FileDataModel(new File("/Users/maggie/Downloads/eclipse/dataset/CleanData.csv"));
+		//model = new FileDataModel(new File("/Users/maggie/Downloads/eclipse/dataset/CleanData.csv"));
+			model = new FileDataModel(new File("dataset/CleanData.csv"));
+
 		} catch (IOException e) 
 		{
 			System.out.println("clean Dataset file not found");

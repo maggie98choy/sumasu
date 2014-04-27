@@ -106,6 +106,24 @@ public class MongoQueries {
 	  
   }
   
+  public ArrayList<JSONObject> mongoGetOldMemories(String email, String activity){
+	  BasicDBObject whereQuery = new BasicDBObject();
+		whereQuery.put("email",email);
+		if(activity != null)
+			whereQuery.put("activity", activity);
+		DBCursor cursor = collection.find(whereQuery);
+		ArrayList<JSONObject> JSONObj_ArrayList = new ArrayList<JSONObject>();
+		  
+		while (cursor.hasNext()) 
+		{
+			String result = cursor.next().toString();
+			JSONObject jsonObj = JSONObject.fromObject(result);
+			JSONObj_ArrayList.add(jsonObj);
+		 }   
+		return JSONObj_ArrayList;
+  }
+  
+  
   public ArrayList<String> mongoGetActivities(String email){
 	  BasicDBObject whereQuery = new BasicDBObject();
 		whereQuery.put("email",email);
@@ -143,6 +161,7 @@ public class MongoQueries {
 		  newDocument.put("business_name", rating.getBusinessName());
 		  newDocument.put("rating", rating.getRating());
 		  newDocument.put("category", rating.getCategory());
+		  newDocument.put("activity",rating.getActivity());
 		  collection.insert(newDocument);
 	  }
   }
@@ -170,6 +189,7 @@ public class MongoQueries {
 	  //System.out.println("Avg Rating "+avgRating);
 	  return avgRating;
   }
+  
   
   public int mongoGetRating(String email, String businessName){
 	  BasicDBObject whereQuery = new BasicDBObject();
@@ -233,78 +253,15 @@ public class MongoQueries {
 	  return bussId;
   }
   
+    
   
-  public boolean mongoMatchCategory(String activity)
-  {
-	  boolean found = false;
-	  
-	  //manipulate keyword
-	  char[] act_charArray = activity.toCharArray();
-	  String activity_uppercase = "";
-	  String activity_lowercase = "";
-	  
-	  if (!Character.isUpperCase(act_charArray[0]))
-	  {
-		  activity_lowercase = activity;
-		  
-		  for(int i=0; i<activity.length(); i++)
-		  {
-			  if (i==0)
-			  {
-				  activity_uppercase =Character.toString(Character.toUpperCase(act_charArray[0]));
-			  }
-			  else
-				  activity_uppercase = activity_uppercase + act_charArray[i];
-		  }
-	  }
-	  else
-	  {
-		  activity_uppercase = activity;
-		  for(int i=0; i<activity.length(); i++)
-		  {
-			  if (i==0)
-			  {
-				  activity_lowercase =Character.toString(Character.toLowerCase(act_charArray[0]));
-			  }
-			  else
-				  activity_lowercase = activity_lowercase + act_charArray[i];
-		  }
-	  }
-	  
-	  System.out.println("activity_uppercase:"+activity_uppercase);
-	  System.out.println("activity_lowercase:"+activity_lowercase);
-	  
-	  //String[][] item =  {{"campgrounds","Campgrounds"}};
-	  String[][] item =  {{activity_uppercase,activity_lowercase}};
-	  DBObject inClause = BasicDBObjectBuilder.start()
-			  .push("Category")
-			  .add("$in", item)
-			  .get();
-	  
-	  System.out.println("inClause:"+inClause.toString());
-	  DBObject obj = collection.findOne(inClause);
-	  
-	  JSONObject jsonObj = JSONObject.fromObject(obj);
-	  
-	  //db.tbl_business.find({Category: {$in: [["Campgrounds", "campgrounds"]]}});
-	  System.out.println("jsonObj"+jsonObj.toString());
-	  if (!jsonObj.toString().equals("null"))
-	  {
-		  found = true;
-	  }
-	 
-	  return found;
-  }
-  
-  public SearchResult mongoGetBussDetailByBId(Long BId)
+  public SearchResult mongoGetBussDetailByBId(Long BId, String activity)
   {
 	  BasicDBObject whereQuery = new BasicDBObject();
 	  SearchResult result = new SearchResult();
 	  
 	  int i_BId;
-	  int total_rating = 0 ;
-	  int avg_rating = 0;
-	  int count = 0;
+	 
 	  
 	  i_BId = BId.intValue();
 	  whereQuery.put("businessid", i_BId);
@@ -314,32 +271,19 @@ public class MongoQueries {
 	  {
 		  String queryResult = cursor.next().toString();
 		  jsonObj = JSONObject.fromObject(queryResult);
-		  //count++;
-		  //total_rating += (Integer) cursor.next().get("rating");
-		//  System.out.println(cursor.curr().get("businessname") +" is " +"rating:" +cursor.curr().get("rating"));
 		  
 	  }
 	  
-	  //float a = (float)total_rating/count;
-	 // System.out.println("float a  :" +a);
-	  //double value = (double) total_rating/count;
-	 // avg_rating = (int) Math.rint(value);
-	  
-	 // System.out.println("rounded rating :" +avg_rating);
 	 
-	 // result.setNoOfStars(avg_rating);
-	  //String queryResult = cursor.next().toString();
-	 // String queryResult = cursor.curr().toString();
-	  //JSONObject jsonObj = JSONObject.fromObject(queryResult);
-	
-	  //System.out.println("obj: "+jsonObj);
-
 	  if (jsonObj != null)
 	  {
 		  result.setName(jsonObj.getString("businessname"));
 		  result.setAddress(jsonObj.getString("address"));
 		  result.setCategory(jsonObj.getString("Category"));
 		  result.setPhoneNo(jsonObj.getString("Phone"));
+		  result.setStateCode(jsonObj.getString("statecode"));
+		  result.setActivity(activity);
+		  
 	  }
 	 
 	  return result;

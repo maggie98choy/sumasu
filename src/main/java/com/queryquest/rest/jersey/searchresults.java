@@ -72,6 +72,7 @@ public class searchresults extends HttpServlet {
 	 	    rating.setBusinessName(searchResult.getName());
 		    rating.setRating(searchResult.getNoOfStars());
 	    	rating.setCategory(searchResult.getCategory());
+	    	rating.setActivity(searchResult.getActivity());
 
 		    
 	    	 
@@ -82,13 +83,17 @@ public class searchresults extends HttpServlet {
 	    	 realRecomSearchList.remove(index);
 	    	 searchResult.setNoOfStars(star);
 	    	 searchResult.setRecommended(false);
-	    	 searchResult.setActivity(searchResult.getCategory());
+	    	 if(searchResult.getActivity()!=null)
+	    		 searchResult.setActivity(searchResult.getActivity());
+	    	 else
+	    		 searchResult.setActivity(searchResult.getCategory());
 	    	ratedSearchList.add(searchResult);
 	    	 
 	 	    rating.setEmail((String)session.getAttribute("email"));
 	 	    rating.setBusinessName(searchResult.getName());
 		    rating.setRating(searchResult.getNoOfStars());
 	    	rating.setCategory(searchResult.getCategory());
+	    	rating.setActivity(searchResult.getActivity());
 
 	    	 
 	     }
@@ -98,6 +103,7 @@ public class searchresults extends HttpServlet {
 	    	 rating.setBusinessName(ratedSearchList.get(index).getName());
 	    	 rating.setRating(ratedSearchList.get(index).getNoOfStars());
 	    	 rating.setCategory(ratedSearchList.get(index).getCategory());
+	    	 rating.setActivity(ratedSearchList.get(index).getActivity());
 	    
 	     }
 	    	 MongoQueries mongoQueries = new MongoQueries();

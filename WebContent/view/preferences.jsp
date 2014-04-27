@@ -58,15 +58,17 @@ html,body {
 	<table class="table borderless table-nonfluid">  
 	<tr> 
 		
-		<td> <input type="checkbox" name="activity" value="Aquarium"/>  Aquarium </td>
+		<td> <input type="checkbox" name="activity" value="Aquariums"/>  Aquarium </td>
 		<td><input type="checkbox" name="activity" value="Archery"/>  Archery</td>
 		<td> <input type="checkbox" name="activity" value="Beaches"/>  Beach </td>
+	    <td> <input type="checkbox" name="activity" value="Wineries"/>  Wineries </td>
+		
 		
 	</tr>
 	<tr>
 		
-		<td><input type="checkbox" name="activity" value="Campground"/> Camp Grounds  </td>
-		<td><input type="checkbox" name="activity" value="Casino"/> Casino  </td>
+		<td><input type="checkbox" name="activity" value="Campgrounds"/> Camp Grounds  </td>
+		<td><input type="checkbox" name="activity" value="Casinos"/> Casino  </td>
 		<td><input type="checkbox" name="activity" value="Fishing"/>  Fishing </td>	
 		
 	
@@ -75,8 +77,8 @@ html,body {
 	<tr>
 		<td><input type="checkbox" name="activity" value="Golf"/>  Golf  </td>
 		<td><input type="checkbox" name="activity" value="Hiking"/>  Hiking </td>
-	    <td><input type="checkbox" name="activity" value="Museum"/>  Museums  </td>
-				<td><input type="checkbox" name="activity" value="Zoo"/>  Zoo </td>
+	    <td><input type="checkbox" name="activity" value="Museums"/>  Museums  </td>
+				<td><input type="checkbox" name="activity" value="Zoos"/>  Zoo </td>
 		
 		
 	</tr>

@@ -5,6 +5,7 @@ public class Rating {
  private int rating;
  private String businessName;
  private String category;
+ private String activity;
  
 public String getEmail() {
 	return email;
@@ -34,6 +35,12 @@ public String getCategory() {
 }
 public void setCategory(String category) {
 	this.category = category;
+}
+public String getActivity() {
+	return activity;
+}
+public void setActivity(String activity) {
+	this.activity = activity;
 }
  
  

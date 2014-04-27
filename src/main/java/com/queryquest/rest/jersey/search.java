@@ -286,9 +286,27 @@ public class search extends HttpServlet {
 				recomSearchList.add(search);
 				count--;
 			}
-			else
-				ratedSearchList.add(search);
+			//else
+		//	ratedSearchList.add(search);
 		}
+		
+		ArrayList<JSONObject> JSONObj_ArrayList = new ArrayList<JSONObject>();
+		JSONObj_ArrayList = mongo.mongoGetOldMemories(email, activity);
+		JSONObject jsonObject = null;
+
+		
+		for(int x=0; x < JSONObj_ArrayList.size(); x++){
+			jsonObject = (JSONObject) JSONObj_ArrayList.get(x);
+		    SearchResult search = new SearchResult();
+		    search.setName(jsonObject.getString("business_name"));
+		    search.setActivity(activity);
+		    search.setCategory(jsonObject.getString("category"));
+		    search.setNoOfStars(jsonObject.getInt("rating"));
+		    search.setRecommended(false);
+		    ratedSearchList.add(search);
+		}
+
+		
 
 		FinalResults finalResults = new FinalResults();
 		//SortSearchResults sort = new SortSearchResults();
