@@ -312,9 +312,11 @@ html,body {
 													String address = search.getAddress();
 													String zipCode = "";
 
+													
 													//substring zipCode from address string
-													zipCode = address.substring(address.length() - 6,
+													zipCode = address.substring(address.length() - 5,
 															address.length());
+
 
 													//String activity = realRecomSearchList.get(i).getActivity();
 										%>

@@ -12,6 +12,20 @@ public class SearchResult {
     private String category;
     private String stateCode;
 	
+    
+	public SearchResult(String name, String address, String category,
+			String phoneNo, String stateCode) 
+	{
+		this.name = name;
+		this.address = address;
+		this.category = category;
+		this.phoneNo = phoneNo;
+		this.stateCode = stateCode;
+	}
+	
+	public SearchResult()
+	{}
+	
 	public String getName() {
 		return name;
 	}

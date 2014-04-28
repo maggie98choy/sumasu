@@ -136,11 +136,14 @@ public class RetrieveBusiness
 
 			for(int i=0; i<listBussName.size(); i++)
 			{
-				Long bussId = Long.parseLong(mongo.mongoGetBussIdByBussName(listBussName.get(i)));
-				if (!bussId.equals(""))
+				if (!mongo.mongoGetBussIdByBussName(listBussName.get(i)).toString().equals(""))
 				{
-					bussId_arraylist.add(bussId);
-				}
+					Long bussId = Long.parseLong(mongo.mongoGetBussIdByBussName(listBussName.get(i)));
+					if (!bussId.equals(""))
+					{
+						bussId_arraylist.add(bussId);
+					}
+				}				
 			}
 			System.out.println("bussId_arraylist:"+ bussId_arraylist.toString());
 
@@ -188,6 +191,15 @@ public class RetrieveBusiness
 			remBussId_arraylist.add((long) 373);
 			 */
 
+			if(remBussId_arraylist!=null )
+			{
+				System.out.println("remBussId_arraylist"+remBussId_arraylist.toString());
+			}
+			else
+			{
+				System.out.println("no remmBuss id");
+			}
+				
 			if(remBussId_arraylist!=null ){
 				if (remBussId_arraylist.size() != 0 )				
 				{
@@ -201,7 +213,8 @@ public class RetrieveBusiness
 
 						if(found==false && activity !=null){
 							ArrayList<SearchResult> resultList= new ArrayList<SearchResult>();
-							for (int i=0; i<30/*remBussId_arraylist.size()*/; i++)
+							//for (int i=0; i<30/*remBussId_arraylist.size()*/; i++)
+							for (int i=0; i<remBussId_arraylist.size(); i++)
 							{
 							   	
 								if(count==5)
@@ -247,20 +260,19 @@ public class RetrieveBusiness
     							System.out.println("result_arraylist:"+ result_arraylist.toString());
 
                             }
-						}else if(found==false && activity == null){
-
-								for (int i=0; i<10; i++)
-								{
-									result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i),activity);
-									if (result!=null)
-									{
-										result_arraylist.add(result);
-
-									}	
-
-								}
+						}else if(found==false && activity == null)
+						{
+								count = 0;
+								ArrayList<String> actList = new ArrayList<String>();
+								
+								mongo.mongoConnect(1);
+								actList = mongo.mongoGetActivities(email);
+								System.out.println("actList:" +actList.toString());
+								
+								mongo.mongoConnect(3);
+								result_arraylist = mongo.mongoGetBussDetailByBId(remBussId_arraylist,actList );
+													
 								System.out.println("result_arraylist:"+ result_arraylist.toString());
-
 
 							}
 	
@@ -290,15 +302,16 @@ public class RetrieveBusiness
 					{
 						// get from bottom 5 of the list
 						int j = 0;
-						for (int i=remBussId_arraylist.size()-1; i>=remBussId_arraylist.size()-10;i--)
+						System.out.println("Condition 2 is here: remm BussId size:"+ remBussId_arraylist.size());
+						//for (int i=remBussId_arraylist.size()-1; i>=remBussId_arraylist.size()-10;i--)
+						for (int i=remBussId_arraylist.size()-1; i>=0;i--)
 						{
 							if (j==5)
 							{
 								break;
 							}
-
 							result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i),activity);
-
+							
 							if (result!=null)
 							{
 								String result_statecode=result.getStateCode();
@@ -452,8 +465,8 @@ public class RetrieveBusiness
 
 		if(category!=null)
 		{
-			//String filename="/Users/maggie/Downloads/eclipse/dataset/"+category+".csv";
-    		String filename="dataset/"+category+".csv"; 
+			String filename="/Users/maggie/Downloads/eclipse/dataset/"+category+".csv";
+    		//String filename="dataset/"+category+".csv"; 
 
 			try 
 			{
@@ -473,8 +486,8 @@ public class RetrieveBusiness
 		try 
 		{
 	
-		//model = new FileDataModel(new File("/Users/maggie/Downloads/eclipse/dataset/CleanData.csv"));
-			model = new FileDataModel(new File("dataset/CleanData.csv"));
+		model = new FileDataModel(new File("/Users/maggie/Downloads/eclipse/dataset/CleanData.csv"));
+			//model = new FileDataModel(new File("dataset/CleanData.csv"));
 
 		} catch (IOException e) 
 		{

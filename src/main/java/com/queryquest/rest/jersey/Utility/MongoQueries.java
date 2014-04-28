@@ -2,6 +2,9 @@ package com.queryquest.rest.jersey.Utility;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +12,7 @@ import static java.lang.Math.abs;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DB;
@@ -290,8 +294,7 @@ public class MongoQueries {
 	 
 	  return bussId;
   }
-  
-    
+   
   
   public SearchResult mongoGetBussDetailByBId(Long BId, String activity)
   {
@@ -303,17 +306,13 @@ public class MongoQueries {
 	  
 	  i_BId = BId.intValue();
 	  whereQuery.put("businessid", i_BId);
-	  DBCursor cursor = collection.find(whereQuery);
+	  DBObject object = collection.findOne(whereQuery);
 	  JSONObject jsonObj=null;	   
-	  while(cursor.hasNext())
-	  {
-		  String queryResult = cursor.next().toString();
-		  jsonObj = JSONObject.fromObject(queryResult);
-		  
-	  }
 	  
-	 
-	  if (jsonObj != null)
+	  System.out.println("i_BId"+i_BId);
+	  jsonObj = JSONObject.fromObject(object);
+	  System.out.println("jsonObj"+jsonObj.toString());
+	  if (!jsonObj.isEmpty())
 	  {
 		  result.setName(jsonObj.getString("businessname"));
 		  result.setAddress(jsonObj.getString("address"));
@@ -326,6 +325,106 @@ public class MongoQueries {
 	 
 	  return result;
   }
+  
+  public ArrayList<SearchResult> mongoGetBussDetailByBId(ArrayList<Long> BidList,ArrayList<String> actList )
+  {
+	  ArrayList<SearchResult> result_list=  new ArrayList<SearchResult>();
+	  SearchResult searchresult = new SearchResult();
+	  int[] Bid_IntList = new int[BidList.size()];	  
+	  for (int i=0; i<BidList.size();i++)
+	  {
+		  Bid_IntList[i] = BidList.get(i).intValue();
+		  //System.out.println("Bid_IntList[i]"+Bid_IntList[i]);  
+	  }
+	  
+	  String activity_lowercase = "";
+	  String activity_uppercase = "";
+	  String [][] activities = new String [actList.size()][2];
+	  
+	  for (int i=0; i<actList.size();i++)
+	  {
+		  char[] act_charArray = actList.get(i).toCharArray();
+		  System.out.println("i: "+i);
+		  if (!Character.isUpperCase(act_charArray[0]))
+		  {
+			  activity_lowercase = actList.get(i);
+			  
+			  for(int j=0; j<actList.get(i).length(); j++)
+			  {
+				  if (j==0)
+				  {
+					  activity_uppercase =Character.toString(Character.toUpperCase(act_charArray[0]));
+				  }
+				  else
+					  activity_uppercase = activity_uppercase + act_charArray[j];
+			  }		 
+		  }
+		  else
+		  {
+			  activity_uppercase = actList.get(i);
+			  for(int k=0; k<actList.get(i).length(); k++)
+			  {
+				  if (k==0)
+				  {
+					  activity_lowercase =Character.toString(Character.toLowerCase(act_charArray[0]));
+				  }
+				  else
+					  activity_lowercase = activity_lowercase + act_charArray[k];
+			  }
+			 
+		  }
+		  activities[i][0]=activity_uppercase;
+		  activities[i][1]=activity_lowercase;
+
+	  }
+	  
+	  DBObject clause1 = BasicDBObjectBuilder.start()
+			  .push("businessid")
+			  .add("$in", Bid_IntList)
+			  .get();
+	  
+	  DBObject clause2 = BasicDBObjectBuilder.start()
+			  .push("Category")
+			  .add("$in", activities)
+			  .get();
+	  	  	  
+	  BasicDBList and = new BasicDBList();
+	  and.add(clause1);
+	  and.add(clause2);
+	  DBObject query = new BasicDBObject("$and", and);	  
+	  
+	  System.out.println("AND Clause:"+query.toString());
+	  DBCursor cursor = collection.find(query);	  
+	  HashMap<String, Integer> cache = new HashMap<String, Integer>();
+	  //System.out.println("count"+cursor.count());	
+	  while (cursor.hasNext()) 
+	  {
+		  
+		  String result = cursor.next().toString();		
+		JSONObject jsonObj = JSONObject.fromObject(result);
+		if (!cache.containsValue((Integer) jsonObj.get("businessid")))
+		{
+			//System.out.println("Bid"+jsonObj.get("businessid"));
+			searchresult.setName(jsonObj.getString("businessname"));
+			searchresult.setAddress(jsonObj.getString("address"));
+			searchresult.setCategory(jsonObj.getString("Category"));
+			searchresult.setPhoneNo(jsonObj.getString("Phone"));
+			searchresult.setStateCode(jsonObj.getString("statecode"));
+			cache.put("businessid"+jsonObj.get("businessid"), (Integer) jsonObj.get("businessid"));	
+			result_list.add(new SearchResult(searchresult.getName(), searchresult.getAddress(), searchresult.getCategory(), searchresult.getPhoneNo(), searchresult.getStateCode()));
+			System.out.println("searchresult"+searchresult.toString());
+		}
+	    
+	  } 
+	 // System.out.println("cache: "+cache.toString());
+	  
+	  return result_list;
+	  
+	  //db.tbl_business.find({"businessid":{$in:[35,3827]},"Category": {$in: [["Campgrounds", "campgrounds"]]}})
+	  //db.tbl_business.find({"businessid":{$in:[29,26]},"Category": {$in: [["Campgrounds", "campgrounds"]]}})
+
+  }
+  
   
   
 }
