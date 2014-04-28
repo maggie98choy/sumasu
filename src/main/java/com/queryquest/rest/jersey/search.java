@@ -141,10 +141,35 @@ public class search extends HttpServlet {
 				FinalResults finalResults= new FinalResults();
 				finalResults = parseYelpResult(msg,(totalNumber/actList.size()),actList.get(i),email);
 				recomSearchList.addAll(finalResults.getRecommendedResults());
-				ratedSearchList.addAll(finalResults.getRatedResults());
 
 			}
 		}
+		
+		mongo.mongoConnect(2);
+
+		ArrayList<JSONObject> JSONObj_ArrayList = new ArrayList<JSONObject>();
+		if(!isPreferredActivities)
+			JSONObj_ArrayList = mongo.mongoGetOldMemories(email, actList.get(0));
+		else
+			JSONObj_ArrayList = mongo.mongoGetOldMemories(email, null);
+
+		JSONObject jsonObject = null;
+
+		
+		for(int x=0; x < JSONObj_ArrayList.size(); x++){
+			jsonObject = (JSONObject) JSONObj_ArrayList.get(x);
+		    SearchResult search = new SearchResult();
+		    search.setName(jsonObject.getString("business_name"));
+		    search.setActivity(jsonObject.getString("activity"));
+		    search.setCategory(jsonObject.getString("category"));
+		    search.setNoOfStars(jsonObject.getInt("rating"));
+		    search.setRecommended(false);
+		    ratedSearchList.add(search);
+		}
+		
+		ratedSearchList=sortRating(ratedSearchList,false);
+         
+	System.out.println("OLD MEM "+ratedSearchList);	
 
 		//Get distance in miles between 2 cities		
 		DistanceCalculation dc = new DistanceCalculation();
@@ -290,28 +315,13 @@ public class search extends HttpServlet {
 		//	ratedSearchList.add(search);
 		}
 		
-		ArrayList<JSONObject> JSONObj_ArrayList = new ArrayList<JSONObject>();
-		JSONObj_ArrayList = mongo.mongoGetOldMemories(email, activity);
-		JSONObject jsonObject = null;
-
-		
-		for(int x=0; x < JSONObj_ArrayList.size(); x++){
-			jsonObject = (JSONObject) JSONObj_ArrayList.get(x);
-		    SearchResult search = new SearchResult();
-		    search.setName(jsonObject.getString("business_name"));
-		    search.setActivity(activity);
-		    search.setCategory(jsonObject.getString("category"));
-		    search.setNoOfStars(jsonObject.getInt("rating"));
-		    search.setRecommended(false);
-		    ratedSearchList.add(search);
-		}
-
+	
 		
 
 		FinalResults finalResults = new FinalResults();
 		//SortSearchResults sort = new SortSearchResults();
 		finalResults.setRecommendedResults(sortRating(recomSearchList,true));
-		finalResults.setRatedResults(sortRating(ratedSearchList,false));
+//		finalResults.setRatedResults(sortRating(ratedSearchList,false));
 		return finalResults;				
 	}
 

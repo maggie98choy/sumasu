@@ -2,9 +2,10 @@ package com.queryquest.rest.jersey.Utility;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import javax.servlet.http.HttpSession;
-import static java.lang.Math.abs;
 
+import javax.servlet.http.HttpSession;
+
+import static java.lang.Math.abs;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -109,8 +110,6 @@ public class MongoQueries {
   public ArrayList<JSONObject> mongoGetOldMemories(String email, String activity){
 	  BasicDBObject whereQuery = new BasicDBObject();
 		whereQuery.put("email",email);
-		if(activity != null)
-			whereQuery.put("activity", activity);
 		DBCursor cursor = collection.find(whereQuery);
 		ArrayList<JSONObject> JSONObj_ArrayList = new ArrayList<JSONObject>();
 		  
@@ -119,8 +118,47 @@ public class MongoQueries {
 			String result = cursor.next().toString();
 			JSONObject jsonObj = JSONObject.fromObject(result);
 			JSONObj_ArrayList.add(jsonObj);
-		 }   
-		return JSONObj_ArrayList;
+		 }
+		
+		if(activity == null)
+			return JSONObj_ArrayList;
+		else{
+			ArrayList<JSONObject> newJSONObj_ArrayList = new ArrayList<JSONObject>();
+			JSONObject jsonObject = null;
+			for(int x=0; x < JSONObj_ArrayList.size(); x++){
+				jsonObject = (JSONObject) JSONObj_ArrayList.get(x);
+				String act= jsonObject.getString("activity");
+				String[] cat = act.split(",");
+                int match=0;
+				for(int z=0;z<cat.length;z++){
+				if((cat[z].toLowerCase().replaceAll("\\W", "")).equals(activity.toLowerCase())){
+					match=1;
+					break;
+				}
+				if(((cat[z].toLowerCase().replaceAll("\\W", "")).contains(activity.toLowerCase()))){
+					match=1; 
+				//	System.out.println("CAT "+catList.get(i));
+					break;
+
+				}
+				else if(activity.toLowerCase().contains(cat[z].toLowerCase().replaceAll("\\W", ""))){
+					//System.out.println("acti " +activity.toLowerCase());
+					//System.out.println("cat "+cat[j].toLowerCase().replaceAll("\\W", ""));
+					match=1; 
+		//			System.out.println("CATi "+catList.get(i));
+					break;
+				}
+				}
+				
+				if (match==1){
+					newJSONObj_ArrayList.add(jsonObject);
+				}
+			}
+			
+			return newJSONObj_ArrayList;
+		}
+		
+		
   }
   
   

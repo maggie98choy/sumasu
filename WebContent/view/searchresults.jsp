@@ -231,23 +231,19 @@ html,body {
 													SearchResult search = new SearchResult();
 													search = ratedSearchList.get(i);
 													
-													String activity = ratedSearchList.get(i).getActivity();
+													/*String activity = ratedSearchList.get(i).getActivity();
 													if (act != null) {
-														if (!act.equals(activity)) {
+														if (!act.equals(activity)) {*/
 										%>
-										<h4 style="color: black;">
-											<%
-												out.println(activity);
-																act = new String(activity);
-															} else
-																System.out.println(search.toString());
-														}
-											%>
-										</h4>
+										
 										<div class="well" style="background-color: #F0F8FF;">
 											<div class="row">
 												<div class="col-md-8">
-													<strong><%=search.getName()%></strong><br> 
+													<strong><%=search.getName()%></strong><br><br>
+													<%
+														out.println("Category: " + search.getCategory());
+													%><br />
+													 
 												</div>
 												<div class="col-md-4">
 													<!-- star rating -->

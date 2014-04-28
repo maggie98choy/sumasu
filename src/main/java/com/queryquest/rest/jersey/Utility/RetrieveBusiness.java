@@ -249,20 +249,21 @@ public class RetrieveBusiness
                             }
 						}else if(found==false && activity == null){
 
-							for (int i=0; i<10; i++)
-							{
-								result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i),activity);
-								if (result!=null)
+								for (int i=0; i<10; i++)
 								{
-									result_arraylist.add(result);
+									result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i),activity);
+									if (result!=null)
+									{
+										result_arraylist.add(result);
 
-								}	
+									}	
+
+								}
+								System.out.println("result_arraylist:"+ result_arraylist.toString());
+
 
 							}
-							System.out.println("result_arraylist:"+ result_arraylist.toString());
-
-
-						}
+	
 						else if(found==true){
 							count=0;
 							for (int i=0; i<remBussId_arraylist.size(); i++)
