@@ -27,6 +27,51 @@ html,body {
 <%@ page
 	import="com.queryquest.rest.jersey.domain.SearchResult,java.util.ArrayList;"%>
 <body>
+<script>
+ window.fbAsyncInit = function() 
+ {
+  FB.init({
+    appId      : '359402037530890',
+    status     : true, // check login status
+    cookie     : true, // enable cookies to allow the server to access the session
+    xfbml      : true  // parse XFBML
+  });
+ 
+  // Additional init code here
+  FB.getLoginStatus(function(response) 
+  {
+   if (response.status === 'connected') {
+   // connected
+   
+
+   } else if (response.status === 'not_authorized') {
+    // not_authorized
+    ///log function will change div visibility to "visible"
+    //log();
+
+   } else {
+   // not_logged_in
+    //log();
+   }
+  });//closes fb.getLoginStatus
+ };//closes fbAsyncInit
+ 
+ (function(d){
+	   var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+	   if (d.getElementById(id)) {return;}
+	   js = d.createElement('script'); js.id = id; js.async = true;
+	   js.src = "//connect.facebook.net/en_US/all.js";
+	   ref.parentNode.insertBefore(js, ref);
+	  }(document));
+
+
+function fblogout()
+{	
+	 FB.logout(function(response) 
+	{ 		 	 
+	});
+}
+</script>
 <!-- JS-->
 	<script src="bootstrap/js/bootstrap.js"></script>
 	
@@ -40,7 +85,7 @@ html,body {
 				<li><a href="search.jsp">Travel</a></li>
 				
 				<li class="active"><a href="preferences.jsp">Preferences</a></li>
-				<li><a href="">Sign Off</a></li>
+				<li><a href="signOff" onclick="fblogout()" >Sign Off</a></li>
 			</ul>
 			&nbsp; <a href="https://www.facebook.com/citystorysf"
 				title="Become a fan"><img src="images/facebook.jpg" height="50"
