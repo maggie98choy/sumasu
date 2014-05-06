@@ -11,8 +11,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.mahout.cf.taste.common.TasteException;
@@ -190,6 +192,16 @@ public class RetrieveBusiness
 			remBussId_arraylist.add((long) 370);
 			remBussId_arraylist.add((long) 373);
 			 */
+			mongo.mongoConnect(2);
+			ArrayList<JSONObject> oldMem_ArrayList = new ArrayList<JSONObject>();
+			Map<String,Integer> oldBusiness = new HashMap<String,Integer>();
+			oldMem_ArrayList = mongo.mongoGetOldMemories(email, null);
+			JSONObject json = null;
+
+			for(int x=0; x < oldMem_ArrayList.size(); x++){
+				json = (JSONObject) oldMem_ArrayList.get(x);
+				oldBusiness.put((String)json.getString("business_name"),1);
+			}
 
 			if(remBussId_arraylist!=null )
 			{
@@ -222,7 +234,9 @@ public class RetrieveBusiness
 								result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i),activity);
 								if (result!=null)
 								{
-                                  resultList.add(result);
+									if(oldBusiness.get(result.getName())!=null)
+										continue;
+                                    resultList.add(result);
 									String result_category= result.getCategory();
 									String result_statecode=result.getStateCode();
 								
@@ -271,6 +285,13 @@ public class RetrieveBusiness
 								
 								mongo.mongoConnect(3);
 								result_arraylist = mongo.mongoGetBussDetailByBId(remBussId_arraylist,actList );
+								for(int i=0;i<result_arraylist.size();i++){
+									if(oldBusiness.get(result_arraylist.get(i).getName())!=null){
+										result_arraylist.remove(i);
+									}
+											
+											
+								}
 													
 								System.out.println("result_arraylist:"+ result_arraylist.toString());
 
@@ -285,7 +306,8 @@ public class RetrieveBusiness
 								result = mongo.mongoGetBussDetailByBId(remBussId_arraylist.get(i),activity);
 								if (result!=null)
 								{
-
+									if(oldBusiness.get(result.getName())!= null )
+										continue;
 									String result_statecode=result.getStateCode();
 								
 									if(result_statecode.equals(stateCode)){
@@ -314,6 +336,9 @@ public class RetrieveBusiness
 							
 							if (result!=null)
 							{
+								if(oldBusiness.get(result.getName()) != null)
+									continue;
+						
 								String result_statecode=result.getStateCode();
 								
 								if(result_statecode.equals(stateCode)){
@@ -465,8 +490,8 @@ public class RetrieveBusiness
 
 		if(category!=null)
 		{
-			String filename="/Users/maggie/Downloads/eclipse/dataset/"+category+".csv";
-    		//String filename="dataset/"+category+".csv"; 
+	//		String filename="/Users/maggie/Downloads/eclipse/dataset/"+category+".csv";
+    		String filename="dataset/"+category+".csv"; 
 
 			try 
 			{
@@ -486,8 +511,8 @@ public class RetrieveBusiness
 		try 
 		{
 	
-		model = new FileDataModel(new File("/Users/maggie/Downloads/eclipse/dataset/CleanData.csv"));
-			//model = new FileDataModel(new File("dataset/CleanData.csv"));
+		//model = new FileDataModel(new File("/Users/maggie/Downloads/eclipse/dataset/CleanData.csv"));
+			model = new FileDataModel(new File("dataset/CleanData.csv"));
 
 		} catch (IOException e) 
 		{

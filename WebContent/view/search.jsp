@@ -57,9 +57,6 @@ p {
 				<li><img src="images/logo.png" alt="Citystory" width="50"
 					height="50"></li>
 				<li class="active"><a href="search.jsp">Travel</a></li>
-				<li><a href="">Sports</a></li>
-				<li><a href="">Music</a></li>
-				<li><a href="">Events</a></li>
 				<li><a href="preferences.jsp">Preferences</a></li>
 
 				<li><a href="">Sign Off</a></li>
